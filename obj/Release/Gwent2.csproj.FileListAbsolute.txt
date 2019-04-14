@@ -1,0 +1,6 @@
+D:\microsoft visual studio projects\Gwent2\bin\Release\Gwent2.exe.config
+D:\microsoft visual studio projects\Gwent2\bin\Release\Gwent2.exe
+D:\microsoft visual studio projects\Gwent2\bin\Release\Gwent2.pdb
+D:\microsoft visual studio projects\Gwent2\obj\Release\Gwent2.exe
+D:\microsoft visual studio projects\Gwent2\obj\Release\Gwent2.pdb
+D:\microsoft visual studio projects\Gwent2\obj\Release\Gwent2.csprojResolveAssemblyReference.cache
