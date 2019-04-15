@@ -23,6 +23,7 @@ namespace Gwent2
         TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
 
         TriggerUnitAction _onUnitDamaged = (s, by, X) => { /*s._context.Log(s, String.Format("watchs how {0} suffers {1} damage", by.ToString(), X));*/ };
+        TriggerUnitSelf _onDestroy = (s, by) => { s._context.Log(s, "destroyed");};
 
         string _onDamagedAbility = "";
         string _onWeakenedAbility = "";
@@ -31,6 +32,7 @@ namespace Gwent2
         string _onHealedAbility = "";
         string _onArmorGainAbility = "";
         string _onUnitDamagedAbility = "";
+        string _onDestroyAbility = "";
 
         public void setOnDamaged(TriggerRecieve trigger, string description) { _onDamaged = trigger; _onDamagedAbility = description; }
         public void setOnWeakened(TriggerRecieve trigger, string description) { _onWeakened = trigger; _onWeakenedAbility = description; }
@@ -39,6 +41,7 @@ namespace Gwent2
         public void setOnHealed(TriggerRecieve trigger, string description) { _onHealed = trigger; _onHealedAbility = description; }
         public void setOnArmorGain(TriggerRecieve trigger, string description) { _onArmorGain = trigger; _onArmorGainAbility = description; }
 
+        public void setOnDestroy(TriggerUnitSelf trigger, string description) { _onDestroy = trigger; _onDestroyAbility = description; }
         public void setOnUnitDamaged(TriggerUnitAction trigger, string description) { _onUnitDamaged = trigger; _onUnitDamagedAbility = description; }
 
         public override int power { get { return _power; } }
@@ -116,7 +119,16 @@ namespace Gwent2
             _power += healCount;
             _onHealed(this, source, healCount);
         }
-
+        public virtual void restore(Card source)
+        {
+            _power = _basePower;
+        }
+        public virtual void destroy(Card source)
+        {
+            move(Place.graveyard);
+            restore(this);
+            _onDestroy(this, source);
+        }
         public bool isDamaged { get { return _power < _basePower; } }
 
         public override string ToString()
@@ -139,8 +151,9 @@ namespace Gwent2
         public override string ToFormatAbilities()
         {
             string baseAbilities = base.ToFormatAbilities();
-            string abilities = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
-                baseAbilities.Length == 0? "" : baseAbilities,
+            string abilities = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
+                baseAbilities.Length == 0 ? "" : baseAbilities,
+                _onDestroyAbility.Length == 0 ? "" : (_onDestroyAbility + "\n"),
                 _onDamagedAbility.Length == 0 ? "" : (_onDamagedAbility + "\n"),
                 _onWeakenedAbility.Length == 0 ? "" : (_onWeakenedAbility + "\n"),
                 _onBuffedAbility.Length == 0 ? "" : (_onBuffedAbility + "\n"),

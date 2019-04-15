@@ -8,6 +8,7 @@ namespace Gwent2
 {
     class SpawnUnit
     {
+        static Random unitDecisionsRandomiser = new Random();
         //delegate void TriggerMove (Card self, Place from);
         //delegate void TrigerRecieve(Unit self, Card source, int X);
 
@@ -39,7 +40,7 @@ namespace Gwent2
             if (t != null)
                 t.damage(self, damageValue);
         }
-        
+
         public static Unit AnCraiteWarrior
         {
             get
@@ -185,10 +186,10 @@ namespace Gwent2
                 self.setUnitAttributes(8, Tag.soldier, Tag.clanDrummond);
                 self.setOnDeploy((s, f) =>
                 {
-                    Unit u = s.host.selectUnit(
-                        Select.Units(s.context.cards,
-                        Filter.anyAllyUnitInDeck(s as Unit),
-                        Filter.anyUnitHasColor(Rarity.bronze)), s.QestionString());
+                    Card u = s.host.selectCard(
+                        Select.Cards(s.context.cards,
+                        Filter.anyCardAllyInDeck(s as Unit),
+                        Filter.anyCardHasColor(Rarity.bronze)), s.QestionString());
                     if (u != null)
                         u.move(Place.graveyard);
                 }, "Discard a Bronze card from your deck.");
@@ -295,7 +296,7 @@ namespace Gwent2
                 self.setOnDiscard((s, f) =>
                 {
                     // ERROR -> random row, not one
-                    (s as Unit).row = 1;
+                    (s as Unit).row = unitDecisionsRandomiser.Next(3);
                     s.move(Place.battlefield);
                 }, "Whenever you Discard this unit, Resurrect it on a random row.");
                 return self;
@@ -397,7 +398,7 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     Unit t = s.host.selectUnit(
-                        Select.Units(s.context.cards, 
+                        Select.Units(s.context.cards,
                         Filter.anyOtherAllyUnitInBattlefield(s as Unit),
                         Filter.anyUnitSoldierOrMachine(),
                         Filter.anyUnitHasColor(Rarity.bronze)),
@@ -405,10 +406,11 @@ namespace Gwent2
 
                     if (t != null)
                     {
-                        t.damage(s, 1);
                         var topCopy = s.context._topUnitOfDeck(s.host, Filter.anyCopie(t));
-                        if (topCopy != null)
-                            s.host.playCard(topCopy);
+                        if (topCopy == null)
+                            return;
+                        t.damage(s, 1);
+                        s.host.playCard(topCopy);
                     }
                 }, "Deal 1 damage to a Bronze Machine or Soldier ally, then play a copy of it from your deck.");
                 return self;
@@ -418,5 +420,28 @@ namespace Gwent2
         //Savage Bear
         //Dimun Warship
         //An Craite Longship
+        public static Unit Vabjorn
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Vabjorn");
+                self.setUnitAttributes(11, Tag.cursed, Tag.cultist);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(
+                        Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), 
+                        s.QestionString());
+                    if (t == null)
+                        return;
+                    if (!t.isDamaged)
+                        t.damage(s, 2);
+                    else
+                        t.destroy(s);
+                },
+                    "Deal 2 damage to an enemy. If it was already damaged, destroy it instead.");
+                return self;
+            }
+        }
     }
 }

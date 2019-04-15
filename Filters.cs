@@ -124,6 +124,18 @@ namespace Gwent2
         {
             return (c) => { return c.place == place && c.host == sameHostCard.host; };
         }
-        public static CardPredicat anyCardAllyInHand(Card source){return anyCardAllyIn(Place.hand, source); }
+        public static CardPredicat anyCardHasColor(params Rarity[] acceptedColors)
+        {
+            return (c) => {
+                foreach (Rarity rarity in acceptedColors)
+                    if (c.rarity == rarity)
+                        return true;
+                return false;
+            };
+        }
+        public static CardPredicat anyCardAllyInHand(Card source) { return anyCardAllyIn(Place.hand, source); }
+        public static CardPredicat anyCardAllyInDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
+        
+
     }
 }

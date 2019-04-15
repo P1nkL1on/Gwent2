@@ -47,7 +47,6 @@ namespace Gwent2
             Place to = place;
             if (to == Place.hand) _onDrawn(this, from);
             if (to == Place.battlefield) _onDeploy(this, from);
-            if (to == Place.graveyard && from == Place.battlefield) _onDestroy(this, from);
             if (to == Place.graveyard && (from == Place.hand || from == Place.deck)) _onDiscard(this, from);
             if (to == Place.banish) _onBanish(this, from);
             if (to == Place.deck && from == Place.hand) _onSwap(this, from);
@@ -70,7 +69,6 @@ namespace Gwent2
         TriggerMove _onDeploy = (s, f) => { s._context.Log(s, "deployed"); };
         TriggerMove _onDrawn = (s, f) => { s._context.Log(s, "drawed"); };
         TriggerMove _onDiscard = (s, f) => { s._context.Log(s, "discarded"); };
-        TriggerMove _onDestroy = (s, f) => { s._context.Log(s, "destroyed"); };
         TriggerMove _onBanish = (s, f) => { s._context.Log(s, "banished"); };
         TriggerMove _onSwap = (s, f) => { s._context.Log(s, "swapped"); };
         TriggerMove _onShuffled = (s, f) => { s._context.Log(s, "shuffled"); };
@@ -79,7 +77,6 @@ namespace Gwent2
         string _onDeployAbility = "";
         string _onDrawnAbility = "";
         string _onDiscardAbility = "";
-        string _onDestroyAbility = "";
         string _onBanishAbility = "";
         string _onSwapAbility = "";
         string _onShuffleAbility = "";
@@ -90,7 +87,6 @@ namespace Gwent2
         public void setOnDeploy(TriggerMove trigger, string description) { _onDeploy = trigger; _onDeployAbility = description; }
         public void setOnDrawn(TriggerMove trigger, string description) { _onDrawn = trigger; _onDrawnAbility = description; }
         public void setOnDiscard(TriggerMove trigger, string description) { _onDiscard = trigger; _onDiscardAbility = description; }
-        public void setOnDestroy(TriggerMove trigger, string description) { _onDestroy = trigger; _onDestroyAbility = description; }
         public void setOnBanish(TriggerMove trigger, string description) { _onBanish = trigger; _onBanishAbility = description; }
         public void setOnSwap(TriggerMove trigger, string description) { _onSwap = trigger; _onSwapAbility = description; }
         public void setOnShuffled(TriggerMove trigger, string description) { _onShuffled = trigger; _onShuffleAbility = description; }
@@ -100,9 +96,8 @@ namespace Gwent2
 
         public virtual string ToFormatAbilities()
         {
-            return String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}",
+            return String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
                 _onDeployAbility.Length == 0? "" : (_onDeployAbility+"\n"),
-                _onDestroyAbility.Length == 0? "" : (_onDestroyAbility+"\n"),
                 _onDiscardAbility.Length == 0 ? "" : (_onDiscardAbility + "\n"),
                 _onBanishAbility.Length == 0 ? "" : (_onBanishAbility + "\n"),
                 _onDrawnAbility.Length == 0 ? "" : (_onDrawnAbility + "\n"),
@@ -178,5 +173,6 @@ namespace Gwent2
     delegate void TriggerMove(Card self, Place from);
     delegate void TriggerRecieve(Unit self, Card source, int X);
     delegate void TriggerUnitAction(Unit self, Unit source, int X);
+    delegate void TriggerUnitSelf(Unit self, Card source);
 
 }

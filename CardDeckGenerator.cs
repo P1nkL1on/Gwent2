@@ -17,6 +17,8 @@ namespace Gwent2
 
                 List<Card> deck = new List<Card>();
 
+                for (int i = 0; i < 10; ++i)
+                    deck.Add(SpawnUnit.Vabjorn);
                 for (int i = 0; i < 5; ++i)
                     deck.Add(SpawnSpecial.AlzursThunder);
                 for (int i = 0; i < 5; ++i)
