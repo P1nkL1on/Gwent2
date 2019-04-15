@@ -12,7 +12,7 @@ namespace Gwent2
         deck = 0,
         hand = 1,
         battlefield = 2,
-        discard = 3,
+        graveyard = 3,
         banish = 4
     }
 
@@ -39,12 +39,14 @@ namespace Gwent2
         none,
 
         doomed,
+        cursed,
 
         beast,
-
+        machine,
         soldier,
         officer,
         support,
+        cultist,
 
         clanAnCraite,
         clanTuirseach,
@@ -55,6 +57,6 @@ namespace Gwent2
 
     class Utils
     {
-        public static List<Place> allPossiblePlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.discard, Place.banish };
+        public static List<Place> allPossiblePlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.graveyard, Place.banish };
     }
 }

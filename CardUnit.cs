@@ -13,29 +13,36 @@ namespace Gwent2
         int _defaultPower;
         int _basePower;
         int _power;
-        List<Tag> _tags;
         public int row = -1;
-        public bool hasTag(Tag tag) { return _tags.IndexOf(tag) >= 0; }
 
-        TriggerRecieve _onDamaged        = (s, by, X) => { s._context.Log(s, String.Format("damaged by {0} for {1}", by.ToString(), X)); };
-        TriggerRecieve _onWeakened       = (s, by, X) => { s._context.Log(s, String.Format("weakened by {0} for {1}", by.ToString(), X)); };
-        TriggerRecieve _onBuffed         = (s, by, X) => { s._context.Log(s, String.Format("buffed by {0} for {1}", by.ToString(), X)); };
-        TriggerRecieve _onStrengthled    = (s, by, X) => { s._context.Log(s, String.Format("strenghled by {0} for {1}", by.ToString(), X)); };
-        TriggerRecieve _onHealed         = (s, by, X) => { s._context.Log(s, String.Format("healed by {0} for {1}", by.ToString(), X)); };
-        TriggerRecieve _onArmorGain      = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
+        TriggerRecieve _onDamaged       = (s, by, X) => { s._context.Log(s, String.Format("damaged for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onWeakened      = (s, by, X) => { s._context.Log(s, String.Format("weakened for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onBuffed        = (s, by, X) => { s._context.Log(s, String.Format("buffed for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onStrengthled   = (s, by, X) => { s._context.Log(s, String.Format("strenghled for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onHealed        = (s, by, X) => { s._context.Log(s, String.Format("healed for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
 
         TriggerUnitAction _onUnitDamaged = (s, by, X) => { /*s._context.Log(s, String.Format("watchs how {0} suffers {1} damage", by.ToString(), X));*/ };
 
-        public void setOnDamaged(TriggerRecieve trigger) { _onDamaged = trigger; }
-        public void setOnWeakened(TriggerRecieve trigger) { _onWeakened = trigger; }
-        public void setOnBuffed(TriggerRecieve trigger) { _onBuffed = trigger; }
-        public void setOnStrengthled(TriggerRecieve trigger) { _onStrengthled = trigger; }
-        public void setOnHealed(TriggerRecieve trigger) { _onHealed = trigger; }
-        public void setOnArmorGain(TriggerRecieve trigger) { _onArmorGain = trigger; }
+        string _onDamagedAbility = "";
+        string _onWeakenedAbility = "";
+        string _onBuffedAbility = "";
+        string _onStrengthledAbility = "";
+        string _onHealedAbility = "";
+        string _onArmorGainAbility = "";
+        string _onUnitDamagedAbility = "";
 
-        public void setOnUnitDamaged(TriggerUnitAction trigger) { _onUnitDamaged = trigger; }
+        public void setOnDamaged(TriggerRecieve trigger, string description) { _onDamaged = trigger; _onDamagedAbility = description; }
+        public void setOnWeakened(TriggerRecieve trigger, string description) { _onWeakened = trigger; _onWeakenedAbility = description; }
+        public void setOnBuffed(TriggerRecieve trigger, string description) { _onBuffed = trigger; _onBuffedAbility = description; }
+        public void setOnStrengthled(TriggerRecieve trigger, string description) { _onStrengthled = trigger; _onStrengthledAbility = description; }
+        public void setOnHealed(TriggerRecieve trigger, string description) { _onHealed = trigger; _onHealedAbility = description; }
+        public void setOnArmorGain(TriggerRecieve trigger, string description) { _onArmorGain = trigger; _onArmorGainAbility = description; }
+
+        public void setOnUnitDamaged(TriggerUnitAction trigger, string description) { _onUnitDamaged = trigger; _onUnitDamagedAbility = description; }
 
         public override int power { get { return _power; } }
+        public int basePower { get { return _basePower; } }
 
         public virtual void setUnitAttributes (int DefaultPower, params Tag[] Tags){
             _defaultPower = _basePower = _power = DefaultPower;
@@ -82,7 +89,7 @@ namespace Gwent2
             status.armor += X;
             _onArmorGain(this, source, X);
         }
-        public virtual void stregthen(Card source, int X)
+        public virtual void strengthen(Card source, int X)
         {
             if (X <= 0)
                 return;
@@ -110,18 +117,47 @@ namespace Gwent2
             _onHealed(this, source, healCount);
         }
 
+        public bool isDamaged { get { return _power < _basePower; } }
+
         public override string ToString()
         {
             return String.Format("[{0} {1}]", power, base.ToString());
         }
-        public override string ToStringFull()
+        string tagsToString()
         {
             string tags = "";
             foreach (Tag t in _tags)
                 tags += t.ToString() + ", ";
+            return tags.Substring(0, tags.Length - 2);
+        }
+        public override string ToStringFull()
+        {
+            
 
             return String.Format("[{0} (base={1}, default={2}), status={3}) tags=[{5}] {4}]",
-                _power, _basePower, _defaultPower, status.ToString(), base.ToStringFull(), tags.Substring(0, tags.Length - 2));
+                _power, _basePower, _defaultPower, status.ToString(), base.ToStringFull(), tagsToString());
+        }
+
+        public override string ToFormatAbilities()
+        {
+            string baseAbilities = base.ToFormatAbilities();
+            string abilities = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
+                baseAbilities.Length == 0? "" : baseAbilities,
+                _onDamagedAbility.Length == 0 ? "" : (_onDamagedAbility + "\n"),
+                _onWeakenedAbility.Length == 0 ? "" : (_onWeakenedAbility + "\n"),
+                _onBuffedAbility.Length == 0 ? "" : (_onBuffedAbility + "\n"),
+                _onStrengthledAbility.Length == 0 ? "" : (_onStrengthledAbility + "\n"),
+                _onHealedAbility.Length == 0 ? "" : (_onHealedAbility + "\n"),
+                _onArmorGainAbility.Length == 0 ? "" : (_onArmorGainAbility + "\n"),
+                _onUnitDamagedAbility.Length == 0 ? "" : (_onUnitDamagedAbility + "\n"));
+            return String.Format("{0}{1}", abilities, AbilityHints.addHitsTo(abilities));
+        }
+
+        public override string ToFormat()
+        {
+            return String.Format("{0}\n\n{1} {2} unit\n{3}\n\nPower = {4} (base = {5}, default = {6})\nStatus = {7}\n\n{8}", 
+                name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(), 
+                _power, _basePower, _defaultPower, status.ToString(), ToFormatAbilities());
         }
     }
 }

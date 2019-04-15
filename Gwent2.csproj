@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbilityHints.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="CardDeckGenerator.cs" />
     <Compile Include="CardMatch.cs" />
     <Compile Include="CardSpecial.cs" />
+    <Compile Include="CardTimer.cs" />
     <Compile Include="CardUnit.cs" />
     <Compile Include="CardUnitGenerator.cs" />
     <Compile Include="CardUnitStatus.cs" />

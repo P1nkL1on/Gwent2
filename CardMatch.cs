@@ -42,15 +42,28 @@ namespace Gwent2
         {
             Console.Clear();
             Player currentPlayer = players[playerIndex];
+
+            foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
+                c._onTurnStart(c);
+
             if (currentPlayer as PlayerHuman != null) State();
 
             var inDeck = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.deck, currentPlayer));
 
             if (inDeck.Count == 0)
                 return;
-            currentPlayer.playCard(currentPlayer.selectCard(inDeck));
-            Console.WriteLine("\n\nEnter to continue...");
+            Card selected = currentPlayer.selectCard(inDeck);
+            Console.WriteLine("\n\n" + selected.ToFormat() );
+
+            currentPlayer.playCard(selected);
+
+            foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
+                c._onTurnEnd(c);
+
+            Console.WriteLine("Enter to continue...");
             Console.ReadLine();
+
+
             Test((playerIndex + 1) % players.Count);
         }
 
