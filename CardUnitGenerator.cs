@@ -11,7 +11,6 @@ namespace Gwent2
         //delegate void TriggerMove (Card self, Place from);
         //delegate void TrigerRecieve(Unit self, Card source, int X);
 
-
         static Unit createToken(Unit preset, Card source)
         {
             preset.SetDefaultHost(source.host, source.context);
@@ -39,7 +38,7 @@ namespace Gwent2
             if (t != null)
                 t.damage(self, damageValue);
         }
-
+        
         public static Unit AnCraiteWarrior
         {
             get

@@ -14,6 +14,10 @@ namespace Gwent2
 
         // <...> For Units
 
+        public static UnitPredicat anyUnitInPlace(Place place)
+        {
+            return (t) => { return t.place == place; };
+        }
         public static UnitPredicat anyOtherUnitInPlace(Unit source, Place place)
         {
             return (t) => { return t != source && t.place == place; };
@@ -91,10 +95,12 @@ namespace Gwent2
             };
         }
 
+        public static UnitPredicat anyUnitInBattlefield() { return anyUnitInPlace(Place.battlefield); }
         public static UnitPredicat anyOtherUnitInBattlefield(Unit source) { return anyOtherUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyAllyUnitInBattlefield(Unit source) { return anyAllyUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyAllyUnitInDiscrard(Unit source) { return anyAllyUnitInPlace(source, Place.graveyard); }
         public static UnitPredicat anyAllyUnitInDeck(Unit source) { return anyAllyUnitInPlace(source, Place.deck); }
+        public static UnitPredicat anyAllyUnitInHand(Unit source) { return anyAllyUnitInPlace(source, Place.hand); }
         public static UnitPredicat anyOtherAllyUnitInBattlefield(Unit source) { return anyOtherAllyUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyEnemyUnitInBattlefield(Unit source) { return anyEnemyUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyOtherAllyUnitInBattlefieldHandDeck(Unit source) { return anyAllyUnitInPlace(source, true, Place.battlefield, Place.hand, Place.deck); }
@@ -117,5 +123,6 @@ namespace Gwent2
         {
             return (c) => { return c.place == place && c.host == sameHostCard.host; };
         }
+        public static CardPredicat anyCardAllyInHand(Card source){return anyCardAllyIn(Place.hand, source); }
     }
 }

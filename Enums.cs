@@ -52,7 +52,13 @@ namespace Gwent2
         clanTuirseach,
         clanHeyMaey,
         clanDrummond,
-        clanDimun
+        clanDimun,
+
+        special,
+        spell,
+        item,
+        alchemy,
+        tactic
     }
 
     class Utils

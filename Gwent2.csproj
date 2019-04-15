@@ -49,11 +49,13 @@
     <Compile Include="CardDeckGenerator.cs" />
     <Compile Include="CardMatch.cs" />
     <Compile Include="CardSpecial.cs" />
+    <Compile Include="CardSpecialGenerator.cs" />
     <Compile Include="CardTimer.cs" />
     <Compile Include="CardUnit.cs" />
     <Compile Include="CardUnitGenerator.cs" />
     <Compile Include="CardUnitStatus.cs" />
     <Compile Include="ConsoleSelector.cs" />
+    <Compile Include="Effects.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="FontProblem.cs" />

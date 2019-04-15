@@ -16,6 +16,10 @@ namespace Gwent2
                 int prioritet1 = 3;
 
                 List<Card> deck = new List<Card>();
+
+                for (int i = 0; i < 5; ++i)
+                    deck.Add(SpawnSpecial.AlzursThunder);
+
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachBearmaster);
                 for (int i = 0; i < prioritet0; ++i)
@@ -52,6 +56,7 @@ namespace Gwent2
                     deck.Add(SpawnUnit.AnCraiteBlacksmith);
                 for (int i = 0; i < prioritet1; ++i)
                     deck.Add(SpawnUnit.AnCraiteGreatsword);
+
 
                 Random rnd = new Random();
                 //foreach (Card c in deck)
