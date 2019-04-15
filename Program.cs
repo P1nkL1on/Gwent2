@@ -32,6 +32,9 @@ namespace Gwent2
             //Console.ReadLine();
             //PixDrawer.testPixDrawer();
 
+            PicGenerator.test();
+            //PicGenerator.byScreenAndName();
+            
             Match newgame = new Match(
                 new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },
                 new List<List<Card>>() { Deck.SkelligeTest, Deck.SkelligeTest }

@@ -59,6 +59,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="FontProblem.cs" />
+    <Compile Include="PicGenerator.cs" />
     <Compile Include="PixColor.cs" />
     <Compile Include="PixDrawer.cs" />
     <Compile Include="Player.cs" />

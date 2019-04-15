@@ -49,6 +49,11 @@ namespace Gwent2
             this.pallete = pallete;
         }
 
+
+        public static PixDrawer Default()
+        {
+            return FromPalette("dd");
+        }
         public static PixDrawer FromPalette(string palleteFileName)
         {
             return new PixDrawer(readPalleteFromFile("../Pallets/" + palleteFileName + palleteExtension));
@@ -89,8 +94,8 @@ namespace Gwent2
                             px._colorApproach = approximateColorOfCurrentPrinted();
                             res.Add(px);
                             ++nCombo;
-                            if (i == j)
-                                break;
+                            //if (i == j)
+                            //    break;
                         }
             Clear();
             Console.WriteLine("Calibration finished with iteration count = " + nCombo);
@@ -242,11 +247,11 @@ namespace Gwent2
 
             foreach (PixColor px in pallete)
             {
-                int main = (clr.R > clr.G && clr.R > clr.B) ? 1 : (clr.G > clr.B) ? 2 : 3;
+                //int main = (clr.R > clr.G && clr.R > clr.B) ? 1 : (clr.G > clr.B) ? 2 : 3;
                 int diff =
-                    Math.Abs(px._colorApproach.R - clr.R) * (main == 1 ? 2 : 1)
-                    + Math.Abs(px._colorApproach.G - clr.G) * (main == 2 ? 2 : 1)
-                    + Math.Abs(px._colorApproach.B - clr.B) * (main == 3 ? 2 : 1);
+                    Math.Abs(px._colorApproach.R - clr.R) //* (main == 1 ? 2 : 1)
+                    + Math.Abs(px._colorApproach.G - clr.G) //* (main == 2 ? 2 : 1)
+                    + Math.Abs(px._colorApproach.B - clr.B); //* (main == 3 ? 2 : 1);
                 if (diff >= bestDiff)
                     continue;
                 bestDiff = diff;
@@ -321,7 +326,7 @@ namespace Gwent2
                     Console.Write("Enter a name of pallete: ");
                     pd = PixDrawer.FromPalette( Console.ReadLine()); Console.ReadLine(); break;
                 case '3':
-                    pd = new PixDrawer("`.-',-=+!\"#$%&*680?@"); break;
+                    pd = new PixDrawer("░▒▓"); break;
                 default:
                     pd = def; break;
             }

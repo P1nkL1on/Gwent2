@@ -11,8 +11,8 @@ namespace Gwent2
     class Effects
     {
         //static string frames = " ░▒▓█";
-        //static string frames = " ░▒▓█";
-        static string frames = " .,oO0";
+        static string frames = " .o@";
+        //static string frames = " .,oO0";
 
         public static void Trajectory(Point from, Point to, ConsoleColor fore, int speedTravel, int tailSpeedTravel, int tailOffset, int timeForFrame)
         {
