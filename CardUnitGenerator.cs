@@ -14,7 +14,7 @@ namespace Gwent2
         static Unit createToken(Unit preset, Card source)
         {
             preset.SetDefaultHost(source.host, source.context);
-            source.context.AddCard(preset);
+            source.context.AddCardToGame(preset);
             return preset;
         }
         static void resurrectAllyUnit(Card self, params UnitPredicat[] filters)
@@ -26,7 +26,7 @@ namespace Gwent2
 
             Unit u = self.host.selectUnit(
                         Select.Units(self.context.cards,
-                        fs.ToArray()));
+                        fs.ToArray()), self.QestionString());
             // the player plays a card if its exists
             if (u != null)
                 self.host.playCard(u);
@@ -34,7 +34,8 @@ namespace Gwent2
         static void dealDamage(Card self, int damageValue)
         {
             Unit t = self.host.selectUnit(
-                        Select.Units(self.context.cards, Filter.anyOtherUnitInBattlefield(self as Unit)));
+                        Select.Units(self.context.cards, Filter.anyOtherUnitInBattlefield(self as Unit)),
+                        self.QestionString());
             if (t != null)
                 t.damage(self, damageValue);
         }
@@ -131,7 +132,8 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     List<Unit> ts = s.host.selectUnits(
-                        Select.Units(s.context.cards, Filter.anyOtherUnitInBattlefield(s as Unit)), 3);
+                        Select.Units(s.context.cards, Filter.anyOtherUnitInBattlefield(s as Unit)), 3,
+                        s.QestionString());
                     foreach (Unit t in ts)
                         t.damage(s, 1);
                 }, "Deal 1 damage to 3 units.");
@@ -186,7 +188,7 @@ namespace Gwent2
                     Unit u = s.host.selectUnit(
                         Select.Units(s.context.cards,
                         Filter.anyAllyUnitInDeck(s as Unit),
-                        Filter.anyUnitHasColor(Rarity.bronze)));
+                        Filter.anyUnitHasColor(Rarity.bronze)), s.QestionString());
                     if (u != null)
                         u.move(Place.graveyard);
                 }, "Discard a Bronze card from your deck.");
@@ -207,7 +209,8 @@ namespace Gwent2
                         Filter.anyAllyUnitInDeck(s as Unit),
                         Filter.anyUnitHasTag(Tag.clanDimun),
                         Filter.anyUnitHasColor(Rarity.bronze),
-                        Filter.anyOtherUnitByName(s as Unit)));
+                        Filter.anyOtherUnitByName(s as Unit)),
+                        s.QestionString());
                     if (u != null)
                         s.host.playCard(u);
                 }, "Play a different Bronze Dimun unit from your deck.");
@@ -274,7 +277,8 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     Unit t = s.host.selectUnit(
-                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)));
+                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)),
+                        s.QestionString());
                     if (t != null)
                         t.buff(s, t.power / 2);
                 }, "Boost an ally by half its power.");
@@ -321,7 +325,8 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     Unit t = s.host.selectUnit(
-                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)));
+                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)),
+                        s.QestionString());
                     if (t != null)
                     {
                         t.strengthen(s, 2);
@@ -364,7 +369,8 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     List<Unit> ts = s.host.selectUnits(
-                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)), 2);
+                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)), 2,
+                        s.QestionString());
                     foreach (Unit t in ts)
                     {
                         t.heal(s);
@@ -381,7 +387,33 @@ namespace Gwent2
         //Heymaey Herbalist
         //Heymaey Protector
         //Heymaey Skald
-        //Heymaey Spearmaiden
+        public static Unit HeymaeySpearmaiden
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Heymaey Spearmaiden");
+                self.setUnitAttributes(2, Tag.support, Tag.clanHeyMaey);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(
+                        Select.Units(s.context.cards, 
+                        Filter.anyOtherAllyUnitInBattlefield(s as Unit),
+                        Filter.anyUnitSoldierOrMachine(),
+                        Filter.anyUnitHasColor(Rarity.bronze)),
+                        s.QestionString());
+
+                    if (t != null)
+                    {
+                        t.damage(s, 1);
+                        var topCopy = s.context._topUnitOfDeck(s.host, Filter.anyCopie(t));
+                        if (topCopy != null)
+                            s.host.playCard(topCopy);
+                    }
+                }, "Deal 1 damage to a Bronze Machine or Soldier ally, then play a copy of it from your deck.");
+                return self;
+            }
+        }
         //Raging Berserker
         //Savage Bear
         //Dimun Warship

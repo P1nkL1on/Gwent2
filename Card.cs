@@ -23,6 +23,9 @@ namespace Gwent2
         public Match context { get { return _context; } }
         protected List<Tag> _tags;
         public bool hasTag(Tag tag) { return _tags.IndexOf(tag) >= 0; }
+        protected List<Player> _visibleTo = new List<Player>();
+        protected void makeVisibleTo(Player watcher) { if (_visibleTo.IndexOf(watcher) < 0)_visibleTo.Add(watcher); }
+        protected void makeVisibleAll() { _visibleTo.Clear();  foreach (Player p in context.players) _visibleTo.Add(p); }
 
         protected Match _context;
 
@@ -30,9 +33,12 @@ namespace Gwent2
             // banishing doomed cards
             if (to == Place.graveyard && hasTag(Tag.doomed))
                 to = Place.banish;
-            // then triggers
+
             Place previousPlace = place;
             place = to;
+            // make cards removing from deck visible to host/all
+            setVisible(previousPlace);
+            // triggers
             triggerMove(previousPlace); 
         }
 
@@ -49,12 +55,20 @@ namespace Gwent2
             if (to == Place.battlefield && from == Place.battlefield) _onMove(this, from);
         }
 
+        protected virtual void setVisible(Place from)
+        {
+            Place to = place;
+            if (to == Place.deck) { _visibleTo.Clear(); return; }
+            if (to == Place.hand) { makeVisibleTo(host); return;}
+            if (to != Place.banish) makeVisibleAll();
+        }
+
         public TriggerTurn _onTurnStart = (s) => { /*s._context.Log(s, "starts a new turn");*/ };
         public TriggerTurn _onTurnEnd = (s) => { /*s._context.Log(s, "ends a turn");*/ };
 
         TriggerMove _onMove = (s, f) => { s._context.Log(s, "moved"); };
         TriggerMove _onDeploy = (s, f) => { s._context.Log(s, "deployed"); };
-        TriggerMove _onDrawn = (s, f) => { s._context.Log(s, "drawned"); };
+        TriggerMove _onDrawn = (s, f) => { s._context.Log(s, "drawed"); };
         TriggerMove _onDiscard = (s, f) => { s._context.Log(s, "discarded"); };
         TriggerMove _onDestroy = (s, f) => { s._context.Log(s, "destroyed"); };
         TriggerMove _onBanish = (s, f) => { s._context.Log(s, "banished"); };
@@ -149,6 +163,14 @@ namespace Gwent2
             _baseHost = Host;
             _host = Host;
             _context = Context;
+        }
+        public virtual string Show(Player watcher)
+        {
+            return _visibleTo.IndexOf(watcher) >= 0 ? ToString() : "".PadLeft(10, '?');
+        }
+        public virtual string QestionString()
+        {
+            return String.Format("Select target for {0}", name);
         }
     }
 

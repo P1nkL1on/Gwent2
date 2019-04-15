@@ -121,7 +121,7 @@ namespace Gwent2
 
         public override string ToString()
         {
-            return String.Format("[{0} {1}]", power, base.ToString());
+            return String.Format("[{0} {1}]{2}", power, base.ToString(), status.ToStringBattlefield());
         }
         string tagsToString()
         {
@@ -132,8 +132,6 @@ namespace Gwent2
         }
         public override string ToStringFull()
         {
-            
-
             return String.Format("[{0} (base={1}, default={2}), status={3}) tags=[{5}] {4}]",
                 _power, _basePower, _defaultPower, status.ToString(), base.ToStringFull(), tagsToString());
         }

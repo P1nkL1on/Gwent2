@@ -30,7 +30,7 @@ namespace Gwent2
         {
             return (t) => { return t != source && t.host == source.host && t.place == place; };
         }
-        public static UnitPredicat anyAllyUnitInPlace(Unit source, bool anyOther, params Place[] places)
+        public static UnitPredicat anyAllyUnitInPlace(Card source, bool anyOther, params Place[] places)
         {
             return (t) => {
                 if ((anyOther && t == source) || t.host != source.host)
@@ -41,11 +41,11 @@ namespace Gwent2
                 return false;
             };
         }
-        public static UnitPredicat anyAllyUnitInPlace(Unit source, Place place)
+        public static UnitPredicat anyAllyUnitInPlace(Card source, Place place)
         {
             return (t) => { return t.host == source.host && t.place == place; };
         }
-        public static UnitPredicat anyEnemyUnitInPlace(Unit source, Place place)
+        public static UnitPredicat anyEnemyUnitInPlace(Card source, Place place)
         {
             return (t) => { return t.host != source.host && t.place == place; };
         }
@@ -53,6 +53,7 @@ namespace Gwent2
         public static UnitPredicat anyCopie(Unit source) { return (t) => { return t.name == source.name; }; }
         public static UnitPredicat anyUnitDamaged() { return (t) => { return t.isDamaged; }; }
         public static UnitPredicat anyUnitDamagedOrCursed() { return (t) => { return t.isDamaged || t.hasTag(Tag.cursed); }; }
+        public static UnitPredicat anyUnitSoldierOrMachine() { return (t) => { return t.hasTag(Tag.soldier) || t.hasTag(Tag.machine); }; }
 
         public static UnitPredicat anyUnitHasTag(params Tag[] anyOfTags)
         {
@@ -97,12 +98,12 @@ namespace Gwent2
 
         public static UnitPredicat anyUnitInBattlefield() { return anyUnitInPlace(Place.battlefield); }
         public static UnitPredicat anyOtherUnitInBattlefield(Unit source) { return anyOtherUnitInPlace(source, Place.battlefield); }
-        public static UnitPredicat anyAllyUnitInBattlefield(Unit source) { return anyAllyUnitInPlace(source, Place.battlefield); }
-        public static UnitPredicat anyAllyUnitInDiscrard(Unit source) { return anyAllyUnitInPlace(source, Place.graveyard); }
-        public static UnitPredicat anyAllyUnitInDeck(Unit source) { return anyAllyUnitInPlace(source, Place.deck); }
-        public static UnitPredicat anyAllyUnitInHand(Unit source) { return anyAllyUnitInPlace(source, Place.hand); }
+        public static UnitPredicat anyAllyUnitInBattlefield(Card source) { return anyAllyUnitInPlace(source, Place.battlefield); }
+        public static UnitPredicat anyAllyUnitInDiscrard(Card source) { return anyAllyUnitInPlace(source, Place.graveyard); }
+        public static UnitPredicat anyAllyUnitInDeck(Card source) { return anyAllyUnitInPlace(source, Place.deck); }
+        public static UnitPredicat anyAllyUnitInHand(Card source) { return anyAllyUnitInPlace(source, Place.hand); }
         public static UnitPredicat anyOtherAllyUnitInBattlefield(Unit source) { return anyOtherAllyUnitInPlace(source, Place.battlefield); }
-        public static UnitPredicat anyEnemyUnitInBattlefield(Unit source) { return anyEnemyUnitInPlace(source, Place.battlefield); }
+        public static UnitPredicat anyEnemyUnitInBattlefield(Card source) { return anyEnemyUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyOtherAllyUnitInBattlefieldHandDeck(Unit source) { return anyAllyUnitInPlace(source, true, Place.battlefield, Place.hand, Place.deck); }
 
         // <...> For cards

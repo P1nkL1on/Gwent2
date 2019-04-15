@@ -21,5 +21,14 @@ namespace Gwent2
                 (isLocked? "LOCKED " : ""),
                 armor);
         }
+        public string ToStringBattlefield()
+        {
+            if (armor == 0 && !isSpy && !isLocked)
+                return "";
+            return String.Format("[{0}{1}{2}]",
+                (isSpy ? "SPY " : ""),
+                (isLocked ? "LOCK " : ""),
+                (armor > 0)? "+" + armor : "");
+        }
     }
 }

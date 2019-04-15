@@ -13,9 +13,9 @@ namespace Gwent2
             _name = Name;
         }
 
-        protected override int makeDescision(List<string> variants)
+        protected override int makeDescision(List<string> variants, string question)
         {
-            Console.WriteLine("Make a descision:");
+            Console.WriteLine(question.Length == 0? "Make a descision:" : (question + ":"));
             int index = 0;
             foreach (string v in variants)
                 Console.WriteLine(String.Format("  {0} >\t{1}", ++index, v));

@@ -16,12 +16,12 @@ namespace Gwent2
             return String.Format("{0}", name);
         }
 
-        public virtual Card selectCard(List<Card> fromList)
+        public virtual Card selectCard(List<Card> fromList, string question)
         {
-            var res = selectCards(fromList, 1);
+            var res = selectCards(fromList, 1, question);
             return res.Count == 0? null : res[0];
         }
-        public virtual List<Card> selectCards(List<Card> fromList, int nCardsToSelect)
+        public virtual List<Card> selectCards(List<Card> fromList, int nCardsToSelect, string question)
         {
             if (fromList.Count <= nCardsToSelect)
                 return fromList;
@@ -32,34 +32,56 @@ namespace Gwent2
                 foreach (Card u in fromList)
                     options.Add(u.ToString());
 
-                int decidedIndex = makeDescision(options);
+                int decidedIndex = makeDescision(options, question);
                 resChoise.Add(fromList[decidedIndex]);
                 fromList.RemoveAt(decidedIndex);
             }
             return resChoise;
         }
-        public virtual List<Unit> selectUnits(List<Unit> fromList, int nCardsToSelect)
+        public virtual Card selectCardOrNone(List<Card> fromList, string question)
+        {
+            var res = selectCardsOrNone(fromList, 1, question);
+            return res.Count == 0 ? null : res[0];
+        }
+        public virtual List<Card> selectCardsOrNone(List<Card> fromList, int nUpToCardsToSelect, string question)
+        {
+            List<Card> resChoise = new List<Card>();
+            for (int i = 0; i < nUpToCardsToSelect; ++i)
+            {
+                List<string> options = new List<string>();
+                options.Add("None");
+                foreach (Card u in fromList)
+                    options.Add(u.ToString());
+                int decidedIndex = makeDescision(options, question) - 1;
+                if (decidedIndex < 0)
+                    return resChoise;
+                resChoise.Add(fromList[decidedIndex]);
+                fromList.RemoveAt(decidedIndex);
+            }
+            return resChoise;
+        }
+        public virtual List<Unit> selectUnits(List<Unit> fromList, int nCardsToSelect, string question)
         {
             List<Card> fromListU = new List<Card>();
             foreach (Card c in fromList)
                 if (c as Unit != null)
                 fromListU.Add(c);
 
-            var res = selectCards(fromListU, nCardsToSelect);
+            var res = selectCards(fromListU, nCardsToSelect, question);
             fromListU.Clear();
             List<Unit> resU = new List<Unit>();
             foreach (Card c in res)
                 resU.Add(c as Unit);
             return resU;
         }
-        public virtual Unit selectUnit(List<Unit> fromList)
+        public virtual Unit selectUnit(List<Unit> fromList, string question)
         {
             List<Card> fromListU = new List<Card>();
             foreach (Card c in fromList)
                 if (c as Unit != null)
                     fromListU.Add(c);
 
-            Card choosen = selectCard(fromListU);
+            Card choosen = selectCard(fromListU, question);
             return choosen == null ? null : (choosen as Unit);
         }
 
@@ -72,7 +94,7 @@ namespace Gwent2
 
         protected Random rnd = new Random();
 
-        protected virtual int makeDescision (List<String> variants){
+        protected virtual int makeDescision (List<String> variants, string question){
             return rnd.Next(variants.Count);
         }
     }

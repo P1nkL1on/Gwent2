@@ -19,6 +19,8 @@ namespace Gwent2
 
                 for (int i = 0; i < 5; ++i)
                     deck.Add(SpawnSpecial.AlzursThunder);
+                for (int i = 0; i < 5; ++i)
+                    deck.Add(SpawnUnit.HeymaeySpearmaiden);
 
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachBearmaster);
@@ -32,7 +34,7 @@ namespace Gwent2
                     deck.Add(SpawnUnit.AnCraiteWarrior);
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachSkirmisher);
-                for (int i = 0; i < prioritet0; ++i)
+                for (int i = 0; i < 7; ++i)
                     deck.Add(SpawnUnit.TuirseachAxeman);
                 for (int i = 0; i < prioritet1; ++i)
                     deck.Add(SpawnUnit.PriestessOfFreya);

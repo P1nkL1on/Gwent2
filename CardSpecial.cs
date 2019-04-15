@@ -20,5 +20,9 @@ namespace Gwent2
             _tags.Add(Tag.special);
             _tags.AddRange(Tags.ToList());
         }
+        public override string ToString()
+        {
+            return String.Format("[* {0}]", name);
+        }
     }
 }
