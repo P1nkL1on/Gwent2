@@ -69,6 +69,9 @@ namespace Gwent2
             foreach (Card c in this.context.cards)
                 if (c as Unit != null)
                     (c as Unit)._onUnitDamaged(c as Unit, this, X);
+
+            if (isMustbeDestroyed)
+                destroy(source);
         }
         public virtual void weaken(Card source, int X)
         {
@@ -77,6 +80,9 @@ namespace Gwent2
             _power -= X;
             _basePower -= X;
             _onWeakened(this, source, X);
+
+            if (isMustbeBanished)
+                banish(source);
         }
         public virtual void buff(Card source, int X)
         {
@@ -129,7 +135,14 @@ namespace Gwent2
             restore(this);
             _onDestroy(this, source);
         }
+        public virtual void banish(Card source)
+        {
+            move(Place.banish);
+            restore(this);
+        }
         public bool isDamaged { get { return _power < _basePower; } }
+        bool isMustbeDestroyed { get { return _power <= 0; } }
+        bool isMustbeBanished { get { return _basePower <= 0; } }
 
         public override string ToString()
         {

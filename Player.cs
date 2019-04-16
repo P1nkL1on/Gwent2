@@ -88,8 +88,13 @@ namespace Gwent2
         public virtual void playCard(Card card)
         {
             if (card as Unit != null)
-                (card as Unit).row = 1;
+                (card as Unit).row = chooseRow("Select row for " + card.ToString());
             card.move(Place.battlefield);
+        }
+
+        public virtual int chooseRow(string question)
+        {
+            return makeDescision(Utils.allRows, question);
         }
 
         protected Random rnd = new Random();

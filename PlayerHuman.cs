@@ -15,11 +15,15 @@ namespace Gwent2
 
         protected override int makeDescision(List<string> variants, string question)
         {
-            Console.WriteLine(question.Length == 0? "Make a descision:" : (question + ":"));
+            Console.WriteLine(question.Length == 0 ? "Make a descision:" : (question + ":"));
             int index = 0;
             foreach (string v in variants)
                 Console.WriteLine(String.Format("  {0} >\t{1}", ++index, v));
-            int answer = int.Parse(Console.ReadLine()) - 1;
+            int answer = -1;
+            do {
+                try { answer = int.Parse(Console.ReadLine()) - 1; }
+                catch (Exception e) { Console.Write("Try again: "); }
+            } while (answer < 0);
             return answer;
         }
     }

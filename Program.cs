@@ -32,7 +32,7 @@ namespace Gwent2
             //Console.ReadLine();
             //PixDrawer.testPixDrawer();
 
-            PicGenerator.test();
+            //PicGenerator.test();
             //PicGenerator.byScreenAndName();
             
             Match newgame = new Match(

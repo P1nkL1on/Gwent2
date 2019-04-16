@@ -63,6 +63,7 @@ namespace Gwent2
 
     class Utils
     {
-        public static List<Place> allPossiblePlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.graveyard, Place.banish };
+        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.graveyard, Place.banish };
+        public static List<string> allRows = new List<string>() { "melee", "ranged", "support"};
     }
 }

@@ -70,6 +70,34 @@ namespace Gwent2
                 topdeck.move(Place.hand);
             }
         }
+        public List<Card> _randomCardsFrom(List<Card> originalList, int nCount)
+        {
+            List<Card> res = new List<Card>();
+            List<Card> from = originalList;
+            for (int i = 0; i < nCount; ++i)
+            {
+                if (from.Count <= 0)
+                    return res;
+                int geted = shuffleRandomiser.Next(from.Count);
+                res.Add(from[geted]);
+                from.RemoveAt(geted);
+            }
+            return res;
+        }
+        public List<Unit> _randomUnitFrom(List<Unit> originalList, int nCount)
+        {
+            List<Unit> res = new List<Unit>();
+            List<Unit> from = originalList;
+            for (int i = 0; i < nCount; ++i)
+            {
+                if (from.Count <= 0)
+                    return res;
+                int geted = shuffleRandomiser.Next(from.Count);
+                res.Add(from[geted]);
+                from.RemoveAt(geted);
+            }
+            return res;
+        }
         public Card _topCardOfDeck(Player player)
         {
             var deck = _deckOf(player);
@@ -184,7 +212,7 @@ namespace Gwent2
             foreach (Player p in players)
             {
                 int line = 5;
-                foreach (Place place in Utils.allPossiblePlaces)
+                foreach (Place place in Utils.allPlaces)
                 {
                     line++;
                     Console.SetCursorPosition(column, line++);
