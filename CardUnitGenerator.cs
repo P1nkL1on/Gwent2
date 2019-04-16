@@ -460,7 +460,7 @@ namespace Gwent2
                     (s as Unit).status.isSpy = true;
 
                     List<Unit> randomBronzePair =
-                        s.context._randomUnitFrom(
+                        Filter.randomUnitFrom(
                             Select.Units(s.context.cards,
                             Filter.anyUnitInBaseHostDeck(s),
                             Filter.anyUnitHasColor(Rarity.bronze)),

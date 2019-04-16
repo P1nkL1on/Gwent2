@@ -15,7 +15,10 @@ namespace Gwent2
                 "Strengthen", "Increase the base power of a unit.",
                 "Discard", "Move a card from your hand to the graveyard.",
                 "Heal", "If a unit's current power is lower than its base power, restore it either to base power or by the amount specified.",
-                "Spying", "Status for a unit played on or moved to the opposite side of the battlefield."
+                "Spying", "Status for a unit played on or moved to the opposite side of the battlefield.",
+                "Hazard", "Negative row effect. Replaced by other row effects and removed on round end.",
+                "Lowest", "Lowest power, ties are resolved randomly.",
+                "Highest", "Highest power, ties are resolved randomly."
         };
         public static string addHitsTo(string sourceAbilities)
         {

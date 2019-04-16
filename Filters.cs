@@ -142,6 +142,76 @@ namespace Gwent2
         public static CardPredicat anyCardAllyInHand(Card source) { return anyCardAllyIn(Place.hand, source); }
         public static CardPredicat anyCardAllyInDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
 
-
+        static Random randomiser = new Random();
+        public static List<Card> randomCardsFrom(List<Card> originalList, int nCount)
+        {
+            List<Card> res = new List<Card>();
+            List<Card> from = originalList;
+            for (int i = 0; i < nCount; ++i)
+            {
+                if (from.Count <= 0)
+                    return res;
+                int geted = randomiser.Next(from.Count);
+                res.Add(from[geted]);
+                from.RemoveAt(geted);
+            }
+            return res;
+        }
+        public static List<Unit> randomUnitFrom(List<Unit> originalList, int nCount)
+        {
+            List<Unit> res = new List<Unit>();
+            List<Unit> from = originalList;
+            for (int i = 0; i < nCount; ++i)
+            {
+                if (from.Count <= 0)
+                    return res;
+                int geted = randomiser.Next(from.Count);
+                res.Add(from[geted]);
+                from.RemoveAt(geted);
+            }
+            return res;
+        }
+        public static List<Unit> lowestUnits(List<Unit> originalList)
+        {
+            if (originalList.Count == 0)
+                return new List<Unit>();
+            if (originalList.Count == 1)
+                return originalList;
+            // find min power
+            int minPower = originalList[0].power;
+            for (int i = 1; i < originalList.Count; ++i)
+                if (minPower > originalList[i].power)
+                    minPower = originalList[i].power;
+            List<Unit> res = new List<Unit>();
+            foreach (Unit u in originalList)
+                if (u.power == minPower)
+                    res.Add(u);
+            return res;
+        }
+        public static List<Unit> highestUnits(List<Unit> originalList)
+        {
+            if (originalList.Count == 0)
+                return new List<Unit>();
+            if (originalList.Count == 1)
+                return originalList;
+            // find min power
+            int maxPower = originalList[0].power;
+            for (int i = 1; i < originalList.Count; ++i)
+                if (maxPower < originalList[i].power)
+                    maxPower = originalList[i].power;
+            List<Unit> res = new List<Unit>();
+            foreach (Unit u in originalList)
+                if (u.power == maxPower)
+                    res.Add(u);
+            return res;
+        }
+        public static Unit lowestUnit(List<Unit> originalList) { 
+            var res = randomUnitFrom(lowestUnits(originalList), 1);
+            return res.Count == 0 ? null : res[0];
+        }
+        public static Unit highestUnit(List<Unit> originalList) {
+            var res = randomUnitFrom(highestUnits(originalList), 1);
+            return res.Count == 0 ? null : res[0];
+        }
     }
 }

@@ -92,9 +92,9 @@ namespace Gwent2
                 spec.setOnDeploy((s, f) =>
                 {
                     List<Unit> randomBronzePair =
-                        s.context._randomUnitFrom(
+                        Filter.randomUnitFrom(
                             Select.Units(s.context.cards,
-                            Filter.anyAllyUnitInDeck(s), 
+                            Filter.anyAllyUnitInDeck(s),
                             Filter.anyUnitHasColor(Rarity.bronze)),
                             2);
                     if (randomBronzePair.Count == 0)
@@ -111,33 +111,71 @@ namespace Gwent2
         {
             get
             {
-                Special spec = new Special();
-                spec.setAttributes(Clan.neutral, Rarity.bronze, "Torrential Rain");
-                spec.setSpecialAttributes(Tag.hazzard);
-                spec.setOnDeploy((s, f) =>
-                {
-                    Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
-                    int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
-
-                    RowEffect rain = new RowEffect(s, enemy, row);
-                    rain.SetBehaviour((r) => {
-                        foreach (Unit t in s.context._randomUnitFrom(r.allRowUnits, 2))
-                            t.damage(s, 1);
+                return Hazzard(
+                    "Torrential Rain",
+                    "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.",
+                    (r) =>
+                    {
+                        foreach (Unit t in Filter.randomUnitFrom(r.allRowUnits, 2))
+                            t.damage(r.Source, 1);
                     });
-
-                }, "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.");
-                
-                    
-                
-                return spec;
+            }
+        }
+        public static Special BitingFrost
+        {
+            get
+            {
+                return Hazzard(
+                    "Biting Frost",
+                    "Apply a Hazard to an enemy row that deals 2 damage to the Lowest unit on turn start.",
+                    (r) =>
+                    {
+                        Unit t = Filter.lowestUnit(r.allRowUnits);
+                        if (t != null)
+                            t.damage(r.Source, 2);
+                    });
+            }
+        }
+        public static Special ImpenetrableFog
+        {
+            get
+            {
+                return Hazzard(
+                    "Impenetrable Fog",
+                    "Apply a Hazard to an enemy row that deals 2 damage to the Highest unit on turn start.",
+                    (r) =>
+                    {
+                        Unit t = Filter.highestUnit(r.allRowUnits);
+                        if (t != null)
+                            t.damage(r.Source, 2);
+                    });
             }
         }
         static string HazzardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
         static string HazzardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
+        static Special Hazzard(string name, string description, TriggerTurnRowEffect trigger)
+        {
+            Special spec = new Special();
+            spec.setAttributes(Clan.neutral, Rarity.bronze, name);
+            spec.setSpecialAttributes(Tag.hazzard);
+            spec.setOnDeploy((s, f) =>
+            {
+                Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
+                int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
+
+                RowEffect rain = new RowEffect(s, enemy, row);
+                rain.SetBehaviour(trigger);
+
+            }, description);
+            return spec;
+        }
+
     }
-    class RowEffect {
+    class RowEffect
+    {
         Card _source;
         Player _onPlayer;
+        public Card Source { get { return _source; } }
         public Player PlayerUnderEffect { get { return _onPlayer; } }
         public int row;
         TriggerTurnRowEffect _onTurnStart;
@@ -165,8 +203,8 @@ namespace Gwent2
         {
             get
             {
-                return Select.Units(_source.context.cards, 
-                    Filter.anyUnitInBattlefield(), 
+                return Select.Units(_source.context.cards,
+                    Filter.anyUnitInBattlefield(),
                     Filter.anyUnitHostBy(_onPlayer),
                     Filter.anyUnitInRow(row));
             }

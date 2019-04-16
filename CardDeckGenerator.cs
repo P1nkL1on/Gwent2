@@ -14,6 +14,8 @@ namespace Gwent2
             {
                 List<Card> deck = new List<Card>();
                 deck.AddRange(new List<Card>() { 
+                    SpawnSpecial.BitingFrost, SpawnSpecial.BitingFrost, SpawnSpecial.BitingFrost, 
+                    SpawnSpecial.ImpenetrableFog, SpawnSpecial.ImpenetrableFog, SpawnSpecial.ImpenetrableFog, 
                     SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, 
                     SpawnUnit.Emissary,
                     SpawnUnit.Ambassador,
