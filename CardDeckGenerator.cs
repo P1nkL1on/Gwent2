@@ -12,64 +12,33 @@ namespace Gwent2
         {
             get
             {
-                int prioritet0 = 0;
-                int prioritet1 = 1;
-
                 List<Card> deck = new List<Card>();
+                deck.AddRange(new List<Card>() { 
+                    SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, 
+                    SpawnUnit.Emissary,
+                    SpawnUnit.Ambassador,
+                    SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, 
+                    SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, 
+                    //SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor,
+                    SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran
+                });
 
+                return deck;
+            }
+        }
 
-                for (int i = 0; i < 10; ++i)
+        public static List<Card> ComputerTest
+        {
+            get
+            {
+                List<Card> deck = new List<Card>();
+                int nCount = 20;
+                while (nCount-- > 0)
+                    deck.Add(SpawnUnit.TuirseachBearmaster);
+                nCount = 5;
+                while (nCount-- > 0)
                     deck.Add(SpawnUnit.Emissary);
 
-                for (int i = 0; i < prioritet1; ++i)
-                    deck.Add(SpawnSpecial.Reconnaissance);
-                for (int i = 0; i < prioritet1; ++i)
-                    deck.Add(SpawnSpecial.AlzursThunder);
-                for (int i = 0; i < 2; ++i)
-                    deck.Add(SpawnUnit.HeymaeySpearmaiden);
-
-                for (int i = 0; i < 2; ++i)
-                    deck.Add(SpawnUnit.TuirseachBearmaster);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.TuirseachHunter);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.TuirseachArcher);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.TuirseachVeteran);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteWarrior);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.TuirseachSkirmisher);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.TuirseachAxeman);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.PriestessOfFreya);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.DrummondWarmonger);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.DimunPirateCaptain);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.DimunPirate);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.DimunCorsair);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.BerserkerMarauder);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteWarcrier);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteRaider);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteMarauder);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteBlacksmith);
-                for (int i = 0; i < prioritet0; ++i)
-                    deck.Add(SpawnUnit.AnCraiteGreatsword);
-
-
-                Random rnd = new Random();
-                //foreach (Card c in deck)
-                //    if (rnd.Next(4) == 0)
-                //        c.place = Place.discard;
                 return deck;
             }
         }

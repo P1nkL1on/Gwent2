@@ -105,5 +105,75 @@ namespace Gwent2
                 return spec;
             }
         }
+
+        // hazzards
+        public static Special TorrentialRain
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Torrential Rain");
+                spec.setSpecialAttributes(Tag.hazzard);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
+                    int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
+
+                    RowEffect rain = new RowEffect(s, enemy, row);
+                    rain.SetBehaviour((r) => {
+                        foreach (Unit t in s.context._randomUnitFrom(r.allRowUnits, 2))
+                            t.damage(s, 1);
+                    });
+
+                }, "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.");
+                
+                    
+                
+                return spec;
+            }
+        }
+        static string HazzardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
+        static string HazzardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
+    }
+    class RowEffect {
+        Card _source;
+        Player _onPlayer;
+        public Player PlayerUnderEffect { get { return _onPlayer; } }
+        public int row;
+        TriggerTurnRowEffect _onTurnStart;
+
+        public RowEffect(Card source, Player player, int row)
+        {
+            this.row = row;
+            _source = source;
+            _onPlayer = player;
+            _source.context._addRowEffect(this);
+        }
+        public void SetBehaviour(TriggerTurnRowEffect onTurnStart)
+        {
+            _onTurnStart = onTurnStart;
+        }
+        public void onTurnStart()
+        {
+            _onTurnStart(this);
+        }
+        public bool isConflictWith(RowEffect another)
+        {
+            return row == another.row && _onPlayer == another._onPlayer;
+        }
+        public List<Unit> allRowUnits
+        {
+            get
+            {
+                return Select.Units(_source.context.cards, 
+                    Filter.anyUnitInBattlefield(), 
+                    Filter.anyUnitHostBy(_onPlayer),
+                    Filter.anyUnitInRow(row));
+            }
+        }
+        public override string ToString()
+        {
+            return String.Format("<{0}>", _source.name);
+        }
     }
 }

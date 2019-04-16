@@ -37,7 +37,7 @@ namespace Gwent2
             
             Match newgame = new Match(
                 new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },
-                new List<List<Card>>() { Deck.SkelligeTest, Deck.SkelligeTest }
+                new List<List<Card>>() { Deck.SkelligeTest, Deck.ComputerTest }
                 );
         }
     }

@@ -16,13 +16,13 @@ namespace Gwent2
 
         public void Log(string message)
         {
-            Console.WriteLine(message);
+            ConsoleWriteLine(message, ConsoleColor.Magenta);
         }
         public void Log(Card source, string message)
         {
-            Console.WriteLine(String.Format("{0} : {1}", source.ToString(), message));
+            Log(String.Format("{0} : {1}", source.ToString(), message));
         }
-        public void AddCardToGame(Card card) { cards.Add(card); }
+        public void AddCardToGame(Card card) { Log(card, "added to game"); cards.Add(card); }
 
         public Match(List<Player> participants, List<List<Card>> decks)
         {
@@ -155,6 +155,17 @@ namespace Gwent2
             }
             return res;
         }
+        List<RowEffect> rowEffects = new List<RowEffect>();
+        public void _addRowEffect(RowEffect rowEffect)
+        {
+            RowEffect conflict = null;
+            foreach (RowEffect r in rowEffects)
+                if (r.isConflictWith(rowEffect))
+                    conflict = r;
+            if (conflict != null)
+                rowEffects.Remove(conflict);
+            rowEffects.Add(rowEffect);
+        }
 
         public void Start()
         {
@@ -185,12 +196,15 @@ namespace Gwent2
             // activate all turn start-triggers
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnStart(c);
+            foreach (RowEffect r in rowEffects)
+                if (r.PlayerUnderEffect == currentPlayer)
+                    r.onTurnStart();
             // draw current state for human player
             if (currentPlayer as PlayerHuman != null) State();
 
 
             Card selected = currentPlayer.selectCard(_handOf(currentPlayer), "Select a card to play in this turn");
-            Console.WriteLine("\n\n" + selected.ToFormat());
+            ConsoleWriteLine("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
 
             // current player plays a selected card
             currentPlayer.playCard(selected);
@@ -205,7 +219,7 @@ namespace Gwent2
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
         }
 
-        public void State()
+        void State()
         {
             const int battlefieldStartTop = 5;
             const int handStartLeft = 60;
@@ -219,8 +233,11 @@ namespace Gwent2
                 // battlefiedld all rows
                 for (int row = 0; row < 3; ++row)
                 {
+                    RowEffect re = null;
+                    foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
+
                     Console.SetCursorPosition(column, line++);
-                    Console.Write(Utils.allRows[row]+":");
+                    Console.Write(Utils.allRows[row] + ":" + (re != null? ("  " + re.ToString()) : ""));
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)
                         {
@@ -261,6 +278,13 @@ namespace Gwent2
                 column += horizontalSpaceForPlayer;
             }
             Console.SetCursorPosition(0, 0);
+        }
+
+        void ConsoleWriteLine(string message, ConsoleColor fore)
+        {
+            Console.ForegroundColor = fore;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }

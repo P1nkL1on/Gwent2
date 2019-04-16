@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    delegate bool UnitPredicat (Unit target);
-    delegate bool CardPredicat (Card target);
-    delegate bool SpecialPredicat (Special target);
+    delegate bool UnitPredicat(Unit target);
+    delegate bool CardPredicat(Card target);
+    delegate bool SpecialPredicat(Special target);
 
     class Filter
     {
@@ -33,7 +33,8 @@ namespace Gwent2
         }
         public static UnitPredicat anyAllyUnitInPlace(Card source, bool anyOther, params Place[] places)
         {
-            return (t) => {
+            return (t) =>
+            {
                 if ((anyOther && t == source) || t.host != source.host)
                     return false;
                 foreach (Place place in places)
@@ -55,6 +56,8 @@ namespace Gwent2
         public static UnitPredicat anyUnitDamaged() { return (t) => { return t.isDamaged; }; }
         public static UnitPredicat anyUnitDamagedOrCursed() { return (t) => { return t.isDamaged || t.hasTag(Tag.cursed); }; }
         public static UnitPredicat anyUnitSoldierOrMachine() { return (t) => { return t.hasTag(Tag.soldier) || t.hasTag(Tag.machine); }; }
+        public static UnitPredicat anyUnitInRow(int row) { return (t) => { return t.row == row; }; }
+        public static UnitPredicat anyUnitHostBy(Player player) { return (t) => { return t.host == player; }; }
 
         public static UnitPredicat anyUnitHasTag(params Tag[] anyOfTags)
         {
@@ -96,6 +99,7 @@ namespace Gwent2
                 return true;
             };
         }
+        public static UnitPredicat anyUnitInBaseHostDeck(Card source) { return (t) => { return t.place == Place.deck && t.host == source.baseHost; }; }
 
         public static UnitPredicat anyUnitInBattlefield() { return anyUnitInPlace(Place.battlefield); }
         public static UnitPredicat anyOtherUnitInBattlefield(Unit source) { return anyOtherUnitInPlace(source, Place.battlefield); }
@@ -127,7 +131,8 @@ namespace Gwent2
         }
         public static CardPredicat anyCardHasColor(params Rarity[] acceptedColors)
         {
-            return (c) => {
+            return (c) =>
+            {
                 foreach (Rarity rarity in acceptedColors)
                     if (c.rarity == rarity)
                         return true;
@@ -136,7 +141,7 @@ namespace Gwent2
         }
         public static CardPredicat anyCardAllyInHand(Card source) { return anyCardAllyIn(Place.hand, source); }
         public static CardPredicat anyCardAllyInDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
-        
+
 
     }
 }

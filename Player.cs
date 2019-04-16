@@ -94,8 +94,8 @@ namespace Gwent2
                     unit.row = chooseRow("Select row for " + card.ToString());
                 else
                 {
-                    Player newSpyHost = chooseEnemy(card.context, "Choose new host for " + card.ToString());
-                    unit.setSpyHost(newSpyHost);
+                    Player newSpyHost = chooseEnemy(card.context, "Select new host for " + card.ToString());
+                    unit.setSpyHost(newSpyHost, this);
                     unit.row = chooseEnemyRow(newSpyHost, String.Format("Select {0}'s row for {1}", newSpyHost.ToString(), card.ToString()));
                 }
 

@@ -15,7 +15,7 @@ namespace Gwent2
         protected Player _baseHost;
         protected Player _host;
         public Timer timer = new Timer();
-        public String name { get { return _name; } }
+        public String name { get { return _name; }}
         public Clan clan { get { return _clan; } }
         public Rarity rarity { get { return _rarity; } }
         public Player host { get { return _host; } }
@@ -171,6 +171,7 @@ namespace Gwent2
         }
     }
 
+    delegate void TriggerTurnRowEffect(RowEffect self);
     delegate void TriggerTurn(Card self);
     delegate void TriggerMove(Card self, Place from);
     delegate void TriggerRecieve(Unit self, Card source, int X);

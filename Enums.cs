@@ -58,7 +58,9 @@ namespace Gwent2
         spell,
         item,
         alchemy,
-        tactic
+        tactic,
+        hazzard,
+        boon
     }
 
     class Utils
