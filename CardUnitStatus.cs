@@ -8,27 +8,42 @@ namespace Gwent2
 {
     class UnitStatus
     {
-        public bool isSpy = false;
-        public bool isLocked = false;
+        bool _isSpy = false;
+        bool _isLocked = false;
         public int armor = 0;
+        public bool isSpy { get { return _isSpy; } set { _isSpy = value; } }
+        public bool isLocked { get { return _isLocked; } set { _isLocked = value; } }
 
         public override string ToString()
         {
-            if (armor == 0 && !isSpy && !isLocked)
+            if (armor == 0 && !_isSpy && !_isLocked)
                 return "[NONE]";
             return String.Format("[{0}{1}armor={2}]",
-                (isSpy? "SPYING " : ""),
-                (isLocked? "LOCKED " : ""),
+                (_isSpy? "SPYING " : ""),
+                (_isLocked? "LOCKED " : ""),
                 armor);
         }
         public string ToStringBattlefield()
         {
-            if (armor == 0 && !isSpy && !isLocked)
+            if (armor == 0 && !_isSpy && !_isLocked)
                 return "";
             return String.Format("[{0}{1}{2}]",
-                (isSpy ? "SPY " : ""),
-                (isLocked ? "LOCK " : ""),
+                (_isSpy ? " SPY " : ""),
+                (_isLocked ? " LOCK " : ""),
                 (armor > 0)? "+" + armor : "");
+        }
+        public void ToggleSpying()
+        {
+            isSpy = !isSpy;
+        }
+        public void ToggleLocking()
+        {
+            isLocked = !isLocked;
+        }
+        public void Clear()
+        {
+            _isSpy = _isLocked = false;
+            armor = 0;
         }
     }
 }

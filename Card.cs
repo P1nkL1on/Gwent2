@@ -19,6 +19,7 @@ namespace Gwent2
         public Clan clan { get { return _clan; } }
         public Rarity rarity { get { return _rarity; } }
         public Player host { get { return _host; } }
+        public Player baseHost { get { return _baseHost; } }
         public virtual int power { get { return 0; } }
         public Match context { get { return _context; } }
         protected List<Tag> _tags;
@@ -159,9 +160,10 @@ namespace Gwent2
             _host = Host;
             _context = Context;
         }
+        public static string InvisibleCardString { get { return "".PadLeft(10, '?'); } }
         public virtual string Show(Player watcher)
         {
-            return _visibleTo.IndexOf(watcher) >= 0 ? ToString() : "".PadLeft(10, '?');
+            return _visibleTo.IndexOf(watcher) >= 0 ? ToString() : InvisibleCardString;
         }
         public virtual string QestionString()
         {

@@ -29,6 +29,27 @@ namespace Gwent2
             }
             return res;
         }
+        public static List<Special> Specials(List<Card> fromList, params SpecialPredicat[] filters)
+        {
+            List<Special> res = new List<Special>();
+            foreach (Card c in fromList)
+            {
+                Special s = c as Special;
+                if (s == null)
+                    continue;
+                bool acceptCard = true;
+                foreach (SpecialPredicat filter in filters)
+                    if (!filter(s))
+                    {
+                        acceptCard = false;
+                        break;
+                    }
+                if (!acceptCard)
+                    continue;
+                res.Add(s);
+            }
+            return res;
+        }
         public static List<Card> Cards(List<Card> fromList, params CardPredicat[] filters)
         {
             List<Card> res = new List<Card>();
@@ -47,5 +68,6 @@ namespace Gwent2
             }
             return res;
         }
+        
     }
 }

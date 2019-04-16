@@ -14,7 +14,8 @@ namespace Gwent2
                 "Resurrect", "Play from your graveyard.",
                 "Strengthen", "Increase the base power of a unit.",
                 "Discard", "Move a card from your hand to the graveyard.",
-                "Heal", "If a unit's current power is lower than its base power, restore it either to base power or by the amount specified."
+                "Heal", "If a unit's current power is lower than its base power, restore it either to base power or by the amount specified.",
+                "Spying", "Status for a unit played on or moved to the opposite side of the battlefield."
         };
         public static string addHitsTo(string sourceAbilities)
         {

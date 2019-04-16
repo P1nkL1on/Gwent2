@@ -9,7 +9,7 @@ namespace Gwent2
 {
     public class ScreenSpacer
     {
-        const int fontSize = 10;
+        const int fontSize = 15;
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         internal unsafe struct CONSOLE_FONT_INFO_EX

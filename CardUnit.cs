@@ -13,11 +13,12 @@ namespace Gwent2
         int _defaultPower;
         int _basePower;
         int _power;
+        bool _isSpy = false;
         public int row = -1;
-
+        
         TriggerRecieve _onDamaged       = (s, by, X) => { s._context.Log(s, String.Format("damaged for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onWeakened      = (s, by, X) => { s._context.Log(s, String.Format("weakened for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onBuffed        = (s, by, X) => { s._context.Log(s, String.Format("buffed for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onBoost        = (s, by, X) => { s._context.Log(s, String.Format("boosted for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onStrengthled   = (s, by, X) => { s._context.Log(s, String.Format("strenghled for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onHealed        = (s, by, X) => { s._context.Log(s, String.Format("healed for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
@@ -27,7 +28,7 @@ namespace Gwent2
 
         string _onDamagedAbility = "";
         string _onWeakenedAbility = "";
-        string _onBuffedAbility = "";
+        string _onBoosted = "";
         string _onStrengthledAbility = "";
         string _onHealedAbility = "";
         string _onArmorGainAbility = "";
@@ -36,7 +37,7 @@ namespace Gwent2
 
         public void setOnDamaged(TriggerRecieve trigger, string description) { _onDamaged = trigger; _onDamagedAbility = description; }
         public void setOnWeakened(TriggerRecieve trigger, string description) { _onWeakened = trigger; _onWeakenedAbility = description; }
-        public void setOnBuffed(TriggerRecieve trigger, string description) { _onBuffed = trigger; _onBuffedAbility = description; }
+        public void setOnBoosted(TriggerRecieve trigger, string description) { _onBoost = trigger; _onBoosted = description; }
         public void setOnStrengthled(TriggerRecieve trigger, string description) { _onStrengthled = trigger; _onStrengthledAbility = description; }
         public void setOnHealed(TriggerRecieve trigger, string description) { _onHealed = trigger; _onHealedAbility = description; }
         public void setOnArmorGain(TriggerRecieve trigger, string description) { _onArmorGain = trigger; _onArmorGainAbility = description; }
@@ -46,6 +47,9 @@ namespace Gwent2
 
         public override int power { get { return _power; } }
         public int basePower { get { return _basePower; } }
+        public bool isSpy { get { return _isSpy; } }
+        public void setSpying() { _isSpy = true; }
+        public void setSpyHost(Player spyHost) { _host = spyHost; }
 
         public virtual void setUnitAttributes (int DefaultPower, params Tag[] Tags){
             _defaultPower = _basePower = _power = DefaultPower;
@@ -84,12 +88,12 @@ namespace Gwent2
             if (isMustbeBanished)
                 banish(source);
         }
-        public virtual void buff(Card source, int X)
+        public virtual void boost(Card source, int X)
         {
             if (X <= 0)
                 return;
             _power += X;
-            _onBuffed(this, source, X);
+            _onBoost(this, source, X);
         }
         public virtual void gainArmor(Card source, int X)
         {
@@ -133,12 +137,14 @@ namespace Gwent2
         {
             move(Place.graveyard);
             restore(this);
+            this.status.Clear();
             _onDestroy(this, source);
         }
         public virtual void banish(Card source)
         {
             move(Place.banish);
             restore(this);
+            this.status.Clear();
         }
         public bool isDamaged { get { return _power < _basePower; } }
         bool isMustbeDestroyed { get { return _power <= 0; } }
@@ -150,6 +156,8 @@ namespace Gwent2
         }
         string tagsToString()
         {
+            if (_tags.Count == 0)
+                return "no tags";
             string tags = "";
             foreach (Tag t in _tags)
                 tags += t.ToString() + ", ";
@@ -169,7 +177,7 @@ namespace Gwent2
                 _onDestroyAbility.Length == 0 ? "" : (_onDestroyAbility + "\n"),
                 _onDamagedAbility.Length == 0 ? "" : (_onDamagedAbility + "\n"),
                 _onWeakenedAbility.Length == 0 ? "" : (_onWeakenedAbility + "\n"),
-                _onBuffedAbility.Length == 0 ? "" : (_onBuffedAbility + "\n"),
+                _onBoosted.Length == 0 ? "" : (_onBoosted + "\n"),
                 _onStrengthledAbility.Length == 0 ? "" : (_onStrengthledAbility + "\n"),
                 _onHealedAbility.Length == 0 ? "" : (_onHealedAbility + "\n"),
                 _onArmorGainAbility.Length == 0 ? "" : (_onArmorGainAbility + "\n"),

@@ -8,6 +8,22 @@ namespace Gwent2
 {
     class SpawnSpecial
     {
+        public static Special Swallow
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Swallow");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyUnitInBattlefield()), s.QestionString());
+                    if (t != null)
+                        t.boost(s, 10);
+                }, "Boost a unit by 10.");
+                return spec;
+            }
+        }
         public static Special AlzursThunder
         {
             get
@@ -21,6 +37,21 @@ namespace Gwent2
                     if (t != null)
                         t.damage(s, 9);
                 }, "Deal 9 damage.");
+                return spec;
+            }
+        }
+        public static Special StammelfordsTremor
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Stammelford's Tremor");
+                spec.setSpecialAttributes(Tag.spell);
+                spec.setOnDeploy((s, f) =>
+                {
+                    foreach (Unit t in Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)))
+                        t.damage(s, 1);
+                }, "Deal 1 damage to all enemies.");
                 return spec;
             }
         }
@@ -45,7 +76,7 @@ namespace Gwent2
                     Unit so = s.host.selectUnit(possibleSourceOfBuff, "Select a Bronze or Silver unit in your hand");
                     Unit to = s.host.selectUnit(possibleTargetsForBuff, "Select a unit to buff");
 
-                    to.buff(s, so.basePower);
+                    to.boost(s, so.basePower);
 
                 }, "Boost a unit by the base power of a Bronze or Silver unit in your hand.");
                 return spec;

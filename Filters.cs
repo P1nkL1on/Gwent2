@@ -8,6 +8,7 @@ namespace Gwent2
 {
     delegate bool UnitPredicat (Unit target);
     delegate bool CardPredicat (Card target);
+    delegate bool SpecialPredicat (Special target);
 
     class Filter
     {

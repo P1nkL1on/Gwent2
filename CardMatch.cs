@@ -207,28 +207,60 @@ namespace Gwent2
 
         public void State()
         {
+            const int battlefieldStartTop = 5;
+            const int handStartLeft = 60;
+            const int horizontalSpaceForPlayer = 60;
+
             Console.WriteLine("\nCurrent game state:");
-            int column = 60;
+            int column = handStartLeft;
             foreach (Player p in players)
             {
-                int line = 5;
+                int line = battlefieldStartTop;
+                // battlefiedld all rows
+                for (int row = 0; row < 3; ++row)
+                {
+                    Console.SetCursorPosition(column, line++);
+                    Console.Write(Utils.allRows[row]+":");
+                    foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
+                        if (u.row == row)
+                        {
+                            Console.SetCursorPosition(column, line++);
+                            Console.Write(String.Format("   {0}", u.Show(currentPlayer)));
+                        }
+                }
+                line += 5;
+                // all non battlefield places
                 foreach (Place place in Utils.allPlaces)
                 {
+                    if (place == Place.battlefield)
+                        continue;
                     line++;
                     Console.SetCursorPosition(column, line++);
-                    Console.WriteLine(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()));
+                    Console.Write(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()));
 
+                    int nInvisibleCards = 0;
                     foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayerIn(place, p)))
                     {
-                        Console.SetCursorPosition(column, line++);
-                        //Console.BackgroundColor = players.IndexOf(p) == 0 ? ConsoleColor.DarkGreen : ConsoleColor.DarkRed;
-                        Console.WriteLine(String.Format("   {0}", c.Show(currentPlayer)));
+                        Console.SetCursorPosition(column, line);
+                        string cardShow = c.Show(currentPlayer);
+                        bool isVisible = cardShow[0] != '?';
+                        if (!isVisible)
+                        {
+                            nInvisibleCards++;
+                            continue;
+                        }
+                        Console.Write(String.Format("   {0}", c.Show(currentPlayer)));
+                        line++;
                     }
-                    //Console.ResetColor();
+                    if (nInvisibleCards > 0)
+                    {
+                        Console.Write(String.Format("   {0} x{1}", Card.InvisibleCardString, nInvisibleCards));
+                        line++;
+                    }
                 }
-                column += 40;
+                column += horizontalSpaceForPlayer;
             }
-            Console.SetCursorPosition(0, 5);
+            Console.SetCursorPosition(0, 0);
         }
     }
 }

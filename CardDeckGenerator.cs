@@ -13,18 +13,22 @@ namespace Gwent2
             get
             {
                 int prioritet0 = 0;
-                int prioritet1 = 3;
+                int prioritet1 = 1;
 
                 List<Card> deck = new List<Card>();
 
+
                 for (int i = 0; i < 10; ++i)
+                    deck.Add(SpawnUnit.Emissary);
+
+                for (int i = 0; i < prioritet1; ++i)
                     deck.Add(SpawnSpecial.Reconnaissance);
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < prioritet1; ++i)
                     deck.Add(SpawnSpecial.AlzursThunder);
-                for (int i = 0; i < 5; ++i)
+                for (int i = 0; i < 2; ++i)
                     deck.Add(SpawnUnit.HeymaeySpearmaiden);
 
-                for (int i = 0; i < prioritet0; ++i)
+                for (int i = 0; i < 2; ++i)
                     deck.Add(SpawnUnit.TuirseachBearmaster);
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachHunter);
@@ -36,11 +40,11 @@ namespace Gwent2
                     deck.Add(SpawnUnit.AnCraiteWarrior);
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachSkirmisher);
-                for (int i = 0; i < 7; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.TuirseachAxeman);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.PriestessOfFreya);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.DrummondWarmonger);
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.DimunPirateCaptain);
@@ -50,15 +54,15 @@ namespace Gwent2
                     deck.Add(SpawnUnit.DimunCorsair);
                 for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.BerserkerMarauder);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.AnCraiteWarcrier);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.AnCraiteRaider);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.AnCraiteMarauder);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.AnCraiteBlacksmith);
-                for (int i = 0; i < prioritet1; ++i)
+                for (int i = 0; i < prioritet0; ++i)
                     deck.Add(SpawnUnit.AnCraiteGreatsword);
 
 

@@ -158,7 +158,7 @@ namespace Gwent2
                     if (unit.place != Place.battlefield)
                         return;
                     if (otherUnit.host != unit.host && otherUnit.row == unit.row)
-                        unit.buff(unit, 1);
+                        unit.boost(unit, 1);
                 }, "Whenever an enemy on the opposite row is damaged, boost self by 1.");
                 return self;
             }
@@ -262,7 +262,7 @@ namespace Gwent2
                     int buff =
                         Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit), Filter.anyUnitDamagedOrCursed())
                         .Count;
-                    (s as Unit).buff(s, buff);
+                    (s as Unit).boost(s, buff);
                 },
                     "Boost self by 1 for each damaged or Cursed ally.");
                 return self;
@@ -281,7 +281,7 @@ namespace Gwent2
                         Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)),
                         s.QestionString());
                     if (t != null)
-                        t.buff(s, t.power / 2);
+                        t.boost(s, t.power / 2);
                 }, "Boost an ally by half its power.");
                 return self;
             }
@@ -440,6 +440,22 @@ namespace Gwent2
                         t.destroy(s);
                 },
                     "Deal 2 damage to an enemy. If it was already damaged, destroy it instead.");
+                return self;
+            }
+        }
+        public static Unit Emissary
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.nilfgaard, Rarity.bronze, "Emissary");
+                self.setUnitAttributes(2);
+                self.setSpying(); // ! the way to show a player class to play it to the other side
+
+                self.setOnDeploy((s, f) =>
+                {
+                    (s as Unit).status.isSpy = true;
+                }, "Spying.");
                 return self;
             }
         }
