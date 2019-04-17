@@ -59,6 +59,7 @@ namespace Gwent2
         item,
         alchemy,
         tactic,
+        organic,
         hazzard,
         boon
     }

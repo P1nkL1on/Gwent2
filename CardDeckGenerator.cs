@@ -14,9 +14,8 @@ namespace Gwent2
             {
                 List<Card> deck = new List<Card>();
                 deck.AddRange(new List<Card>() { 
-                    SpawnSpecial.BitingFrost, SpawnSpecial.BitingFrost, SpawnSpecial.BitingFrost, 
-                    SpawnSpecial.ImpenetrableFog, SpawnSpecial.ImpenetrableFog, SpawnSpecial.ImpenetrableFog, 
-                    SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, SpawnSpecial.TorrentialRain, 
+                    SpawnSpecial.MahakamAle, SpawnSpecial.MahakamAle, SpawnSpecial.MahakamAle, 
+                    SpawnSpecial.Spores, SpawnSpecial.Spores, SpawnSpecial.Spores, 
                     SpawnUnit.Emissary,
                     SpawnUnit.Ambassador,
                     SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, 
@@ -34,12 +33,16 @@ namespace Gwent2
             get
             {
                 List<Card> deck = new List<Card>();
-                int nCount = 20;
+                int nCount = 10;
                 while (nCount-- > 0)
-                    deck.Add(SpawnUnit.TuirseachBearmaster);
-                nCount = 5;
+                    deck.Add(SpawnUnit.TuirseachArcher);
+                nCount = 2;
                 while (nCount-- > 0)
                     deck.Add(SpawnUnit.Emissary);
+
+                deck.AddRange(new List<Card>() { 
+                    SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth
+                });
 
                 return deck;
             }

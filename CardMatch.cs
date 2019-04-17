@@ -70,7 +70,7 @@ namespace Gwent2
                 topdeck.move(Place.hand);
             }
         }
-        
+
         public Card _topCardOfDeck(Player player)
         {
             var deck = _deckOf(player);
@@ -139,6 +139,31 @@ namespace Gwent2
                 rowEffects.Remove(conflict);
             rowEffects.Add(rowEffect);
         }
+        public void _removeRowEffect(Player player, int row, params CardPredicat[] filters)
+        {
+            RowEffect conflict = null;
+            foreach (RowEffect r in rowEffects)
+                if (r.row == row && r.PlayerUnderEffect == player)
+                {
+                    bool accepted = true;
+                    foreach (CardPredicat f in filters)
+                        if (!f(r.Source))
+                            accepted = false;
+                    if (accepted)
+                        conflict = r;
+                }
+            if (conflict != null)
+                rowEffects.Remove(conflict);
+        }
+        public void _removeAllNegativeRowEffectsFromPlayer(Player player)
+        {
+            for (int i = 0; i < rowEffects.Count; ++i)
+                if (rowEffects[i].Source.hasTag(Tag.hazzard) && rowEffects[i].PlayerUnderEffect == player)
+                {
+                    rowEffects.RemoveAt(i);
+                    i--;
+                }
+        }
 
         public void Start()
         {
@@ -192,7 +217,8 @@ namespace Gwent2
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
         }
 
-        void State()
+        void State() { State(false); }
+        void State(bool showOnlyBattlefield)
         {
             const int battlefieldStartTop = 5;
             const int handStartLeft = 60;
@@ -210,7 +236,7 @@ namespace Gwent2
                     foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
                     Console.SetCursorPosition(column, line++);
-                    Console.Write(Utils.allRows[row] + ":" + (re != null? ("  " + re.ToString()) : ""));
+                    Console.Write(Utils.allRows[row] + ":" + (re != null ? ("  " + re.ToString()) : ""));
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)
                         {
@@ -218,6 +244,8 @@ namespace Gwent2
                             Console.Write(String.Format("   {0}", u.Show(currentPlayer)));
                         }
                 }
+                if (showOnlyBattlefield)
+                    continue;
                 line += 5;
                 // all non battlefield places
                 foreach (Place place in Utils.allPlaces)

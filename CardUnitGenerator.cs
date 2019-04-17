@@ -485,8 +485,8 @@ namespace Gwent2
                 {
                     (s as Unit).status.isSpy = true;
 
-                    Unit t = s.host.selectUnit(
-                        Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s as Unit)),
+                    Unit t = s.baseHost.selectUnit(
+                        Select.Units(s.context.cards, Filter.anyUnitInBaseHostBattlefield(s)),
                         s.QestionString());
                     if (t != null)
                         t.boost(s, 12);

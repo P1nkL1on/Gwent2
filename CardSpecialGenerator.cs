@@ -24,6 +24,36 @@ namespace Gwent2
                 return spec;
             }
         }
+        public static Special Shrike
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Shrike");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    foreach (Unit t in Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), 6))
+                        t.damage(s, 2);
+                }, "Deal 2 damage to 6 random enemies.");
+                return spec;
+            }
+        }
+        public static Special PetrisPhilter
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Petri's Philter");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    foreach (Unit t in Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyAllyUnitInBattlefield(s)), 6))
+                        t.boost(s, 2);
+                }, "Boost 6 random allies by 2.");
+                return spec;
+            }
+        }
         public static Special AlzursThunder
         {
             get
@@ -64,21 +94,52 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.item);
                 spec.setOnDeploy((s, f) =>
                 {
-                    var possibleTargetsForBuff
-                        = Select.Units(s.context.cards, Filter.anyUnitInBattlefield());
                     var possibleSourceOfBuff
                         = Select.Units(s.context.cards,
                             Filter.anyAllyUnitInHand(s),
                             Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver));
-                    if (possibleSourceOfBuff.Count == 0 || possibleTargetsForBuff.Count == 0)
+                    if (possibleSourceOfBuff.Count == 0)
+                        return;
+                    var possibleTargetsForBuff
+                        = Select.Units(s.context.cards, Filter.anyUnitInBattlefield());
+                    if (possibleTargetsForBuff.Count == 0)
                         return; // no targets
 
                     Unit so = s.host.selectUnit(possibleSourceOfBuff, "Select a Bronze or Silver unit in your hand");
-                    Unit to = s.host.selectUnit(possibleTargetsForBuff, "Select a unit to buff");
+                    Unit to = s.host.selectUnit(possibleTargetsForBuff, "Select a unit to boost");
 
                     to.boost(s, so.basePower);
 
                 }, "Boost a unit by the base power of a Bronze or Silver unit in your hand.");
+                return spec;
+            }
+        }
+        public static Special MastercraftedSpear
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Mastercrafted Spear");
+                spec.setSpecialAttributes(Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    var possibleSourceOfBuff
+                        = Select.Units(s.context.cards,
+                            Filter.anyAllyUnitInHand(s),
+                            Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver));
+                    if (possibleSourceOfBuff.Count == 0)
+                        return;
+                    var possibleTargetsForBuff
+                        = Select.Units(s.context.cards, Filter.anyUnitInBattlefield());
+                    if (possibleTargetsForBuff.Count == 0)
+                        return; // no targets
+
+                    Unit so = s.host.selectUnit(possibleSourceOfBuff, "Select a Bronze or Silver unit in your hand");
+                    Unit to = s.host.selectUnit(possibleTargetsForBuff, "Select a unit to damage");
+
+                    to.damage(s, so.basePower);
+
+                }, "Deal damage equal to the base power of a Bronze or Silver unit in your hand.");
                 return spec;
             }
         }
@@ -105,7 +166,47 @@ namespace Gwent2
                 return spec;
             }
         }
+        public static Special Spores
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Spores");
+                spec.setSpecialAttributes(Tag.organic);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
+                    int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
+                    s.context._removeRowEffect(enemy, row, Filter.anyCardHasTag(Tag.boon));
+                    foreach (Unit t in Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s), Filter.anyUnitInRow(row)))
+                        t.damage(s, 2);
 
+                }, "Deal 2 damage to all units on a row and clear a Boon from it.");
+                return spec;
+            }
+        }
+        public static Special MahakamAle
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Mahakam Ale");
+                spec.setSpecialAttributes(Tag.alchemy);
+                spec.setOnDeploy((s, f) =>
+                {
+                    for (int row = 0; row < 3; ++row)
+                    {
+                        Unit t = Filter.randomUnitFrom(
+                            Select.Units(s.context.cards, 
+                            Filter.anyAllyUnitInBattlefield(s), 
+                            Filter.anyUnitInRow(row)));
+                        if (t != null)
+                            t.boost(s, 4);
+                    }
+                }, "Boost a random ally on each row by 4.");
+                return spec;
+            }
+        }
         // hazzards
         public static Special TorrentialRain
         {
@@ -151,8 +252,25 @@ namespace Gwent2
                     });
             }
         }
+        // boons
+        public static Special GoldenFroth
+        {
+            get
+            {
+                return Boon(
+                    "Golden Froth",
+                    "Apply a Boon to an allied row that boosts 2 random units by 1 on turn start.",
+                    (r) =>
+                    {
+                        foreach (Unit t in Filter.randomUnitFrom(r.allRowUnits, 2))
+                            t.boost(r.Source, 1);
+                    });
+            }
+        }
+        
         static string HazzardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
         static string HazzardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
+        static string BoonQuestionRow(string name) { return String.Format("Select row to apply {0}", name); }
         static Special Hazzard(string name, string description, TriggerTurnRowEffect trigger)
         {
             Special spec = new Special();
@@ -163,13 +281,25 @@ namespace Gwent2
                 Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
                 int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
 
-                RowEffect rain = new RowEffect(s, enemy, row);
-                rain.SetBehaviour(trigger);
+                RowEffect hazz = new RowEffect(s, enemy, row);
+                hazz.SetBehaviour(trigger);
 
             }, description);
             return spec;
         }
+        static Special Boon(string name, string description, TriggerTurnRowEffect trigger)
+        {
+            Special spec = new Special();
+            spec.setAttributes(Clan.neutral, Rarity.bronze, name);
+            spec.setSpecialAttributes(Tag.boon);
+            spec.setOnDeploy((s, f) =>
+            {
+                RowEffect boon = new RowEffect(s, s.host, s.host.chooseRow(BoonQuestionRow(s.name)));
+                boon.SetBehaviour(trigger);
 
+            }, description);
+            return spec;
+        }
     }
     class RowEffect
     {

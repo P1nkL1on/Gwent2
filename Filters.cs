@@ -58,7 +58,17 @@ namespace Gwent2
         public static UnitPredicat anyUnitSoldierOrMachine() { return (t) => { return t.hasTag(Tag.soldier) || t.hasTag(Tag.machine); }; }
         public static UnitPredicat anyUnitInRow(int row) { return (t) => { return t.row == row; }; }
         public static UnitPredicat anyUnitHostBy(Player player) { return (t) => { return t.host == player; }; }
-
+        
+        public static CardPredicat anyCardHasTag(params Tag[] anyOfTags)
+        {
+            return (t) =>
+            {
+                foreach (Tag tag in anyOfTags)
+                    if (t.hasTag(tag))
+                        return true;
+                return false;
+            };
+        }
         public static UnitPredicat anyUnitHasTag(params Tag[] anyOfTags)
         {
             return (t) =>
@@ -100,6 +110,7 @@ namespace Gwent2
             };
         }
         public static UnitPredicat anyUnitInBaseHostDeck(Card source) { return (t) => { return t.place == Place.deck && t.host == source.baseHost; }; }
+        public static UnitPredicat anyUnitInBaseHostBattlefield(Card source) { return (t) => { return t.place == Place.battlefield && t.host == source.baseHost; }; }
 
         public static UnitPredicat anyUnitInBattlefield() { return anyUnitInPlace(Place.battlefield); }
         public static UnitPredicat anyOtherUnitInBattlefield(Unit source) { return anyOtherUnitInPlace(source, Place.battlefield); }
@@ -170,6 +181,11 @@ namespace Gwent2
                 from.RemoveAt(geted);
             }
             return res;
+        }
+        public static Unit randomUnitFrom(List<Unit> originalList)
+        {
+            List<Unit> res = randomUnitFrom(originalList, 1);
+            return res.Count == 0 ? null : res[0];
         }
         public static List<Unit> lowestUnits(List<Unit> originalList)
         {

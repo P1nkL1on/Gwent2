@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Gwent2
 {
@@ -153,15 +153,6 @@ namespace Gwent2
         public override string ToString()
         {
             return String.Format("[{0} {1}]{2}", power, base.ToString(), status.ToStringBattlefield());
-        }
-        string tagsToString()
-        {
-            if (_tags.Count == 0)
-                return "no tags";
-            string tags = "";
-            foreach (Tag t in _tags)
-                tags += t.ToString() + ", ";
-            return tags.Substring(0, tags.Length - 2);
         }
         public override string ToStringFull()
         {

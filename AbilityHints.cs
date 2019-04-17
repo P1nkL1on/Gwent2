@@ -17,6 +17,7 @@ namespace Gwent2
                 "Heal", "If a unit's current power is lower than its base power, restore it either to base power or by the amount specified.",
                 "Spying", "Status for a unit played on or moved to the opposite side of the battlefield.",
                 "Hazard", "Negative row effect. Replaced by other row effects and removed on round end.",
+                "Boon", "Positive row effect. Replaced by other row effects and removed on round end.",
                 "Lowest", "Lowest power, ties are resolved randomly.",
                 "Highest", "Highest power, ties are resolved randomly."
         };

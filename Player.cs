@@ -88,6 +88,7 @@ namespace Gwent2
 
         public virtual void playCard(Card card)
         {
+            card.context.Log(card, "played by " + this.ToString());
             Unit unit = card as Unit;
             if (unit != null)
                 if (!unit.isSpy)

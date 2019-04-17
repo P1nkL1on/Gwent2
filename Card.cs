@@ -169,6 +169,15 @@ namespace Gwent2
         {
             return String.Format("Select target for {0}", name);
         }
+        protected string tagsToString()
+        {
+            if (_tags.Count == 0)
+                return "no tags";
+            string tags = "";
+            foreach (Tag t in _tags)
+                tags += t.ToString() + ", ";
+            return tags.Substring(0, tags.Length - 2);
+        }
     }
 
     delegate void TriggerTurnRowEffect(RowEffect self);

@@ -24,5 +24,11 @@ namespace Gwent2
         {
             return String.Format("[* {0}]", name);
         }
+
+        public override string ToFormat()
+        {
+            return String.Format("{0}\n\n{1} {2} card\n{3}\n\n{4}",
+                name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(), ToFormatAbilities());
+        }
     }
 }
