@@ -21,7 +21,8 @@ namespace Gwent2
                     SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, 
                     SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, 
                     //SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor,
-                    SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran
+                    SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran,
+                    SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden
                 });
 
                 return deck;

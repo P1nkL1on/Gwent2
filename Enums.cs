@@ -68,5 +68,14 @@ namespace Gwent2
     {
         public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.graveyard, Place.banish };
         public static List<string> allRows = new List<string>() { "melee", "ranged", "support"};
+
+        // line out
+        public static int leftTextColumnWidth = 45;
+        public static int leftTextColumnHeigth = 30;
+        public static int fieldHeigth = 70;
+        public static int fieldStartHorizontal = leftTextColumnWidth + 2;
+        public static int fieldPerPlayerHorizontal = 60;
+        public static int fieldStartVerticalOffset = 5;
+
     }
 }

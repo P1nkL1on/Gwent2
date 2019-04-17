@@ -15,7 +15,7 @@ namespace Gwent2
         public static void SetFullScreen()
         {
             ScreenSpacer.SetConsoleFont();
-            int offset = 50;
+            int offset = 20;
             Console.SetBufferSize(Console.LargestWindowWidth - offset, Console.LargestWindowHeight * 50);
             Console.SetWindowSize(Console.LargestWindowWidth - offset, Console.LargestWindowHeight);
         }
@@ -262,7 +262,7 @@ namespace Gwent2
 
         public void drawImage(Bitmap image, Rectangle place)
         {
-            bool smooth = true;
+            bool smooth = false;
 
             Bitmap image2 = (smooth) ? new Bitmap(image, new Size(place.Width, place.Height)) : image;
 
@@ -271,8 +271,8 @@ namespace Gwent2
                 setCursor(place, j);
                 for (int i = 0; i < place.Width; i++)
                     getClosestColor(image2.GetPixel(
-                            (int)((float)i / place.Width * (image2.Width - 1)),
-                            (int)((float)j / place.Height * (image2.Height - 1))
+                            (int)((float)(i + 1) / place.Width * (image2.Width)) - 1,
+                            (int)((float)(j + 1) / place.Height * (image2.Height)) - 1
                         )).Paint();
             }
         }
@@ -286,8 +286,7 @@ namespace Gwent2
         {
             PixColor clr = getClosestColor(color);
             clr.ApplyColorsToConsole();
-            if (clr._fore == clr._back)
-                Console.BackgroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Black;
 
             Console.SetCursorPosition(place.X, place.Y);
             Console.Write(style[2] + "".PadLeft(place.Width - 2, style[0]) + style[3]);
@@ -300,7 +299,12 @@ namespace Gwent2
             }
             Console.SetCursorPosition(place.X, place.Y + place.Height);
             Console.Write(style[4] + "".PadLeft(place.Width - 2, style[0]) + style[5]);
-            Console.ResetColor();
+            //Console.ResetColor();
+        }
+
+        public PixColor drawPixel(Color color)
+        {
+            return getClosestColor(color);
         }
 
         public void drawRectangle(Rectangle place, Color color)
@@ -324,7 +328,7 @@ namespace Gwent2
             {
                 case '2':
                     Console.Write("Enter a name of pallete: ");
-                    pd = PixDrawer.FromPalette( Console.ReadLine()); Console.ReadLine(); break;
+                    pd = PixDrawer.FromPalette(Console.ReadLine()); Console.ReadLine(); break;
                 case '3':
                     pd = new PixDrawer("░▒▓"); break;
                 default:

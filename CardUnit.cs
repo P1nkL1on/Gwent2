@@ -18,7 +18,7 @@ namespace Gwent2
         
         TriggerRecieve _onDamaged       = (s, by, X) => { s._context.Log(s, String.Format("damaged for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onWeakened      = (s, by, X) => { s._context.Log(s, String.Format("weakened for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onBoost        = (s, by, X) => { s._context.Log(s, String.Format("boosted for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onBoosted        = (s, by, X) => { s._context.Log(s, String.Format("boosted for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onStrengthled   = (s, by, X) => { s._context.Log(s, String.Format("strenghled for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onHealed        = (s, by, X) => { s._context.Log(s, String.Format("healed for {1} by {0}", by.ToString(), X)); };
         TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
@@ -28,7 +28,7 @@ namespace Gwent2
 
         string _onDamagedAbility = "";
         string _onWeakenedAbility = "";
-        string _onBoosted = "";
+        string _onBoostedAbility = "";
         string _onStrengthledAbility = "";
         string _onHealedAbility = "";
         string _onArmorGainAbility = "";
@@ -37,7 +37,7 @@ namespace Gwent2
 
         public void setOnDamaged(TriggerRecieve trigger, string description) { _onDamaged = trigger; _onDamagedAbility = description; }
         public void setOnWeakened(TriggerRecieve trigger, string description) { _onWeakened = trigger; _onWeakenedAbility = description; }
-        public void setOnBoosted(TriggerRecieve trigger, string description) { _onBoost = trigger; _onBoosted = description; }
+        public void setOnBoosted(TriggerRecieve trigger, string description) { _onBoosted = trigger; _onBoostedAbility = description; }
         public void setOnStrengthled(TriggerRecieve trigger, string description) { _onStrengthled = trigger; _onStrengthledAbility = description; }
         public void setOnHealed(TriggerRecieve trigger, string description) { _onHealed = trigger; _onHealedAbility = description; }
         public void setOnArmorGain(TriggerRecieve trigger, string description) { _onArmorGain = trigger; _onArmorGainAbility = description; }
@@ -93,7 +93,7 @@ namespace Gwent2
             if (X <= 0)
                 return;
             _power += X;
-            _onBoost(this, source, X);
+            _onBoosted(this, source, X);
         }
         public virtual void gainArmor(Card source, int X)
         {
@@ -136,9 +136,9 @@ namespace Gwent2
         public virtual void destroy(Card source)
         {
             move(Place.graveyard);
+            _onDestroy(this, source);
             restore(this);
             this.status.Clear();
-            _onDestroy(this, source);
         }
         public virtual void banish(Card source)
         {
@@ -147,6 +147,7 @@ namespace Gwent2
             this.status.Clear();
         }
         public bool isDamaged { get { return _power < _basePower; } }
+        public bool isBoosted { get { return _power > _basePower; } }
         bool isMustbeDestroyed { get { return _power <= 0; } }
         bool isMustbeBanished { get { return _basePower <= 0; } }
 
@@ -168,7 +169,7 @@ namespace Gwent2
                 _onDestroyAbility.Length == 0 ? "" : (_onDestroyAbility + "\n"),
                 _onDamagedAbility.Length == 0 ? "" : (_onDamagedAbility + "\n"),
                 _onWeakenedAbility.Length == 0 ? "" : (_onWeakenedAbility + "\n"),
-                _onBoosted.Length == 0 ? "" : (_onBoosted + "\n"),
+                _onBoostedAbility.Length == 0 ? "" : (_onBoostedAbility + "\n"),
                 _onStrengthledAbility.Length == 0 ? "" : (_onStrengthledAbility + "\n"),
                 _onHealedAbility.Length == 0 ? "" : (_onHealedAbility + "\n"),
                 _onArmorGainAbility.Length == 0 ? "" : (_onArmorGainAbility + "\n"),

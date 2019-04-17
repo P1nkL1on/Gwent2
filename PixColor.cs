@@ -28,7 +28,13 @@ namespace Gwent2
             _back = back;
             _colorApproach = Color.Black;
         }
-
+        public PixColor Reversed
+        {
+            get
+            {
+                return new PixColor(_symbol, _back, _fore);
+            }
+        }
         public char Paint()
         {
             ApplyColorsToConsole();

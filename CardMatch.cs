@@ -13,10 +13,11 @@ namespace Gwent2
         Player currentPlayer { get { return players[_currentPlayerIndex]; } }
         public List<Player> players = new List<Player>();
         public List<Card> cards = new List<Card>();
+        private ConsoleWindowText topLeftTextBox;
 
         public void Log(string message)
         {
-            ConsoleWriteLine(message, ConsoleColor.Magenta);
+            topLeftTextBox.AddLog(message, ConsoleColor.Magenta);
         }
         public void Log(Card source, string message)
         {
@@ -34,7 +35,8 @@ namespace Gwent2
             }
             players = participants;
 
-            Start();
+            topLeftTextBox = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.fieldHeigth - Utils.leftTextColumnHeigth);
+            topLeftTextBox.AddOffset(0, Utils.leftTextColumnHeigth);
         }
 
         void _mulliganOnRoundStart(Player player, int nMuliganCount)
@@ -187,10 +189,10 @@ namespace Gwent2
                     default: continue;
                 }
         }
-
         public void Turn()
         {
-            Console.Clear();
+            topLeftTextBox.ClearLogWindow();
+
             // activate all turn start-triggers
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnStart(c);
@@ -202,7 +204,7 @@ namespace Gwent2
 
 
             Card selected = currentPlayer.selectCard(_handOf(currentPlayer), "Select a card to play in this turn");
-            ConsoleWriteLine("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
+            topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
 
             // current player plays a selected card
             currentPlayer.playCard(selected);
@@ -211,7 +213,7 @@ namespace Gwent2
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnEnd(c);
 
-            Console.WriteLine("Enter to continue...");
+            if (currentPlayer as PlayerHuman != null) State();
             Console.ReadLine();
 
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
@@ -220,15 +222,14 @@ namespace Gwent2
         void State() { State(false); }
         void State(bool showOnlyBattlefield)
         {
-            const int battlefieldStartTop = 5;
-            const int handStartLeft = 60;
-            const int horizontalSpaceForPlayer = 60;
-
-            Console.WriteLine("\nCurrent game state:");
-            int column = handStartLeft;
+            Console.SetCursorPosition(0, 0);
+            int column = Utils.leftTextColumnWidth;
             foreach (Player p in players)
             {
-                int line = battlefieldStartTop;
+                // set color
+                Console.BackgroundColor = (p as PlayerHuman != null)? ConsoleColor.Blue : ConsoleColor.DarkRed;
+                // set vertical offset
+                int line = Utils.fieldStartVerticalOffset;
                 // battlefiedld all rows
                 for (int row = 0; row < 3; ++row)
                 {
@@ -236,25 +237,27 @@ namespace Gwent2
                     foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
                     Console.SetCursorPosition(column, line++);
-                    Console.Write(Utils.allRows[row] + ":" + (re != null ? ("  " + re.ToString()) : ""));
+                    ConsoleWrite(Utils.allRows[row] + ":" + (re != null ? ("  " + re.ToString()) : ""), Utils.fieldPerPlayerHorizontal);
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)
                         {
                             Console.SetCursorPosition(column, line++);
-                            Console.Write(String.Format("   {0}", u.Show(currentPlayer)));
+                            ConsoleWrite(String.Format("   {0}", u.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
                         }
                 }
                 if (showOnlyBattlefield)
                     continue;
-                line += 5;
+
+                // 5 line space between bf and other
+                line += SkipLines(5, Utils.fieldPerPlayerHorizontal);
                 // all non battlefield places
                 foreach (Place place in Utils.allPlaces)
                 {
                     if (place == Place.battlefield)
                         continue;
-                    line++;
+                    line+= SkipLines(1, Utils.fieldPerPlayerHorizontal);
                     Console.SetCursorPosition(column, line++);
-                    Console.Write(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()));
+                    ConsoleWrite(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()), Utils.fieldPerPlayerHorizontal);
 
                     int nInvisibleCards = 0;
                     foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayerIn(place, p)))
@@ -267,18 +270,28 @@ namespace Gwent2
                             nInvisibleCards++;
                             continue;
                         }
-                        Console.Write(String.Format("   {0}", c.Show(currentPlayer)));
+                        ConsoleWrite(String.Format("   {0}", c.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
                         line++;
                     }
                     if (nInvisibleCards > 0)
                     {
-                        Console.Write(String.Format("   {0} x{1}", Card.InvisibleCardString, nInvisibleCards));
+                        ConsoleWrite(String.Format("   {0} x{1}", Card.InvisibleCardString, nInvisibleCards), Utils.fieldPerPlayerHorizontal);
                         line++;
                     }
                 }
-                column += horizontalSpaceForPlayer;
+                // add spacing to last
+                line += SkipLines(Utils.fieldHeigth - line - 1, Utils.fieldPerPlayerHorizontal);
+                column += Utils.fieldPerPlayerHorizontal;
             }
+            Console.ResetColor();
             Console.SetCursorPosition(0, 0);
+        }
+        void ClearText(int upToX)
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.Write("".PadLeft(upToX));
+            SkipLines(70, upToX);
+            Console.SetCursorPosition(0, 1);
         }
 
         void ConsoleWriteLine(string message, ConsoleColor fore)
@@ -286,6 +299,27 @@ namespace Gwent2
             Console.ForegroundColor = fore;
             Console.WriteLine(message);
             Console.ResetColor();
+        }
+        void ConsoleWrite(string message, int padMax, ConsoleColor fore)
+        {
+            Console.ForegroundColor = fore;
+            ConsoleWrite(message, padMax);
+            Console.ResetColor();
+        }
+        void ConsoleWrite(String message, int padMax)
+        {
+            Console.Write(message.PadRight(padMax));
+        }
+        int SkipLines(int nCount, int padMax)
+        {
+            int x = Console.CursorLeft - padMax;
+            int y = Console.CursorTop + 1;
+            for (int i = 0; i <= nCount; ++i)
+            {
+                Console.SetCursorPosition(x, y + i);
+                ConsoleWrite("", padMax);
+            }
+            return nCount;
         }
     }
 }

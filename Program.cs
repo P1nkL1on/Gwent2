@@ -9,13 +9,7 @@ namespace Gwent2
 {
     class Program
     {
-        //static void Main(string[] args)
-        //{
-        //    Console.CursorSize = 5;
-        //    Console.WriteLine(Console.CursorSize);
-        //    Console.WriteLine("Why you gay?");
-        //    Console.ReadLine();
-        //}
+        
         static void Main(string[] args)
         {
             PixDrawer.SetFullScreen();
@@ -34,11 +28,13 @@ namespace Gwent2
 
             //PicGenerator.test();
             //PicGenerator.byScreenAndName();
-            
+
             Match newgame = new Match(
                 new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },
                 new List<List<Card>>() { Deck.SkelligeTest, Deck.ComputerTest }
                 );
+            //CardDrawer cd = new CardDrawer(newgame);
+            newgame.Start();
         }
     }
 }
