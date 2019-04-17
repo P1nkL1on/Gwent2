@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Reflection;
 
 namespace Gwent2
 {
     class Program
     {
-        
+
         static void Main(string[] args)
         {
             PixDrawer.SetFullScreen();
@@ -28,6 +29,7 @@ namespace Gwent2
 
             //PicGenerator.test();
             //PicGenerator.byScreenAndName();
+            //SpawnUnit.showCaseAllUnits();
 
             Match newgame = new Match(
                 new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },

@@ -53,6 +53,8 @@ namespace Gwent2
         clanHeyMaey,
         clanDrummond,
         clanDimun,
+        clanTordarroch,
+        clanBrokvar,
 
         special,
         spell,

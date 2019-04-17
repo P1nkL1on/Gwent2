@@ -19,7 +19,8 @@ namespace Gwent2
                 "Hazard", "Negative row effect. Replaced by other row effects and removed on round end.",
                 "Boon", "Positive row effect. Replaced by other row effects and removed on round end.",
                 "Lowest", "Lowest power, ties are resolved randomly.",
-                "Highest", "Highest power, ties are resolved randomly."
+                "Highest", "Highest power, ties are resolved randomly.",
+                "Single-Use", "This card's ability can be used only once per game."
         };
         public static string addHitsTo(string sourceAbilities)
         {

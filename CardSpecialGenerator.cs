@@ -33,7 +33,7 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.alchemy, Tag.item);
                 spec.setOnDeploy((s, f) =>
                 {
-                    foreach (Unit t in Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), 6))
+                    foreach (Unit t in Filter.randomUnitsFrom(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), 6))
                         t.damage(s, 2);
                 }, "Deal 2 damage to 6 random enemies.");
                 return spec;
@@ -48,7 +48,7 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.alchemy, Tag.item);
                 spec.setOnDeploy((s, f) =>
                 {
-                    foreach (Unit t in Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyAllyUnitInBattlefield(s)), 6))
+                    foreach (Unit t in Filter.randomUnitsFrom(Select.Units(s.context.cards, Filter.anyAllyUnitInBattlefield(s)), 6))
                         t.boost(s, 2);
                 }, "Boost 6 random allies by 2.");
                 return spec;
@@ -153,7 +153,7 @@ namespace Gwent2
                 spec.setOnDeploy((s, f) =>
                 {
                     List<Unit> randomBronzePair =
-                        Filter.randomUnitFrom(
+                        Filter.randomUnitsFrom(
                             Select.Units(s.context.cards,
                             Filter.anyAllyUnitInDeck(s),
                             Filter.anyUnitHasColor(Rarity.bronze)),
@@ -217,7 +217,7 @@ namespace Gwent2
                     "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.",
                     (r) =>
                     {
-                        foreach (Unit t in Filter.randomUnitFrom(r.allRowUnits, 2))
+                        foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))
                             t.damage(r.Source, 1);
                     });
             }
@@ -262,7 +262,7 @@ namespace Gwent2
                     "Apply a Boon to an allied row that boosts 2 random units by 1 on turn start.",
                     (r) =>
                     {
-                        foreach (Unit t in Filter.randomUnitFrom(r.allRowUnits, 2))
+                        foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))
                             t.boost(r.Source, 1);
                     });
             }

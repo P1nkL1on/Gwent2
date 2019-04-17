@@ -8,10 +8,10 @@ namespace Gwent2
 {
     class SpawnUnit
     {
+        // random
         static Random unitDecisionsRandomiser = new Random();
-        //delegate void TriggerMove (Card self, Place from);
-        //delegate void TrigerRecieve(Unit self, Card source, int X);
 
+        // universal templates
         static Unit createToken(Unit preset, Card source)
         {
             preset.SetDefaultHost(source.host, source.context);
@@ -22,7 +22,7 @@ namespace Gwent2
         {
             // select one card from discard
             List<UnitPredicat> fs = new List<UnitPredicat>();
-            fs.Add(Filter.anyAllyUnitInDiscrard(self as Unit));
+            fs.Add(Filter.anyAllyUnitInDiscard(self as Unit));
             fs.AddRange(filters);
 
             Unit u = self.host.selectUnit(
@@ -41,6 +41,8 @@ namespace Gwent2
                 t.damage(self, damageValue);
         }
 
+        // ||| SKELIGE |||
+        // < > bronze skellige
         public static Unit AnCraiteWarrior
         {
             get
@@ -132,8 +134,9 @@ namespace Gwent2
                 self.setUnitAttributes(8, Tag.soldier, Tag.clanTuirseach);
                 self.setOnDeploy((s, f) =>
                 {
+                    List<Unit> bts = Select.Units(s.context.cards, Filter.anyOtherUnitInBattlefield(s as Unit));
                     List<Unit> ts = s.host.selectUnits(
-                        Select.Units(s.context.cards, Filter.anyOtherUnitInBattlefield(s as Unit)), 3,
+                        bts, 3,
                         s.QestionString());
                     foreach (Unit t in ts)
                         t.damage(s, 1);
@@ -188,7 +191,7 @@ namespace Gwent2
                 {
                     Card u = s.host.selectCard(
                         Select.Cards(s.context.cards,
-                        Filter.anyCardAllyInDeck(s as Unit),
+                        Filter.anyCardInYourDeck(s as Unit),
                         Filter.anyCardHasColor(Rarity.bronze)), s.QestionString());
                     if (u != null)
                         u.move(Place.graveyard);
@@ -382,12 +385,143 @@ namespace Gwent2
             }
         }
         //Dimun Smuggler
-        //Drummond Queensguard
-        //Drummond Shieldmaid
-        //Heymaey Flaminica
-        //Heymaey Herbalist
-        //Heymaey Protector
-        //Heymaey Skald
+        public static Unit DrummondQueensguard
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Drummond Queensguard");
+                self.setUnitAttributes(4, Tag.soldier, Tag.clanDrummond);
+                self.setOnDeploy((s, f) =>
+                {
+                    foreach (Unit u in Select.Units(s.context.cards,
+                        Filter.anyAllyUnitInDiscard(s as Unit),
+                        Filter.anyCopie(s as Unit)))
+                    {
+                        u.move(Place.battlefield);
+                        u.row = (s as Unit).row;
+                    }
+                }, "Resurrect all copies of this unit on this row.");
+                return self;
+            }
+        }
+        public static Unit DrummondShieldmaid
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Drummond Shieldmaid");
+                self.setUnitAttributes(3, Tag.soldier, Tag.clanDrummond);
+                self.setOnDeploy((s, f) =>
+                {
+                    foreach (Unit u in Select.Units(s.context.cards,
+                        Filter.anyAllyUnitInDeck(s as Unit),
+                        Filter.anyCopie(s as Unit)))
+                    {
+                        u.move(Place.battlefield);
+                        u.row = (s as Unit).row;
+                    }
+                }, "Summon all copies of this unit to this row.");
+                return self;
+            }
+        }
+        public static Unit HeymaeyFlaminica
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Heymaey Flaminica");
+                self.setUnitAttributes(10, Tag.support, Tag.clanHeyMaey);
+                self.setOnDeploy((s, f) =>
+                {
+                    s.context._removeRowEffect(s.host, (s as Unit).row, Filter.anyCardHasTag(Tag.hazzard));
+                    s.host.selectUnits(
+                        Select.Units(s.context.cards,
+                        Filter.anyOtherAllyUnitInBattlefield(s as Unit),
+                        Filter.anyUnitNotInRow((s as Unit).row)),
+                        2, s.QestionString());
+                }, "Clear Hazards from the row and move 2 allies to it.");
+                return self;
+            }
+        }
+        public static Unit HeymaeyHerbalist
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Heymaey Herbalist");
+                self.setUnitAttributes(2, Tag.support, Tag.clanHeyMaey);
+                self.setOnDeploy((s, f) =>
+                {
+                    Card item = Filter.randomCardFrom(Select.Cards(s.context.cards,
+                        Filter.anyCardInYourDeck(s),
+                        Filter.anyCardHasTag(Tag.hazzard, Tag.organic),
+                        Filter.anyCardHasColor(Rarity.bronze)));
+                    if (item != null)
+                        s.host.playCard(item);
+                }, "Play a random Bronze Organic or Hazard card from your deck.");
+                return self;
+            }
+        }
+        public static Unit HeymaeyProtector
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Heymaey Protector");
+                self.setUnitAttributes(2, Tag.soldier, Tag.clanHeyMaey);
+                self.setOnDeploy((s, f) =>
+                {
+                    Card item = s.host.selectCard(Select.Cards(s.context.cards,
+                        Filter.anyCardInYourDeck(s),
+                        Filter.anyCardHasTag(Tag.item),
+                        Filter.anyCardHasColor(Rarity.bronze)),
+                        s.QestionString());
+                    if (item != null)
+                        s.host.playCard(item);
+                }, "Play a Bronze Item from your deck.");
+                return self;
+            }
+        }
+        public static Unit HeymaeySkald
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Heymaey Skald");
+                self.setUnitAttributes(9, Tag.support, Tag.clanHeyMaey);
+                self.setOnDeploy((s, f) =>
+                {
+                    List<Tag> possibleClans = new List<Tag>(){
+                        Tag.clanAnCraite,
+                        Tag.clanDimun,
+                        Tag.clanDrummond,
+                        Tag.clanHeyMaey,
+                        Tag.clanTuirseach,
+                        Tag.clanTordarroch,
+                        Tag.clanBrokvar
+                    };
+                    Unit ally = s.host.selectUnit(
+                        Select.Units(s.context.cards,
+                            Filter.anyOtherAllyUnitInBattlefield(s as Unit),
+                            Filter.anyUnitHasTag(possibleClans.ToArray())),
+                        s.QestionString());
+                    if (ally == null)
+                        return;
+                    Tag clanItHas = Tag.none;
+                    foreach (Tag cl in possibleClans)
+                        if (ally.hasTag(cl))
+                            clanItHas = cl;
+                    if (clanItHas == Tag.none)
+                        return;
+                    foreach (Unit u in Select.Units(s.context.cards,
+                        Filter.anyAllyUnitInBattlefield(s),
+                        Filter.anyUnitHasTag(clanItHas)))
+                        u.boost(s, 1);
+                }, "Boost all allies from a Clan of your choice by 1.");
+                return self;
+            }
+        }
         public static Unit HeymaeySpearmaiden
         {
             get
@@ -400,7 +534,7 @@ namespace Gwent2
                     Unit t = s.host.selectUnit(
                         Select.Units(s.context.cards,
                         Filter.anyOtherAllyUnitInBattlefield(s as Unit),
-                        Filter.anyUnitSoldierOrMachine(),
+                        Filter.anyUnitHasTag(Tag.soldier, Tag.machine),
                         Filter.anyUnitHasColor(Rarity.bronze)),
                         s.QestionString());
 
@@ -420,6 +554,115 @@ namespace Gwent2
         //Savage Bear
         //Dimun Warship
         //An Craite Longship
+        // < > silver skellige
+        public static Unit JuttaanDimun
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Jutta an Dimun");
+                self.setUnitAttributes(13, Tag.soldier, Tag.clanDimun);
+                self.setOnDeploy((s, f) => { (s as Unit).damage(s, 1); }, "Deal 1 damage to self.");
+                return self;
+            }
+        }
+        public static Unit Yoana
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Yoana");
+                self.setUnitAttributes(6, Tag.support, Tag.clanTordarroch);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(
+                        Select.Units(s.context.cards,
+                            Filter.anyOtherAllyUnitInBattlefield(s as Unit),
+                            Filter.anyUnitDamaged()),
+                        s.QestionString());
+                    if (t != null)
+                    {
+                        int healthMissed = t.basePower - t.power;
+                        if (healthMissed <= 0) return;
+                        t.heal(s);
+                        t.boost(s, healthMissed);
+                    }
+                }, "Heal an ally, then boost it by the amount Healed.");
+                return self;
+            }
+        }
+        public static Unit Udalryk
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Udalryk");
+                self.setUnitAttributes(13, Tag.cursed, Tag.clanBrokvar);
+                self.setSpying();
+                self.setOnDeploy((s, f) =>
+                {
+                    (s as Unit).status.isSpy = true;
+
+                    Card willBeDiscraded = null;
+                    Card willBeDrawn =
+                        s.baseHost.selectOneAndReturnRest(
+                        s.context._topCardsOfDeck(s.baseHost, 2),
+                        out willBeDiscraded,
+                        "Select a card to draw. The other one will be discarded.");
+
+                    s.context._drawCard(s.baseHost, willBeDrawn);
+                    willBeDiscraded.move(Place.graveyard);
+
+                }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
+                return self;
+            }
+        }
+        public static Unit SvanrigeTuirseach
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Svanrige Tuirseach");
+                self.setUnitAttributes(9, Tag.officer, Tag.clanTuirseach);
+                self.setOnDeploy(
+                    (s, f) =>
+                    {
+                        s.context._drawCard(s.host, 1);
+                        // short way discarding
+                        Card cardToDiscard = s.host.selectCard(
+                            Select.Cards(s.context.cards, Filter.anyCardInYourHand(s)),
+                            "Discard a card");
+                        if (cardToDiscard != null)
+                            cardToDiscard.move(Place.graveyard);
+                    },
+                    "Draw a card, then Discard a card.");
+                return self;
+            }
+        }
+        public static Unit Skjall
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Skjall");
+                self.setUnitAttributes(5, Tag.cursed, Tag.clanHeyMaey);
+                self.setOnDeploy(
+                    (s, f) =>
+                    {
+                        Unit u = 
+                            Filter.randomUnitFrom(
+                                Select.Units(s.context.cards,
+                                    Filter.anyAllyUnitInDeck(s),
+                                    Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver),
+                                    Filter.anyUnitHasTag(Tag.cursed)));
+                        if (u != null)
+                            u.host.playCard(u);
+                    },
+                    "Play a random Bronze or Silver Cursed unit from your deck.");
+                return self;
+            }
+        }
+        // < > golden skellige
         public static Unit Vabjorn
         {
             get
@@ -430,7 +673,7 @@ namespace Gwent2
                 self.setOnDeploy((s, f) =>
                 {
                     Unit t = s.host.selectUnit(
-                        Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), 
+                        Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)),
                         s.QestionString());
                     if (t == null)
                         return;
@@ -443,6 +686,9 @@ namespace Gwent2
                 return self;
             }
         }
+
+        // ||| NILFGAARD |||
+        // < > bronze inlfgaard
         public static Unit Emissary
         {
             get
@@ -451,7 +697,7 @@ namespace Gwent2
                 self.setAttributes(Clan.nilfgaard, Rarity.bronze, "Emissary");
                 self.setUnitAttributes(2);
                 // WARNING: current comments are actual to every spy unit
-                self.setSpying(); 
+                self.setSpying();
                 // ! the way to show a player class to play it to the other side
                 // base Host is a pointer to Player, who is playing this card!
                 self.setOnDeploy((s, f) =>
@@ -460,7 +706,7 @@ namespace Gwent2
                     (s as Unit).status.isSpy = true;
 
                     List<Unit> randomBronzePair =
-                        Filter.randomUnitFrom(
+                        Filter.randomUnitsFrom(
                             Select.Units(s.context.cards,
                             Filter.anyUnitInBaseHostDeck(s),
                             Filter.anyUnitHasColor(Rarity.bronze)),
@@ -490,9 +736,25 @@ namespace Gwent2
                         s.QestionString());
                     if (t != null)
                         t.boost(s, 12);
-                    
+
                 }, "Spying.\nBoost an ally by 12.");
                 return self;
+            }
+        }
+
+        // misc
+        public static void showCaseAllUnits()
+        {
+            Type spawner = (new SpawnUnit()).GetType();
+            foreach (var unitMethod in spawner.GetMethods())
+            {
+                Console.Clear();
+                try
+                {
+                    Console.WriteLine(((unitMethod.Invoke(new SpawnUnit(), null)) as Unit).ToFormat());
+                    Console.ReadLine();
+                }
+                catch (Exception e) { }
             }
         }
     }

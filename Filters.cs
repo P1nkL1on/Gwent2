@@ -55,8 +55,8 @@ namespace Gwent2
         public static UnitPredicat anyCopie(Unit source) { return (t) => { return t.name == source.name; }; }
         public static UnitPredicat anyUnitDamaged() { return (t) => { return t.isDamaged; }; }
         public static UnitPredicat anyUnitDamagedOrCursed() { return (t) => { return t.isDamaged || t.hasTag(Tag.cursed); }; }
-        public static UnitPredicat anyUnitSoldierOrMachine() { return (t) => { return t.hasTag(Tag.soldier) || t.hasTag(Tag.machine); }; }
         public static UnitPredicat anyUnitInRow(int row) { return (t) => { return t.row == row; }; }
+        public static UnitPredicat anyUnitNotInRow(int row) { return (t) => { return t.row != row; }; }
         public static UnitPredicat anyUnitHostBy(Player player) { return (t) => { return t.host == player; }; }
         
         public static CardPredicat anyCardHasTag(params Tag[] anyOfTags)
@@ -115,10 +115,11 @@ namespace Gwent2
         public static UnitPredicat anyUnitInBattlefield() { return anyUnitInPlace(Place.battlefield); }
         public static UnitPredicat anyOtherUnitInBattlefield(Unit source) { return anyOtherUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyAllyUnitInBattlefield(Card source) { return anyAllyUnitInPlace(source, Place.battlefield); }
-        public static UnitPredicat anyAllyUnitInDiscrard(Card source) { return anyAllyUnitInPlace(source, Place.graveyard); }
+        public static UnitPredicat anyAllyUnitInDiscard(Card source) { return anyAllyUnitInPlace(source, Place.graveyard); }
         public static UnitPredicat anyAllyUnitInDeck(Card source) { return anyAllyUnitInPlace(source, Place.deck); }
         public static UnitPredicat anyAllyUnitInHand(Card source) { return anyAllyUnitInPlace(source, Place.hand); }
         public static UnitPredicat anyOtherAllyUnitInBattlefield(Unit source) { return anyOtherAllyUnitInPlace(source, Place.battlefield); }
+        public static UnitPredicat anyOtherAllyUnitInDeck(Unit source) { return anyOtherAllyUnitInPlace(source, Place.deck); }
         public static UnitPredicat anyEnemyUnitInBattlefield(Card source) { return anyEnemyUnitInPlace(source, Place.battlefield); }
         public static UnitPredicat anyOtherAllyUnitInBattlefieldHandDeck(Unit source) { return anyAllyUnitInPlace(source, true, Place.battlefield, Place.hand, Place.deck); }
 
@@ -150,8 +151,9 @@ namespace Gwent2
                 return false;
             };
         }
-        public static CardPredicat anyCardAllyInHand(Card source) { return anyCardAllyIn(Place.hand, source); }
-        public static CardPredicat anyCardAllyInDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
+        public static CardPredicat anyCardInYourHand(Card source) { return anyCardAllyIn(Place.hand, source); }
+        public static CardPredicat anyCardInYourDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
+        public static CardPredicat anyCardInBaseHostDeck(Card source) { return (c) => { return c.host == source.baseHost && c.place == Place.deck; }; }
 
         static Random randomiser = new Random();
         public static List<Card> randomCardsFrom(List<Card> originalList, int nCount)
@@ -168,7 +170,7 @@ namespace Gwent2
             }
             return res;
         }
-        public static List<Unit> randomUnitFrom(List<Unit> originalList, int nCount)
+        public static List<Unit> randomUnitsFrom(List<Unit> originalList, int nCount)
         {
             List<Unit> res = new List<Unit>();
             List<Unit> from = originalList;
@@ -184,7 +186,12 @@ namespace Gwent2
         }
         public static Unit randomUnitFrom(List<Unit> originalList)
         {
-            List<Unit> res = randomUnitFrom(originalList, 1);
+            List<Unit> res = randomUnitsFrom(originalList, 1);
+            return res.Count == 0 ? null : res[0];
+        }
+        public static Card randomCardFrom(List<Card> originalList)
+        {
+            List<Card> res = randomCardsFrom(originalList, 1);
             return res.Count == 0 ? null : res[0];
         }
         public static List<Unit> lowestUnits(List<Unit> originalList)
@@ -222,11 +229,11 @@ namespace Gwent2
             return res;
         }
         public static Unit lowestUnit(List<Unit> originalList) { 
-            var res = randomUnitFrom(lowestUnits(originalList), 1);
+            var res = randomUnitsFrom(lowestUnits(originalList), 1);
             return res.Count == 0 ? null : res[0];
         }
         public static Unit highestUnit(List<Unit> originalList) {
-            var res = randomUnitFrom(highestUnits(originalList), 1);
+            var res = randomUnitsFrom(highestUnits(originalList), 1);
             return res.Count == 0 ? null : res[0];
         }
     }

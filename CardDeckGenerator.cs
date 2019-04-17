@@ -14,17 +14,15 @@ namespace Gwent2
             {
                 List<Card> deck = new List<Card>();
                 deck.AddRange(new List<Card>() { 
-                    SpawnSpecial.MahakamAle, SpawnSpecial.MahakamAle, SpawnSpecial.MahakamAle, 
-                    SpawnSpecial.Spores, SpawnSpecial.Spores, SpawnSpecial.Spores, 
-                    SpawnUnit.Emissary,
-                    SpawnUnit.Ambassador,
-                    SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, SpawnSpecial.Reconnaissance, 
-                    SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, SpawnSpecial.AlzursThunder, 
-                    //SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor, SpawnSpecial.StammelfordsTremor,
-                    SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran, SpawnUnit.TuirseachVeteran,
-                    SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden, SpawnUnit.HeymaeySpearmaiden
+                    SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
+                    SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
+                    SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, 
+                    SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger,
+                    SpawnUnit.Yoana, SpawnUnit.JuttaanDimun, SpawnUnit.Udalryk, SpawnUnit.SvanrigeTuirseach, SpawnUnit.Skjall
                 });
-
+                //int nCount = 10;
+                //while (nCount-- > 0)
+                //    deck.Add(SpawnUnit.DrummondShieldmaid);
                 return deck;
             }
         }
@@ -34,7 +32,7 @@ namespace Gwent2
             get
             {
                 List<Card> deck = new List<Card>();
-                int nCount = 10;
+                int nCount = 15;
                 while (nCount-- > 0)
                     deck.Add(SpawnUnit.TuirseachArcher);
                 nCount = 2;
@@ -42,7 +40,7 @@ namespace Gwent2
                     deck.Add(SpawnUnit.Emissary);
 
                 deck.AddRange(new List<Card>() { 
-                    SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth, SpawnSpecial.GoldenFroth
+                    SpawnSpecial.TorrentialRain, SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog,
                 });
 
                 return deck;

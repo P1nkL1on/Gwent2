@@ -66,7 +66,7 @@ namespace Gwent2
         public TriggerTurn _onTurnStart = (s) => { /*s._context.Log(s, "starts a new turn");*/ };
         public TriggerTurn _onTurnEnd = (s) => { /*s._context.Log(s, "ends a turn");*/ };
 
-        TriggerMove _onMove = (s, f) => { s._context.Log(s, "moved"); };
+        protected TriggerMove _onMove = (s, f) => { s._context.Log(s, "moved"); };
         TriggerMove _onDeploy = (s, f) => { s._context.Log(s, "deployed"); };
         TriggerMove _onDrawn = (s, f) => { s._context.Log(s, "drawed"); };
         TriggerMove _onDiscard = (s, f) => { s._context.Log(s, "discarded"); };

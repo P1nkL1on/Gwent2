@@ -55,7 +55,13 @@ namespace Gwent2
             _defaultPower = _basePower = _power = DefaultPower;
             _tags = Tags.ToList();
         }
-
+        public virtual void move(Card source, int rowTo)
+        {
+            if (row == rowTo)
+                return;
+            row = rowTo;
+            _onMove(source, Place.battlefield);
+        }
         public virtual void damage  (Card source, int X)
         {
             if (X <= 0)

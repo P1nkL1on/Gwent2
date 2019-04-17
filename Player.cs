@@ -8,6 +8,7 @@ namespace Gwent2
 {
     class Player
     {
+        public bool passed = false;
         protected string _name;
         protected string name { get { return _name; } }
 
@@ -20,6 +21,18 @@ namespace Gwent2
         {
             var res = selectCards(fromList, 1, question);
             return res.Count == 0 ? null : res[0];
+        }
+        public virtual Card selectOneAndReturnRest(List<Card> fromList, out Card anotherCard, string question)
+        {
+            anotherCard = null;
+            if (fromList.Count == 0)
+                return null;
+            if (fromList.Count == 1)
+                return fromList[0];
+
+            var res = selectCard(fromList, question);
+            anotherCard = res == fromList[0] ? fromList[1] : fromList[0];
+            return res;
         }
         public virtual List<Card> selectCards(List<Card> fromList, int nCardsToSelect, string question)
         {
@@ -39,18 +52,18 @@ namespace Gwent2
             }
             return resChoise;
         }
-        public virtual Card selectCardOrNone(List<Card> fromList, string question)
+        public virtual Card selectCardOrNone(List<Card> fromList, string question, string extraName = "none")
         {
-            var res = selectCardsOrNone(fromList, 1, question);
+            var res = selectCardsOrNone(fromList, 1, question, extraName);
             return res.Count == 0 ? null : res[0];
         }
-        public virtual List<Card> selectCardsOrNone(List<Card> fromList, int nUpToCardsToSelect, string question)
+        public virtual List<Card> selectCardsOrNone(List<Card> fromList, int nUpToCardsToSelect, string question, string extraName = "none")
         {
             List<Card> resChoise = new List<Card>();
             for (int i = 0; i < nUpToCardsToSelect; ++i)
             {
                 List<string> options = new List<string>();
-                options.Add("None");
+                options.Add(extraName);
                 foreach (Card u in fromList)
                     options.Add(u.ToString());
                 int decidedIndex = makeDescision(options, question) - 1;
@@ -69,10 +82,11 @@ namespace Gwent2
                     fromListU.Add(c);
 
             var res = selectCards(fromListU, nCardsToSelect, question);
-            fromListU.Clear();
+
             List<Unit> resU = new List<Unit>();
             foreach (Card c in res)
                 resU.Add(c as Unit);
+            fromListU.Clear();
             return resU;
         }
         public virtual Unit selectUnit(List<Unit> fromList, string question)

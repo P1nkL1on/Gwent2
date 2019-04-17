@@ -72,11 +72,23 @@ namespace Gwent2
                 topdeck.move(Place.hand);
             }
         }
+        public void _drawCard(Player player, Card exactCard)
+        {
+            if (exactCard != null)
+                exactCard.move(Place.hand);
+        }
 
         public Card _topCardOfDeck(Player player)
         {
             var deck = _deckOf(player);
             return deck.Count == 0 ? null : deck.First();
+        }
+        public List<Card> _topCardsOfDeck(Player player, int nCardCount)
+        {
+            var deck = _deckOf(player);
+            if (deck.Count == 0)
+                return new List<Card>();
+            return deck.GetRange(0, Math.Min(nCardCount, deck.Count));
         }
         public Unit _topUnitOfDeck(Player player, params UnitPredicat[] filters)
         {
@@ -166,30 +178,50 @@ namespace Gwent2
                     i--;
                 }
         }
+        public int _powerAtPlayersRow(Player p, int row)
+        {
+            int summ = 0;
+            foreach (Unit u in Select.Units(cards, Filter.anyUnitInBattlefield(), Filter.anyUnitHostBy(p), Filter.anyUnitInRow(row)))
+                summ += u.power;
+            return summ;
+        }
+        public int _powerOfPlayer(Player p)
+        {
+            int summ = 0;
+            for (int i = 0; i < 3; ++i)
+                summ += _powerAtPlayersRow(p, i);
+            return summ;
+        }
 
         public void Start()
         {
             foreach (Player p in players)
                 _shuffleDeckOf(p);
 
-            Round(++_round);
+            StartRound(++_round);
 
             for (; ; )
                 Turn();
         }
 
-        public void Round(int roundIndex)
+        public void StartRound(int roundIndex)
         {
+            // remove all units from field
+            foreach (Unit u in Select.Units(cards, Filter.anyUnitInBattlefield()))
+                u.move(Place.graveyard);
             foreach (Player player in players)
+            {
+                player.passed = false;
                 switch (roundIndex)
                 {
-                    case 1: _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
+                    case 1: _drawCard(player, 4); _mulliganOnRoundStart(player, 3); continue;
                     case 2: _drawCard(player, 2); _mulliganOnRoundStart(player, 2); continue;
                     case 3: _drawCard(player, 1); _mulliganOnRoundStart(player, 1); continue;
                     default: continue;
                 }
+            }
         }
-        public void Turn()
+        public Player Turn()
         {
             topLeftTextBox.ClearLogWindow();
 
@@ -199,24 +231,33 @@ namespace Gwent2
             foreach (RowEffect r in rowEffects)
                 if (r.PlayerUnderEffect == currentPlayer)
                     r.onTurnStart();
-            // draw current state for human player
-            if (currentPlayer as PlayerHuman != null) State();
-
-
-            Card selected = currentPlayer.selectCard(_handOf(currentPlayer), "Select a card to play in this turn");
-            topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
-
-            // current player plays a selected card
-            currentPlayer.playCard(selected);
+            // actions performed only if player has not passed yet
+            if (!currentPlayer.passed)
+            {
+                // draw current state for human player
+                if (currentPlayer as PlayerHuman != null) State();
+                Card selected = currentPlayer.selectCardOrNone(_handOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
+                if (selected != null)
+                {
+                    topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
+                    // current player plays a selected card
+                    currentPlayer.playCard(selected);
+                }
+                else
+                {
+                    Log(String.Format("{0} passed!", currentPlayer.ToString()));
+                    currentPlayer.passed = true;
+                }
+            }
 
             // activate all turn end-triigers
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnEnd(c);
 
-            if (currentPlayer as PlayerHuman != null) State();
-            Console.ReadLine();
+            if (currentPlayer as PlayerHuman != null){State();Console.ReadLine();}
 
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
+            return null;
         }
 
         void State() { State(false); }
@@ -227,9 +268,18 @@ namespace Gwent2
             foreach (Player p in players)
             {
                 // set color
-                Console.BackgroundColor = (p as PlayerHuman != null)? ConsoleColor.Blue : ConsoleColor.DarkRed;
+                Console.BackgroundColor = (p as PlayerHuman != null) ? ConsoleColor.Blue : ConsoleColor.DarkRed;
                 // set vertical offset
                 int line = Utils.fieldStartVerticalOffset;
+
+                Console.SetCursorPosition(column, line++);
+                ConsoleWrite(String.Format("{1}{0}",
+                    p.ToString(), 
+                    String.Format("{0} {1}", _powerOfPlayer(p), (p.passed? "PASSED" : "") )
+                    .PadRight(Utils.fieldPerPlayerHorizontal / 2 - 3)),
+                    Utils.fieldPerPlayerHorizontal);
+                line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
+
                 // battlefiedld all rows
                 for (int row = 0; row < 3; ++row)
                 {
@@ -237,12 +287,13 @@ namespace Gwent2
                     foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
                     Console.SetCursorPosition(column, line++);
-                    ConsoleWrite(Utils.allRows[row] + ":" + (re != null ? ("  " + re.ToString()) : ""), Utils.fieldPerPlayerHorizontal);
+                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_powerAtPlayersRow(p, row)+"").PadRight(4)), 
+                        Utils.fieldPerPlayerHorizontal);
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)
                         {
                             Console.SetCursorPosition(column, line++);
-                            ConsoleWrite(String.Format("   {0}", u.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
+                            ConsoleWrite(String.Format("      {0}", u.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
                         }
                 }
                 if (showOnlyBattlefield)
@@ -255,7 +306,7 @@ namespace Gwent2
                 {
                     if (place == Place.battlefield)
                         continue;
-                    line+= SkipLines(1, Utils.fieldPerPlayerHorizontal);
+                    line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
                     Console.SetCursorPosition(column, line++);
                     ConsoleWrite(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()), Utils.fieldPerPlayerHorizontal);
 
