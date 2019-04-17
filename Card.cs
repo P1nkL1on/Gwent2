@@ -34,6 +34,9 @@ namespace Gwent2
             // banishing doomed cards
             if (to == Place.graveyard && hasTag(Tag.doomed))
                 to = Place.banish;
+            // can not return from banish
+            if (place == Place.banish)
+                return;
 
             Place previousPlace = place;
             place = to;

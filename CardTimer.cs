@@ -18,6 +18,7 @@ namespace Gwent2
 
         TriggerTurn _actionOnFinish = (s) => { s.context.Log(s, "timer finished."); };
 
+        // can be used for Single-Use abilities
         public Timer(Card Host, TriggerTurn Action, int Max, bool Repeatable)
         {
             _max = Max;
@@ -33,6 +34,20 @@ namespace Gwent2
             _host = Host;
             _actionOnFinish = Action;
         }
+        public Timer(Card Host)
+        {
+            // used for abilities that could be used several times
+            _max = int.MaxValue;
+            _enabled = true;
+            _host = Host;
+        }
+        public bool Untick()
+        {
+            if (_current <= 0)
+                return false;
+            _current--;
+            return true;
+        }
         public Timer()
         {
             // disabled
@@ -47,6 +62,10 @@ namespace Gwent2
             if (_current >= _max)
             {
                 _actionOnFinish(_host);
+                _host.context.Log(_host, 
+                    !_repeatable? 
+                    "Single-Use ability activated" 
+                    : String.Format("Ability activated. Repeatance: every {0} turn(s)", _max));
                 if (_repeatable)
                     _current = 0;
                 else

@@ -17,7 +17,7 @@ namespace Gwent2
                     SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
                     SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
                     SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, 
-                    SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger,
+                    SpawnUnit.Morkvarg, SpawnUnit.Morkvarg,
                     SpawnUnit.Yoana, SpawnUnit.JuttaanDimun, SpawnUnit.Udalryk, SpawnUnit.SvanrigeTuirseach, SpawnUnit.Skjall
                 });
                 //int nCount = 10;
@@ -34,7 +34,7 @@ namespace Gwent2
                 List<Card> deck = new List<Card>();
                 int nCount = 15;
                 while (nCount-- > 0)
-                    deck.Add(SpawnUnit.TuirseachArcher);
+                    deck.Add(SpawnUnit.Vabjorn);
                 nCount = 2;
                 while (nCount-- > 0)
                     deck.Add(SpawnUnit.Emissary);

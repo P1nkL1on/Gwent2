@@ -8,6 +8,7 @@ namespace Gwent2
 {
     class Player
     {
+        public int roundsWin = 0;
         public bool passed = false;
         protected string _name;
         protected string name { get { return _name; } }
@@ -143,6 +144,9 @@ namespace Gwent2
         protected virtual int makeDescision(List<String> variants, string question)
         {
             return rnd.Next(variants.Count);
+            //int choise = rnd.Next(variants.Count);
+            //Console.WriteLine(String.Format("{1}: {0} chooses {2}", this.ToString(), question, variants[choise]));
+            //return choise;
         }
     }
 }

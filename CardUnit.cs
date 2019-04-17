@@ -142,8 +142,8 @@ namespace Gwent2
         public virtual void destroy(Card source)
         {
             move(Place.graveyard);
-            _onDestroy(this, source);
             restore(this);
+            _onDestroy(this, source);
             this.status.Clear();
         }
         public virtual void banish(Card source)

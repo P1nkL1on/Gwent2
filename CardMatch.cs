@@ -47,6 +47,7 @@ namespace Gwent2
 
             for (int muliganUsed = 0; muliganUsed < nMuliganCount; ++muliganUsed)
             {
+                if (player as PlayerHuman != null) State(); 
                 Card choose = player.selectCardOrNone(_handOf(player), String.Format("Select card for mulligan [{0}/{1}]", muliganUsed, nMuliganCount));
                 if (choose == null)
                     return; // stop, when selected no more cards
@@ -178,19 +179,47 @@ namespace Gwent2
                     i--;
                 }
         }
-        public int _powerAtPlayersRow(Player p, int row)
+        public int _scoreAtPlayersRow(Player p, int row)
         {
             int summ = 0;
             foreach (Unit u in Select.Units(cards, Filter.anyUnitInBattlefield(), Filter.anyUnitHostBy(p), Filter.anyUnitInRow(row)))
                 summ += u.power;
             return summ;
         }
-        public int _powerOfPlayer(Player p)
+        public int _scoreOf(Player p)
         {
             int summ = 0;
             for (int i = 0; i < 3; ++i)
-                summ += _powerAtPlayersRow(p, i);
+                summ += _scoreAtPlayersRow(p, i);
             return summ;
+        }
+        public List<Player> currentlyWinning
+        {
+            get
+            {
+                List<int> scores = new List<int>();
+                foreach (Player p in players)
+                    scores.Add(_scoreOf(p));
+                int winScore = scores.Max();
+                List<int> winners = new List<int>();
+                for (int i = 0; i < scores.Count; ++i)
+                    if (scores[i] == winScore)
+                        winners.Add(i);
+                List<Player> winPlayers = new List<Player>();
+                foreach (int winnerId in winners)
+                    winPlayers.Add(players[winnerId]);
+                return winPlayers;
+            }
+        }
+
+        public bool everyPlayerPassed
+        {
+            get {
+                foreach (Player p in players)
+                    if (!p.passed)
+                        return false;
+                return true;
+            }
         }
 
         public void Start()
@@ -198,10 +227,18 @@ namespace Gwent2
             foreach (Player p in players)
                 _shuffleDeckOf(p);
 
-            StartRound(++_round);
+            while (true)
+            {
+                StartRound(++_round);
 
-            for (; ; )
-                Turn();
+                while (!Turn()) ;
+
+                foreach (Player p in currentlyWinning)
+                {
+                    Log(String.Format("{0} wins the round!", p.ToString()));
+                    p.roundsWin++;
+                }
+            }
         }
 
         public void StartRound(int roundIndex)
@@ -214,17 +251,20 @@ namespace Gwent2
                 player.passed = false;
                 switch (roundIndex)
                 {
-                    case 1: _drawCard(player, 4); _mulliganOnRoundStart(player, 3); continue;
+                    case 1: _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
                     case 2: _drawCard(player, 2); _mulliganOnRoundStart(player, 2); continue;
                     case 3: _drawCard(player, 1); _mulliganOnRoundStart(player, 1); continue;
                     default: continue;
                 }
             }
         }
-        public Player Turn()
+        public bool Turn()
         {
-            topLeftTextBox.ClearLogWindow();
+            // if all playes passed then finish round
+            if (everyPlayerPassed)
+                return true;
 
+            topLeftTextBox.ClearLogWindow();
             // activate all turn start-triggers
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnStart(c);
@@ -254,10 +294,11 @@ namespace Gwent2
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnEnd(c);
 
-            if (currentPlayer as PlayerHuman != null){State();Console.ReadLine();}
+            if (currentPlayer as PlayerHuman != null){State();}
+            Console.ReadLine();
 
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
-            return null;
+            return false;
         }
 
         void State() { State(false); }
@@ -274,8 +315,8 @@ namespace Gwent2
 
                 Console.SetCursorPosition(column, line++);
                 ConsoleWrite(String.Format("{1}{0}",
-                    p.ToString(), 
-                    String.Format("{0} {1}", _powerOfPlayer(p), (p.passed? "PASSED" : "") )
+                    p.ToString(),
+                    String.Format("{0} {2} {1}", _scoreOf(p), (p.passed ? "PASSED" : ""), ("".PadLeft(p.roundsWin, '*')))
                     .PadRight(Utils.fieldPerPlayerHorizontal / 2 - 3)),
                     Utils.fieldPerPlayerHorizontal);
                 line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
@@ -287,7 +328,7 @@ namespace Gwent2
                     foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
                     Console.SetCursorPosition(column, line++);
-                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_powerAtPlayersRow(p, row)+"").PadRight(4)), 
+                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_scoreAtPlayersRow(p, row)+"").PadRight(4)), 
                         Utils.fieldPerPlayerHorizontal);
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)

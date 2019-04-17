@@ -599,7 +599,7 @@ namespace Gwent2
                 self.setAttributes(Clan.skellige, Rarity.silver, "Udalryk");
                 self.setUnitAttributes(13, Tag.cursed, Tag.clanBrokvar);
                 self.setSpying();
-                self.setOnDeploy((s, f) =>
+                self.timer = new Timer(self, (s) =>
                 {
                     (s as Unit).status.isSpy = true;
 
@@ -612,7 +612,11 @@ namespace Gwent2
 
                     s.context._drawCard(s.baseHost, willBeDrawn);
                     willBeDiscraded.move(Place.graveyard);
-
+                }, 1, false);
+                self.setOnDeploy((s, f) =>
+                {
+                    // use only once
+                    s.timer.Tick();
                 }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
                 return self;
             }
@@ -649,7 +653,7 @@ namespace Gwent2
                 self.setOnDeploy(
                     (s, f) =>
                     {
-                        Unit u = 
+                        Unit u =
                             Filter.randomUnitFrom(
                                 Select.Units(s.context.cards,
                                     Filter.anyAllyUnitInDeck(s),
@@ -662,6 +666,33 @@ namespace Gwent2
                 return self;
             }
         }
+        public static Unit Morkvarg
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Morkvarg");
+                self.setUnitAttributes(9, Tag.cursed, Tag.beast);
+                self.setOnDiscard((s, f) =>
+                {
+                    Unit u = s as Unit;
+                    u.weaken(s, u.basePower - u.basePower / 2);
+                    u.row = unitDecisionsRandomiser.Next(3);
+                    s.move(Place.battlefield);
+                },
+                    "Whenever discarded, resurrect on a random row, then weaken self by half.");
+
+                self.setOnDestroy((s, f) =>
+                {
+                    Unit u = s as Unit;
+                    u.weaken(s, u.basePower - u.basePower / 2);
+                    s.move(Place.battlefield);
+                },
+                    "Whenever destroyed, resurrect on a random row, then weaken self by half.");
+                return self;
+            }
+        }
+
         // < > golden skellige
         public static Unit Vabjorn
         {
