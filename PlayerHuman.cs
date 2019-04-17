@@ -19,7 +19,6 @@ namespace Gwent2
         {
             if (variants.Count == 1)
                 return 0;
-            decideWindow.ClearLogWindow();
 
             decideWindow.AddLog(question.Length == 0 ? "Make a descision:" : (question + ":"));
             int index = 0;
@@ -31,6 +30,7 @@ namespace Gwent2
                 try { answer = int.Parse(Console.ReadLine()) - 1; }
                 catch (Exception e) { Console.Write("Try again: "); }
             } while (answer < 0);
+            decideWindow.ClearLogWindow();
             return answer;
         }
     }

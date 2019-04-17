@@ -47,7 +47,7 @@ namespace Gwent2
 
             for (int muliganUsed = 0; muliganUsed < nMuliganCount; ++muliganUsed)
             {
-                if (player as PlayerHuman != null) State(); 
+                if (player as PlayerHuman != null) State();
                 Card choose = player.selectCardOrNone(_handOf(player), String.Format("Select card for mulligan [{0}/{1}]", muliganUsed, nMuliganCount));
                 if (choose == null)
                     return; // stop, when selected no more cards
@@ -214,7 +214,8 @@ namespace Gwent2
 
         public bool everyPlayerPassed
         {
-            get {
+            get
+            {
                 foreach (Player p in players)
                     if (!p.passed)
                         return false;
@@ -275,7 +276,7 @@ namespace Gwent2
             if (!currentPlayer.passed)
             {
                 // draw current state for human player
-                if (currentPlayer as PlayerHuman != null) State();
+                if (currentPlayer as PlayerHuman != null) { State(); Console.ReadLine(); State(); }
                 Card selected = currentPlayer.selectCardOrNone(_handOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
                 if (selected != null)
                 {
@@ -294,7 +295,7 @@ namespace Gwent2
             foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayer(currentPlayer)))
                 c._onTurnEnd(c);
 
-            if (currentPlayer as PlayerHuman != null){State();}
+            if (currentPlayer as PlayerHuman != null) State();
             Console.ReadLine();
 
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
@@ -305,6 +306,7 @@ namespace Gwent2
         void State(bool showOnlyBattlefield)
         {
             Console.SetCursorPosition(0, 0);
+            fieldState.Clear();
             int column = Utils.leftTextColumnWidth;
             foreach (Player p in players)
             {
@@ -328,7 +330,7 @@ namespace Gwent2
                     foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
                     Console.SetCursorPosition(column, line++);
-                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_scoreAtPlayersRow(p, row)+"").PadRight(4)), 
+                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_scoreAtPlayersRow(p, row) + "").PadRight(4)),
                         Utils.fieldPerPlayerHorizontal);
                     foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
                         if (u.row == row)
@@ -377,6 +379,9 @@ namespace Gwent2
             }
             Console.ResetColor();
             Console.SetCursorPosition(0, 0);
+            lastFieldState.Clear();
+            foreach (string s in fieldState)
+                lastFieldState.Add(s);
         }
         void ClearText(int upToX)
         {
@@ -400,8 +405,20 @@ namespace Gwent2
         }
         void ConsoleWrite(String message, int padMax)
         {
-            Console.Write(message.PadRight(padMax));
+            string messagePadded = message.PadRight(padMax);
+            fieldState.Add(messagePadded);
+            bool reColor = (lastFieldState.IndexOf(messagePadded) < 0);
+            if (!reColor)
+            {
+                Console.Write(messagePadded);
+                return;
+            }
+
+            findAnyDiff(messagePadded);
         }
+        List<string> lastFieldState = new List<string>();
+        List<string> fieldState = new List<string>();
+
         int SkipLines(int nCount, int padMax)
         {
             int x = Console.CursorLeft - padMax;
@@ -412,6 +429,73 @@ namespace Gwent2
                 ConsoleWrite("", padMax);
             }
             return nCount;
+        }
+        List<int> compareStrings(string a, string b, out int diff)
+        {
+            List<int> res = new List<int>();
+            bool isOk = true, wasOk = true;
+            int resDiff = 0;
+            for (int i = 0; i < Math.Min(a.Length, b.Length); ++i)
+            {
+                wasOk = isOk;
+                isOk = (a[i] == b[i]);
+                if (!isOk) resDiff++;
+                if (isOk != wasOk)
+                    res.Add(i + (isOk? 1 : 0));
+            }
+            if (res.Count % 2 == 1)
+                res.Add(Math.Min(a.Length, b.Length) - 1);
+            diff = resDiff;
+            return res;
+        }
+        bool findAnyDiff(string newString)
+        {
+            int index = fieldState.Count, lastFrom = Math.Max(0, index - 5), lastTo = Math.Min(lastFieldState.Count - 1, index + 5);
+            int bestComprehence = 100;
+            List<int> bestMarkUp = new List<int>(){0, newString.Length};
+            string bestRemember = "";
+            for (int i = lastFrom; i < lastTo; ++i)
+            {
+                int comprehance = 0;
+                List<int> markup = compareStrings(newString, lastFieldState[i], out comprehance);
+                if (comprehance > bestComprehence)
+                    continue;
+                bestComprehence = comprehance;
+                bestMarkUp = markup;
+                bestRemember = lastFieldState[i];
+            }
+            string[] parts = new string[bestMarkUp.Count + 1];
+            for (int i = bestMarkUp.Count - 1; i >= 0; i--)
+            {
+                if (bestMarkUp[i] < 0) bestMarkUp[i] = 0;
+                parts[i + 1] = newString.Substring(bestMarkUp[i]);
+                newString = newString.Substring(0, bestMarkUp[i]);
+            }
+            parts[0] = newString;
+            ConsoleColor defColor = Console.BackgroundColor;
+            ConsoleColor mark = ConsoleColor.Red;
+            bool isMarkingText = true;
+            foreach (string part in parts)
+            {
+                isMarkingText = !isMarkingText;
+                Console.BackgroundColor = isMarkingText ? mark : defColor;
+                //Console.BackgroundColor = mark;
+                Console.Write(part);
+            }
+            Console.BackgroundColor = defColor;
+
+            if (bestRemember.Trim().Length > 0)
+            {
+                int rememberWidth = 20;
+                int wasCaret = Console.CursorLeft;
+                Console.SetCursorPosition(wasCaret - rememberWidth, Console.CursorTop);
+                if (bestRemember.Trim().Length == 0)
+                    Console.Write("appeared");
+                else
+                    Console.Write("was " + bestRemember.Substring(bestMarkUp[0], bestMarkUp[1] - bestMarkUp[0]));
+                Console.SetCursorPosition(wasCaret, Console.CursorTop);
+            }
+            return bestMarkUp.Count > 0;
         }
     }
 }
