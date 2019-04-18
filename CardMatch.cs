@@ -192,6 +192,13 @@ namespace Gwent2
                 summ += _scoreAtPlayersRow(p, i);
             return summ;
         }
+        public RowEffect _rowEffectOn(int row, Player p)
+        {
+            foreach (RowEffect r in rowEffects)
+                if (r.row == row && r.PlayerUnderEffect == p)
+                    return r;
+            return null;
+        }
         public List<Player> currentlyWinning
         {
             get

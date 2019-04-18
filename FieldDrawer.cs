@@ -15,6 +15,7 @@ namespace Gwent2
     }
     class CardRedrawContainer
     {
+        public static int redrawSpeed = 150;
         // callback
         public Card _source;
         public FieldDrawer _global;
@@ -44,8 +45,9 @@ namespace Gwent2
         }
         public void setPosition(Point newPosition)
         {
-            if (_position != newPosition)
-                _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
+            if (_position == newPosition)
+                return;
+            _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
             _position = newPosition;
             upd = UpdateType.placeChanged;
         }
@@ -84,6 +86,7 @@ namespace Gwent2
             if (upd == UpdateType.none)
                 upd = UpdateType.valueChanged;
             callGlobalRedraw();
+            _global.updateAllRowWeatherAndValues();
         }
         public void redrawCausedMove()
         {
@@ -95,7 +98,7 @@ namespace Gwent2
         void callGlobalRedraw()
         {
             _global.redraw();
-            Thread.Sleep(400);
+            Thread.Sleep(redrawSpeed);
         }
     }
     class FieldDrawer
@@ -110,6 +113,13 @@ namespace Gwent2
             ConsoleColor.DarkGreen,
             ConsoleColor.DarkGray
         };
+        List<ConsoleColor> _lightPlayerColors = new List<ConsoleColor>() { 
+            ConsoleColor.Blue,
+            ConsoleColor.Red,
+            ConsoleColor.Magenta,
+            ConsoleColor.Green,
+            ConsoleColor.Gray
+        };
         Stack<ConsoleColor> _colorStackFore = new Stack<ConsoleColor>();
         Stack<ConsoleColor> _colorStackBack = new Stack<ConsoleColor>();
 
@@ -123,7 +133,7 @@ namespace Gwent2
             Console.ForegroundColor = _colorStackFore.Pop();
             Console.BackgroundColor = _colorStackBack.Pop();
         }
-        public void swapColor(ConsoleColor fore, ConsoleColor back)
+        public void swapColor(ConsoleColor back, ConsoleColor fore)
         {
             saveColor();
             Console.ForegroundColor = fore;
@@ -146,22 +156,15 @@ namespace Gwent2
             _watcher = watcher;
             _context = forGame;
 
-            _playerColors.Reverse();
             for (int i = 0; i < _context.players.Count; ++i)
                 clearLine(i);
 
-            _playerColors.Reverse();
-
-            int pos = 0;
             foreach (Card c in _context.cards)
             {
                 CardRedrawContainer crc = new CardRedrawContainer(c);
                 crc._global = this;
                 _containers.Add(crc);
             }
-
-            //setAllCardPositions();
-            //redraw();
         }
 
         public void clearLine(int playerIndex, int lineIndex, int upToLineIndex)
@@ -172,7 +175,7 @@ namespace Gwent2
             for (int i = lineIndex; i <= upToLineIndex; ++i)
             {
                 Console.SetCursorPosition(X, Y + i);
-                Console.Write((i + "").PadLeft(Utils.fieldPerPlayerHorizontal));
+                Console.Write(("").PadLeft(Utils.fieldPerPlayerHorizontal));
             }
             popColor();
         }
@@ -196,8 +199,30 @@ namespace Gwent2
         {
             setAllCardPositions(_watcher);
         }
+
+        List<List<int>> allRowLines = new List<List<int>>();
+        public void updateAllRowWeatherAndValues()
+        {
+            for (int i = 0; i < allRowLines.Count; ++i)
+            {
+                Player p = _context.players[i];
+                int playerCardAllignLeft = Utils.fieldStartHorizontal + i * Utils.fieldPerPlayerHorizontal;
+                List<int> rowLines = allRowLines[i];
+                for (int j = 0; j < 3; ++j)
+                {
+                    RowEffect re = _context._rowEffectOn(j, p);
+
+                    clearLine(i, rowLines[j] - 1, rowLines[j]);
+                    Console.SetCursorPosition(playerCardAllignLeft, rowLines[j] + Utils.fieldStartVerticalOffset);
+                    swapColor(_lightPlayerColors[i], ConsoleColor.White);
+                    Console.Write(String.Format("{2}{0}{1}", Utils.allRows[j], (re != null ? ("  " + re.ToString()) : ""), (_context._scoreAtPlayersRow(p, j) + "").PadRight(4)));
+                    popColor();
+                }
+            }
+        }
         public void setAllCardPositions(Player watcher)
         {
+            allRowLines.Clear();
             int cardAllignOffset = 4;
             for (int i = 0; i < _context.players.Count; ++i)
             {
@@ -206,7 +231,17 @@ namespace Gwent2
 
                 int currentLine = Utils.fieldStartVerticalOffset;
 
+                List<int> rowLines = new List<int>();
+                for (int row = 0; row < 3; ++row)
+                {
+                    rowLines.Add(currentLine + 1);
+                    currentLine += 2;
+                    foreach (Card u in Select.Cards(_context.cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
+                        if (u as Unit != null && (u as Unit).row == row)
+                            u._show.setPosition(new Point(playerCardAllignLeft + cardAllignOffset + 2, currentLine++));
 
+                }
+                allRowLines.Add(rowLines);
 
                 // rest == non-battlefield
                 List<int> linesForPlaces = new List<int>();
@@ -229,17 +264,23 @@ namespace Gwent2
                             lastWasInvisible = !c.isVisibleTo(watcher);
                         }
                         cardsInPlaces.Add(cardsInPlace);
+                        if (cardsInPlace == 0)
+                            linesForPlaces[linesForPlaces.Count - 1] = -1;
                     }
                 // indexes changes to ignore battlefield
-                for (int j = 0; j < Utils.allPlaces.Count - 1; ++j)
+                for (int j = 0; j < linesForPlaces.Count; ++j)
                 {
                     clearLine(i, linesForPlaces[j] - 1, linesForPlaces[j]);
                     Console.SetCursorPosition(playerCardAllignLeft, linesForPlaces[j] + Utils.fieldStartVerticalOffset);
-                    Console.Write(String.Format("{0}'s {1}:{2}", 
-                        p, Utils.allPlaces[j + 1], 
+                    swapColor(_lightPlayerColors[i], ConsoleColor.White);
+                    if (linesForPlaces[j] < 0) continue;
+                    Console.Write(String.Format("{0}'s {1}:{2}",
+                        p, Utils.allPlaces[j + 1],
                         cardsInPlaces[j] > 0 ? String.Format("  <{0}>", cardsInPlaces[j]) : ""));
+                    popColor();
                 }
             }
+            updateAllRowWeatherAndValues();
         }
         public void redraw()
         {

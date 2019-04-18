@@ -151,14 +151,12 @@ namespace Gwent2
         public virtual void destroy(Card source)
         {
             move(Place.graveyard);
-            restore(this);
             _onDestroy(this, source);
             this.status.Clear();
         }
         public virtual void banish(Card source)
         {
             move(Place.banish);
-            restore(this);
             this.status.Clear();
         }
         public bool isDamaged { get { return _power < _basePower; } }

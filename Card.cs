@@ -37,6 +37,10 @@ namespace Gwent2
             // banishing doomed cards
             if (to == Place.graveyard && hasTag(Tag.doomed))
                 to = Place.banish;
+            // reset power in unit && non doomed
+            Unit pr = this as Unit;
+            if (pr != null && to == Place.graveyard)
+                pr.restore(pr);
             // can not return from banish
             if (place == Place.banish)
                 return;

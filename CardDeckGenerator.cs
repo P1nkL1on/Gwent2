@@ -14,8 +14,8 @@ namespace Gwent2
             {
                 List<Card> deck = new List<Card>();
                 deck.AddRange(new List<Card>() { 
-                    SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
-                    SpawnUnit.AnCraiteRaider,SpawnUnit.AnCraiteRaider,
+                    SpawnUnit.JuttaanDimun,SpawnUnit.JuttaanDimun,
+                    SpawnUnit.JuttaanDimun,SpawnUnit.AnCraiteRaider,
                     SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, 
                     SpawnUnit.Morkvarg, SpawnUnit.Morkvarg,
                     SpawnUnit.Yoana, SpawnUnit.JuttaanDimun, SpawnUnit.Udalryk, SpawnUnit.SvanrigeTuirseach, SpawnUnit.Skjall
@@ -34,7 +34,7 @@ namespace Gwent2
                 List<Card> deck = new List<Card>();
                 int nCount = 15;
                 while (nCount-- > 0)
-                    deck.Add(SpawnUnit.Vabjorn);
+                    deck.Add(SpawnUnit.TuirseachHunter);
                 nCount = 2;
                 while (nCount-- > 0)
                     deck.Add(SpawnUnit.Emissary);
