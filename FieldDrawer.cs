@@ -26,7 +26,7 @@ namespace Gwent2
         // pos
         Point _position;
         // type of update required
-        UpdateType upd = UpdateType.none;
+        UpdateType upd = UpdateType.placeChanged;
         public UpdateType requiredUpdate { get { return upd; } }
 
         public CardRedrawContainer(Card source)
@@ -38,11 +38,16 @@ namespace Gwent2
             // provide a connection to source card
             source._show = this;
         }
+        public override string ToString()
+        {
+            return String.Format("{0} {1}", upd.ToString(), _source);
+        }
         public void setPosition(Point newPosition)
         {
             if (_position != newPosition)
                 _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
             _position = newPosition;
+            upd = UpdateType.placeChanged;
         }
         public void callAutoDraw(Player watcher)
         {
@@ -70,6 +75,10 @@ namespace Gwent2
 
             _global.popColor();
         }
+        public void clearUpdate()
+        {
+            upd = UpdateType.none;
+        }
         public void redrawCausedChangeValue()
         {
             if (upd == UpdateType.none)
@@ -86,7 +95,7 @@ namespace Gwent2
         void callGlobalRedraw()
         {
             _global.redraw();
-            Thread.Sleep(200);
+            Thread.Sleep(400);
         }
     }
     class FieldDrawer
@@ -151,8 +160,8 @@ namespace Gwent2
                 _containers.Add(crc);
             }
 
-            setAllCardPositions();
-            redraw();
+            //setAllCardPositions();
+            //redraw();
         }
 
         public void clearLine(int playerIndex, int lineIndex, int upToLineIndex)
@@ -163,7 +172,7 @@ namespace Gwent2
             for (int i = lineIndex; i <= upToLineIndex; ++i)
             {
                 Console.SetCursorPosition(X, Y + i);
-                Console.Write((i+"").PadLeft(Utils.fieldPerPlayerHorizontal));
+                Console.Write((i + "").PadLeft(Utils.fieldPerPlayerHorizontal));
             }
             popColor();
         }
@@ -197,28 +206,38 @@ namespace Gwent2
 
                 int currentLine = Utils.fieldStartVerticalOffset;
 
+
+
+                // rest == non-battlefield
+                List<int> linesForPlaces = new List<int>();
+                List<int> cardsInPlaces = new List<int>();
                 foreach (Place place in Utils.allPlaces)
-                //if (place != Place.battlefield)
-                {
-                    // skip 1 line each separation
-                    clearLine(i, currentLine + 1);
-                    setLineFromContainer(playerCardAllignLeft, currentLine + 1);
-                    Console.Write(place.ToString()+":");
-
-                    currentLine += 2;
-                    int cardsInPlace = 0;
-                    Card prevCard = null;
-                    foreach (Card c in Select.Cards(_context.cards, Filter.anyCardHostByPlayerIn(place, p)))
+                    if (place != Place.battlefield)
                     {
-                        //if (prevCard != null && !prevCard.isVisibleTo(watcher) && c.isVisibleTo(watcher))
-                        //    currentLine++;
-                        c._show.setPosition(new Point(playerCardAllignLeft + cardAllignOffset, currentLine));
+                        // skip 1 line each separation
+                        linesForPlaces.Add(currentLine + 1);
+                        currentLine += 2;
+                        int cardsInPlace = 0;
+                        bool lastWasInvisible = false;
+                        foreach (Card c in Select.Cards(_context.cards, Filter.anyCardHostByPlayerIn(place, p)))
+                        {
+                            if (lastWasInvisible && !c.isVisibleTo(watcher)) currentLine--;
+                            c._show.setPosition(new Point(playerCardAllignLeft + cardAllignOffset, currentLine));
 
-                        currentLine ++;//= c.isVisibleTo(watcher) ? 1 : 0;
-                        cardsInPlace++;
-
-                        prevCard = c;
+                            currentLine++;
+                            cardsInPlace++;
+                            lastWasInvisible = !c.isVisibleTo(watcher);
+                        }
+                        cardsInPlaces.Add(cardsInPlace);
                     }
+                // indexes changes to ignore battlefield
+                for (int j = 0; j < Utils.allPlaces.Count - 1; ++j)
+                {
+                    clearLine(i, linesForPlaces[j] - 1, linesForPlaces[j]);
+                    Console.SetCursorPosition(playerCardAllignLeft, linesForPlaces[j] + Utils.fieldStartVerticalOffset);
+                    Console.Write(String.Format("{0}'s {1}:{2}", 
+                        p, Utils.allPlaces[j + 1], 
+                        cardsInPlaces[j] > 0 ? String.Format("  <{0}>", cardsInPlaces[j]) : ""));
                 }
             }
         }
@@ -232,12 +251,15 @@ namespace Gwent2
             foreach (Player p in _context.players)
             {
                 swapColor(_playerColors[pInd++]);
-                bool allBellowIsMoved = false;
+                //bool allBellowIsMoved = false;
                 foreach (CardRedrawContainer r in _containers)
                     if (r._source.host == p)
                     {
                         if (r.requiredUpdate != UpdateType.none)
+                        {
                             r.callAutoDraw(watcher);
+                            r.clearUpdate();
+                        }
                     }
                 popColor();
             }

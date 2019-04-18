@@ -13,7 +13,7 @@ namespace Gwent2
         public static PixDrawer please = PixDrawer.Default();
 
         static Color bronzeColor = Color.FromArgb(122, 122, 0);
-        static Color silverColor = Color.FromArgb(160, 162, 162);
+        static Color silverColor = Color.FromArgb(190, 192, 192);
         static Color goldenColor = Color.FromArgb(255, 122, 0);
 
         static Color neutralColor = Color.FromArgb(110, 40, 22);
