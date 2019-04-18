@@ -31,12 +31,17 @@ namespace Gwent2
             //PicGenerator.byScreenAndName();
             //SpawnUnit.showCaseAllUnits();
 
+            PlayerHuman bonnie = new PlayerHuman("Bonnie");
+
             Match newgame = new Match(
-                new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },
+                new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
                 new List<List<Card>>() { Deck.SkelligeTest, Deck.ComputerTest }
                 );
-            FieldDrawer fd = new FieldDrawer(newgame);
-            //CardDrawer cd = new CardDrawer(newgame);
+            FieldDrawer fd = new FieldDrawer(newgame, bonnie);
+
+            fd.setAllCardPositions();
+            fd.redraw();
+
             newgame.Start();
         }
     }

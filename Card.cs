@@ -27,7 +27,7 @@ namespace Gwent2
         protected List<Player> _visibleTo = new List<Player>();
         protected void makeVisibleTo(Player watcher) { if (_visibleTo.IndexOf(watcher) < 0)_visibleTo.Add(watcher); }
         protected void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
-
+        public bool isVisibleTo(Player watcher) { return _visibleTo.IndexOf(watcher) >= 0; }
 
         public CardRedrawContainer _show = null;
         protected Match _context;
@@ -45,6 +45,8 @@ namespace Gwent2
             place = to;
             // make cards removing from deck visible to host/all
             setVisible(previousPlace);
+            // after making visible ask redrawing
+            _show.redrawCausedMove();
             // triggers
             triggerMove(previousPlace);
         }
@@ -69,9 +71,7 @@ namespace Gwent2
             if (to != Place.banish) makeVisibleAll();
         }
 
-        public TriggerTurn _onTurnStart = (s) => { /*s._context.Log(s, "starts a new turn");*/ };
-        public TriggerTurn _onTurnEnd = (s) => { /*s._context.Log(s, "ends a turn");*/ };
-
+        // triggers
         protected TriggerMove _onMove = (s, f) => { s._context.Log(s, "moved"); };
         TriggerMove _onDeploy = (s, f) => { s._context.Log(s, "deployed"); };
         TriggerMove _onDrawn = (s, f) => { s._context.Log(s, "drawed"); };
@@ -79,6 +79,9 @@ namespace Gwent2
         TriggerMove _onBanish = (s, f) => { s._context.Log(s, "banished"); };
         TriggerMove _onSwap = (s, f) => { s._context.Log(s, "swapped"); };
         TriggerMove _onShuffled = (s, f) => { s._context.Log(s, "shuffled"); };
+
+        public TriggerTurn _onTurnStart = (s) => { /*s._context.Log(s, "starts a new turn");*/ };
+        public TriggerTurn _onTurnEnd = (s) => { /*s._context.Log(s, "ends a turn");*/ };
 
         string _onMoveAbility = "";
         string _onDeployAbility = "";
@@ -101,25 +104,7 @@ namespace Gwent2
         public void setOnTurnStart(TriggerTurn trigger, string description) { _onTurnStart = trigger; _onTurnStartAbility = description; }
         public void setOnTurnEnd(TriggerTurn trigger, string description) { _onTurnEnd = trigger; _onTurnEndAbility = description; }
 
-        public virtual string ToFormatAbilities()
-        {
-            return String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
-                _onDeployAbility.Length == 0 ? "" : (_onDeployAbility + "\n"),
-                _onDiscardAbility.Length == 0 ? "" : (_onDiscardAbility + "\n"),
-                _onBanishAbility.Length == 0 ? "" : (_onBanishAbility + "\n"),
-                _onDrawnAbility.Length == 0 ? "" : (_onDrawnAbility + "\n"),
-                _onShuffleAbility.Length == 0 ? "" : (_onShuffleAbility + "\n"),
-                _onMoveAbility.Length == 0 ? "" : (_onMoveAbility + "\n"),
-                _onSwapAbility.Length == 0 ? "" : (_onSwapAbility + "\n"),
-                _onTurnStartAbility.Length == 0 ? "" : (_onTurnStartAbility + "\n"),
-                _onTurnEndAbility.Length == 0 ? "" : (_onTurnEndAbility + "\n"));
-        }
-
-        public virtual string ToFormat()
-        {
-            return name;
-        }
-
+        // creating contructors
         public void setAttributes(Match Context, Player H, Clan C, Rarity R, String N, Place P)
         {
             _context = Context;
@@ -150,7 +135,27 @@ namespace Gwent2
             _name = Name;
             place = Place.token;
         }
+        
+        // format outputs
+        public virtual string ToFormatAbilities()
+        {
+            return String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
+                _onDeployAbility.Length == 0 ? "" : (_onDeployAbility + "\n"),
+                _onDiscardAbility.Length == 0 ? "" : (_onDiscardAbility + "\n"),
+                _onBanishAbility.Length == 0 ? "" : (_onBanishAbility + "\n"),
+                _onDrawnAbility.Length == 0 ? "" : (_onDrawnAbility + "\n"),
+                _onShuffleAbility.Length == 0 ? "" : (_onShuffleAbility + "\n"),
+                _onMoveAbility.Length == 0 ? "" : (_onMoveAbility + "\n"),
+                _onSwapAbility.Length == 0 ? "" : (_onSwapAbility + "\n"),
+                _onTurnStartAbility.Length == 0 ? "" : (_onTurnStartAbility + "\n"),
+                _onTurnEndAbility.Length == 0 ? "" : (_onTurnEndAbility + "\n"));
+        }
+        public virtual string ToFormat()
+        {
+            return name;
+        }
 
+        // outputs
         public override string ToString()
         {
             return name;

@@ -77,7 +77,7 @@ namespace Gwent2
         public static int fieldHeigth = 70;
         public static int fieldStartHorizontal = leftTextColumnWidth + 2;
         public static int fieldPerPlayerHorizontal = 60;
-        public static int fieldStartVerticalOffset = 5;
+        public static int fieldStartVerticalOffset = 2;
 
     }
 }

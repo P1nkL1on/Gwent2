@@ -10,7 +10,7 @@ namespace Gwent2
     {
         int _currentPlayerIndex = 0;
         int _round = 0;
-        Player currentPlayer { get { return players[_currentPlayerIndex]; } }
+        public Player currentPlayer { get { return players[_currentPlayerIndex]; } }
         public List<Player> players = new List<Player>();
         public List<Card> cards = new List<Card>();
         private ConsoleWindowText topLeftTextBox;
@@ -47,7 +47,6 @@ namespace Gwent2
 
             for (int muliganUsed = 0; muliganUsed < nMuliganCount; ++muliganUsed)
             {
-                if (player as PlayerHuman != null) State();
                 Card choose = player.selectCardOrNone(_handOf(player), String.Format("Select card for mulligan [{0}/{1}]", muliganUsed, nMuliganCount));
                 if (choose == null)
                     return; // stop, when selected no more cards
@@ -302,134 +301,137 @@ namespace Gwent2
             return false;
         }
 
-        void State() { State(false); }
-        void State(bool showOnlyBattlefield)
-        {
-            Console.SetCursorPosition(0, 0);
-            //fieldState.Clear();
-            int column = Utils.leftTextColumnWidth;
-            foreach (Player p in players)
-            {
-                // set color
-                Console.BackgroundColor = (p as PlayerHuman != null) ? ConsoleColor.Blue : ConsoleColor.DarkRed;
-                // set vertical offset
-                int line = Utils.fieldStartVerticalOffset;
+        //void State() { State(false); }
+        //void State(bool showOnlyBattlefield)
+        //{
+        //    Console.SetCursorPosition(0, 0);
+        //    //fieldState.Clear();
+        //    int column = Utils.leftTextColumnWidth;
+        //    foreach (Player p in players)
+        //    {
+        //        // set color
+        //        Console.BackgroundColor = (p as PlayerHuman != null) ? ConsoleColor.Blue : ConsoleColor.DarkRed;
+        //        // set vertical offset
+        //        int line = Utils.fieldStartVerticalOffset;
 
-                Console.SetCursorPosition(column, line++);
-                ConsoleWrite(String.Format("{1}{0}",
-                    p.ToString(),
-                    String.Format("{0} {2} {1}", _scoreOf(p), (p.passed ? "PASSED" : ""), ("".PadLeft(p.roundsWin, '*')))
-                    .PadRight(Utils.fieldPerPlayerHorizontal / 2 - 3)),
-                    Utils.fieldPerPlayerHorizontal);
-                line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
+        //        Console.SetCursorPosition(column, line++);
+        //        ConsoleWrite(String.Format("{1}{0}",
+        //            p.ToString(),
+        //            String.Format("{0} {2} {1}", _scoreOf(p), (p.passed ? "PASSED" : ""), ("".PadLeft(p.roundsWin, '*')))
+        //            .PadRight(Utils.fieldPerPlayerHorizontal / 2 - 3)),
+        //            Utils.fieldPerPlayerHorizontal);
+        //        line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
 
-                // battlefiedld all rows
-                for (int row = 0; row < 3; ++row)
-                {
-                    RowEffect re = null;
-                    foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
+        //        // battlefiedld all rows
+        //        for (int row = 0; row < 3; ++row)
+        //        {
+        //            RowEffect re = null;
+        //            foreach (RowEffect r in rowEffects) if (r.PlayerUnderEffect == p && r.row == row) re = r;
 
-                    Console.SetCursorPosition(column, line++);
-                    ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_scoreAtPlayersRow(p, row) + "").PadRight(4)),
-                        Utils.fieldPerPlayerHorizontal);
-                    foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
-                        if (u.row == row)
-                        {
-                            Console.SetCursorPosition(column, line++);
-                            ConsoleWrite(String.Format("      {0}", u.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
-                        }
-                }
-                if (showOnlyBattlefield)
-                    continue;
+        //            Console.SetCursorPosition(column, line++);
+        //            ConsoleWrite(String.Format("{2}{0} {1}", Utils.allRows[row], (re != null ? ("  " + re.ToString()) : ""), (_scoreAtPlayersRow(p, row) + "").PadRight(4)),
+        //                Utils.fieldPerPlayerHorizontal);
+        //            foreach (Unit u in Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.battlefield, p)))
+        //                if (u.row == row)
+        //                {
+        //                    Console.SetCursorPosition(column, line++);
+        //                    ConsoleWrite(String.Format("      {0}", u.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
+        //                }
+        //        }
+        //        if (showOnlyBattlefield)
+        //            continue;
 
-                // 5 line space between bf and other
-                line += SkipLines(5, Utils.fieldPerPlayerHorizontal);
-                // all non battlefield places
-                foreach (Place place in Utils.allPlaces)
-                {
-                    if (place == Place.battlefield)
-                        continue;
-                    line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
-                    Console.SetCursorPosition(column, line++);
-                    ConsoleWrite(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()), Utils.fieldPerPlayerHorizontal);
+        //        // 5 line space between bf and other
+        //        line += SkipLines(5, Utils.fieldPerPlayerHorizontal);
+        //        // all non battlefield places
+        //        foreach (Place place in Utils.allPlaces)
+        //        {
+        //            if (place == Place.battlefield)
+        //                continue;
+        //            line += SkipLines(1, Utils.fieldPerPlayerHorizontal);
+        //            Console.SetCursorPosition(column, line++);
+        //            ConsoleWrite(String.Format("  {0}'s {1}: ", p.ToString(), place.ToString()), Utils.fieldPerPlayerHorizontal);
 
-                    int nInvisibleCards = 0;
-                    foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayerIn(place, p)))
-                    {
-                        Console.SetCursorPosition(column, line);
-                        string cardShow = c.Show(currentPlayer);
-                        bool isVisible = cardShow[0] != '?';
-                        if (!isVisible)
-                        {
-                            nInvisibleCards++;
-                            continue;
-                        }
-                        ConsoleWrite(String.Format("   {0}", c.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
-                        line++;
-                    }
-                    if (nInvisibleCards > 0)
-                    {
-                        ConsoleWrite(String.Format("   {0} x{1}", Card.InvisibleCardString, nInvisibleCards), Utils.fieldPerPlayerHorizontal);
-                        line++;
-                    }
-                }
-                // add spacing to last
-                line += SkipLines(Utils.fieldHeigth - line - 1, Utils.fieldPerPlayerHorizontal);
-                column += Utils.fieldPerPlayerHorizontal;
-            }
-            Console.ResetColor();
-            Console.SetCursorPosition(0, 0);
-            //lastFieldState.Clear();
-            //foreach (string s in fieldState)
-            //    lastFieldState.Add(s);
-        }
-        void ClearText(int upToX)
-        {
-            Console.SetCursorPosition(0, 0);
-            Console.Write("".PadLeft(upToX));
-            SkipLines(70, upToX);
-            Console.SetCursorPosition(0, 1);
-        }
+        //            int nInvisibleCards = 0;
+        //            foreach (Card c in Select.Cards(cards, Filter.anyCardHostByPlayerIn(place, p)))
+        //            {
+        //                Console.SetCursorPosition(column, line);
+        //                string cardShow = c.Show(currentPlayer);
+        //                bool isVisible = cardShow[0] != '?';
+        //                if (!isVisible)
+        //                {
+        //                    nInvisibleCards++;
+        //                    continue;
+        //                }
+        //                ConsoleWrite(String.Format("   {0}", c.Show(currentPlayer)), Utils.fieldPerPlayerHorizontal);
+        //                line++;
+        //            }
+        //            if (nInvisibleCards > 0)
+        //            {
+        //                ConsoleWrite(String.Format("   {0} x{1}", Card.InvisibleCardString, nInvisibleCards), Utils.fieldPerPlayerHorizontal);
+        //                line++;
+        //            }
+        //        }
+        //        // add spacing to last
+        //        line += SkipLines(Utils.fieldHeigth - line - 1, Utils.fieldPerPlayerHorizontal);
+        //        column += Utils.fieldPerPlayerHorizontal;
+        //    }
+        //    Console.ResetColor();
+        //    Console.SetCursorPosition(0, 0);
+        //    //lastFieldState.Clear();
+        //    //foreach (string s in fieldState)
+        //    //    lastFieldState.Add(s);
+        //}
+        //void ClearText(int upToX)
+        //{
+        //    Console.SetCursorPosition(0, 0);
+        //    Console.Write("".PadLeft(upToX));
+        //    SkipLines(70, upToX);
+        //    Console.SetCursorPosition(0, 1);
+        //}
 
-        void ConsoleWriteLine(string message, ConsoleColor fore)
-        {
-            Console.ForegroundColor = fore;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-        void ConsoleWrite(string message, int padMax, ConsoleColor fore)
-        {
-            Console.ForegroundColor = fore;
-            ConsoleWrite(message, padMax);
-            Console.ResetColor();
-        }
-        void ConsoleWrite(String message, int padMax)
-        {
-            string messagePadded = message.PadRight(padMax);
-            //fieldState.Add(messagePadded);
-            //bool reColor = (lastFieldState.IndexOf(messagePadded) < 0);
-            //if (!reColor)
-            //{
-            Console.Write(messagePadded);
-            //    return;
-            //}
+        //void ConsoleWriteLine(string message, ConsoleColor fore)
+        //{
+        //    Console.ForegroundColor = fore;
+        //    Console.WriteLine(message);
+        //    Console.ResetColor();
+        //}
+        //void ConsoleWrite(string message, int padMax, ConsoleColor fore)
+        //{
+        //    Console.ForegroundColor = fore;
+        //    ConsoleWrite(message, padMax);
+        //    Console.ResetColor();
+        //}
+        //void ConsoleWrite(String message, int padMax)
+        //{
+        //    string messagePadded = message.PadRight(padMax);
+        //    //fieldState.Add(messagePadded);
+        //    //bool reColor = (lastFieldState.IndexOf(messagePadded) < 0);
+        //    //if (!reColor)
+        //    //{
+        //    Console.Write(messagePadded);
+        //    //    return;
+        //    //}
 
-            //findAnyDiff(messagePadded);
-        }
-        //List<string> lastFieldState = new List<string>();
-        //List<string> fieldState = new List<string>();
+        //    //findAnyDiff(messagePadded);
+        //}
+        ////List<string> lastFieldState = new List<string>();
+        ////List<string> fieldState = new List<string>();
 
-        int SkipLines(int nCount, int padMax)
-        {
-            int x = Console.CursorLeft - padMax;
-            int y = Console.CursorTop + 1;
-            for (int i = 0; i <= nCount; ++i)
-            {
-                Console.SetCursorPosition(x, y + i);
-                ConsoleWrite("", padMax);
-            }
-            return nCount;
-        }
+        //int SkipLines(int nCount, int padMax)
+        //{
+        //    int x = Console.CursorLeft - padMax;
+        //    int y = Console.CursorTop + 1;
+        //    for (int i = 0; i <= nCount; ++i)
+        //    {
+        //        Console.SetCursorPosition(x, y + i);
+        //        ConsoleWrite("", padMax);
+        //    }
+        //    return nCount;
+        //}
+
+        // RED MARKING
+
         //List<int> compareStrings(string a, string b, out int diff)
         //{
         //    List<int> res = new List<int>();

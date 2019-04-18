@@ -184,7 +184,7 @@ namespace Gwent2
                     return new List<PixColor>();
                 }
             }
-            Console.WriteLine("Pallete " + path + " loaded!");
+            //Console.WriteLine("Pallete " + path + " loaded!");
             return res;
         }
 

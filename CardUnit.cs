@@ -60,6 +60,7 @@ namespace Gwent2
             if (row == rowTo)
                 return;
             row = rowTo;
+            _show.redrawCausedMove();
             _onMove(source, Place.battlefield);
         }
         public virtual void damage  (Card source, int X)
@@ -74,6 +75,7 @@ namespace Gwent2
                 return;
 
             _power -= X;
+            _show.redrawCausedChangeValue();
             _onDamaged(this, source, X);
 
             foreach (Card c in this.context.cards)
@@ -89,6 +91,7 @@ namespace Gwent2
                 return;
             _power -= X;
             _basePower -= X;
+            _show.redrawCausedChangeValue();
             _onWeakened(this, source, X);
 
             if (isMustbeBanished)
@@ -99,6 +102,7 @@ namespace Gwent2
             if (X <= 0)
                 return;
             _power += X;
+            _show.redrawCausedChangeValue();
             _onBoosted(this, source, X);
         }
         public virtual void gainArmor(Card source, int X)
@@ -106,6 +110,7 @@ namespace Gwent2
             if (X <= 0)
                 return;
             status.armor += X;
+            _show.redrawCausedChangeValue();
             _onArmorGain(this, source, X);
         }
         public virtual void strengthen(Card source, int X)
@@ -114,6 +119,7 @@ namespace Gwent2
                 return;
             _power += X;
             _basePower += X;
+            _show.redrawCausedChangeValue();
             _onStrengthled(this, source, X);
         }
         public virtual void heal(Card source, int X)
@@ -125,6 +131,7 @@ namespace Gwent2
                 return;
             int healCount = Math.Min(X, healthMissed);
             _power += healCount;
+            _show.redrawCausedChangeValue();
             _onHealed(this, source, healCount);
         }
         public virtual void heal(Card source)
@@ -133,11 +140,13 @@ namespace Gwent2
                 return;
             int healCount = _basePower - _power;
             _power += healCount;
+            _show.redrawCausedChangeValue();
             _onHealed(this, source, healCount);
         }
         public virtual void restore(Card source)
         {
             _power = _basePower;
+            _show.redrawCausedChangeValue();
         }
         public virtual void destroy(Card source)
         {
