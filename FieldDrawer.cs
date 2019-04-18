@@ -205,6 +205,7 @@ namespace Gwent2
         {
             for (int i = 0; i < allRowLines.Count; ++i)
             {
+                swapColor(_lightPlayerColors[i], ConsoleColor.White);
                 Player p = _context.players[i];
                 int playerCardAllignLeft = Utils.fieldStartHorizontal + i * Utils.fieldPerPlayerHorizontal;
                 List<int> rowLines = allRowLines[i];
@@ -214,10 +215,16 @@ namespace Gwent2
 
                     clearLine(i, rowLines[j] - 1, rowLines[j]);
                     Console.SetCursorPosition(playerCardAllignLeft, rowLines[j] + Utils.fieldStartVerticalOffset);
-                    swapColor(_lightPlayerColors[i], ConsoleColor.White);
                     Console.Write(String.Format("{2}{0}{1}", Utils.allRows[j], (re != null ? ("  " + re.ToString()) : ""), (_context._scoreAtPlayersRow(p, j) + "").PadRight(4)));
-                    popColor();
+                   
                 }
+                Console.SetCursorPosition(playerCardAllignLeft, Utils.fieldStartVerticalOffset);
+                Console.Write(String.Format("{1}{0}",
+                    p.ToString(),
+                    String.Format("{0} {2} {1}", _context._scoreOf(p), (p.passed ? "PASSED" : ""),
+                    ("".PadLeft(p.roundsWin, '*'))).PadRight(Utils.fieldPerPlayerHorizontal / 2 - 3)),
+                    Utils.fieldPerPlayerHorizontal);
+                popColor();
             }
         }
         public void setAllCardPositions(Player watcher)

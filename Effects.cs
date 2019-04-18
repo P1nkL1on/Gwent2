@@ -11,24 +11,42 @@ namespace Gwent2
     class Effects
     {
         //static string frames = " ░▒▓█";
-        static string frames = " .o@";
+        static string frames = " .,+oO";
         //static string frames = " .,oO0";
 
         public static void Trajectory(Point from, Point to, ConsoleColor fore, int speedTravel, int tailSpeedTravel, int tailOffset, int timeForFrame)
         {
+            List<int> availableTopIndices = new List<int>() { 20, 30, 40 };
             Console.CursorVisible = false;
             List<Point> path = new List<Point>();
 
             Point currentPoint = from;
+            //do
+            //{
+            //    path.Add(currentPoint);
+            //    if (to.X < currentPoint.X) currentPoint.X--;
+            //    if (to.X > currentPoint.X) currentPoint.X++;
+            //    if (to.Y < currentPoint.Y) currentPoint.Y--;
+            //    if (to.Y > currentPoint.Y) currentPoint.Y++;
+            //}
+            //while (currentPoint.X != to.X || currentPoint.Y != to.Y);
             do
             {
                 path.Add(currentPoint);
-                if (to.X < currentPoint.X) currentPoint.X--;
-                if (to.X > currentPoint.X) currentPoint.X++;
-                if (to.Y < currentPoint.Y) currentPoint.Y--;
-                if (to.Y > currentPoint.Y) currentPoint.Y++;
-            }
-            while (currentPoint.X != to.X || currentPoint.Y != to.Y);
+                int _x = currentPoint.X, _y = currentPoint.Y;
+                bool canGoTopDown = availableTopIndices.IndexOf(_x) >= 0;
+                if (to.Y != _y && canGoTopDown)
+                {
+                    if (to.Y > _y) { _y++; }
+                    if (to.Y < _y) { _y--; }
+                }
+                else
+                {
+                    if (to.X > _x) { _x++; }
+                    if (to.X < _x) { _x--; }
+                }
+                currentPoint = new Point(_x, _y);
+            } while (currentPoint.X != to.X || currentPoint.Y != to.Y);
 
             int timePerSegment = timeForFrame;//Math.Max(1, overallTime / (path.Count));
 

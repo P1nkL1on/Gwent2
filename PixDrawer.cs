@@ -12,9 +12,9 @@ namespace Gwent2
 {
     class PixDrawer
     {
-        public static void SetFullScreen()
+        public static void SetFullScreen(bool setAnotherFont)
         {
-            ScreenSpacer.SetConsoleFont();
+            if (setAnotherFont) ScreenSpacer.SetConsoleFont();
             int offset = 20;
             Console.SetBufferSize(Console.LargestWindowWidth - offset, Console.LargestWindowHeight * 50);
             Console.SetWindowSize(Console.LargestWindowWidth - offset, Console.LargestWindowHeight);
@@ -320,7 +320,7 @@ namespace Gwent2
         public static void testPixDrawer()
         {
 
-            PixDrawer.SetFullScreen();
+            PixDrawer.SetFullScreen(true);
 
             PixDrawer pd;
             PixDrawer def = PixDrawer.FromPalette("dd");

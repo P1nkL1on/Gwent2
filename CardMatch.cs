@@ -169,6 +169,10 @@ namespace Gwent2
             if (conflict != null)
                 rowEffects.Remove(conflict);
         }
+        public void _clearAllRowEffects()
+        {
+            rowEffects.Clear();
+        }
         public void _removeAllNegativeRowEffectsFromPlayer(Player player)
         {
             for (int i = 0; i < rowEffects.Count; ++i)
@@ -234,23 +238,34 @@ namespace Gwent2
             foreach (Player p in players)
                 _shuffleDeckOf(p);
 
-            while (true)
+            do
             {
                 StartRound(++_round);
 
                 while (!Turn()) ;
 
-                foreach (Player p in currentlyWinning)
-                {
-                    Log(String.Format("{0} wins the round!", p.ToString()));
-                    p.roundsWin++;
-                }
+            } while (selectWinners().Count == 0);
+        }
+
+        //returns winners if game ends
+        List<Player> selectWinners()
+        {
+            foreach (Player p in currentlyWinning)
+            {
+                Log(String.Format("{0} wins the round!", p.ToString()));
+                p.roundsWin++;
             }
+            List<Player> gameWinners = new List<Player>();
+            foreach (Player p in players)
+                if (p.roundsWin == 2)
+                    gameWinners.Add(p);
+            return gameWinners;
         }
 
         public void StartRound(int roundIndex)
         {
             // remove all units from field
+            _clearAllRowEffects();
             foreach (Unit u in Select.Units(cards, Filter.anyUnitInBattlefield()))
                 u.move(Place.graveyard);
             foreach (Player player in players)
@@ -270,6 +285,7 @@ namespace Gwent2
             // if all playes passed then finish round
             if (everyPlayerPassed)
                 return true;
+            Console.SetCursorPosition(0, 0); Console.Write("Press any key..."); Console.ReadKey();
 
             topLeftTextBox.ClearLogWindow();
             // activate all turn start-triggers
@@ -302,7 +318,7 @@ namespace Gwent2
                 c._onTurnEnd(c);
 
             //if (currentPlayer as PlayerHuman != null) State();
-            //Console.ReadLine();
+            //
 
             _currentPlayerIndex = (_currentPlayerIndex + 1) % players.Count;
             return false;
