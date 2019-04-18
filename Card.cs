@@ -15,7 +15,7 @@ namespace Gwent2
         protected Player _baseHost;
         protected Player _host;
         public Timer timer = new Timer();
-        public String name { get { return _name; }}
+        public String name { get { return _name; } }
         public Clan clan { get { return _clan; } }
         public Rarity rarity { get { return _rarity; } }
         public Player host { get { return _host; } }
@@ -26,11 +26,14 @@ namespace Gwent2
         public bool hasTag(Tag tag) { return _tags.IndexOf(tag) >= 0; }
         protected List<Player> _visibleTo = new List<Player>();
         protected void makeVisibleTo(Player watcher) { if (_visibleTo.IndexOf(watcher) < 0)_visibleTo.Add(watcher); }
-        protected void makeVisibleAll() { _visibleTo.Clear();  foreach (Player p in context.players) _visibleTo.Add(p); }
+        protected void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
 
+
+        public CardRedrawContainer _show = null;
         protected Match _context;
 
-        public virtual void move(Place to) {
+        public virtual void move(Place to)
+        {
             // banishing doomed cards
             if (to == Place.graveyard && hasTag(Tag.doomed))
                 to = Place.banish;
@@ -43,7 +46,7 @@ namespace Gwent2
             // make cards removing from deck visible to host/all
             setVisible(previousPlace);
             // triggers
-            triggerMove(previousPlace); 
+            triggerMove(previousPlace);
         }
 
         protected virtual void triggerMove(Place from)
@@ -62,7 +65,7 @@ namespace Gwent2
         {
             Place to = place;
             if (to == Place.deck) { _visibleTo.Clear(); return; }
-            if (to == Place.hand) { makeVisibleTo(host); return;}
+            if (to == Place.hand) { makeVisibleTo(host); return; }
             if (to != Place.banish) makeVisibleAll();
         }
 
@@ -101,7 +104,7 @@ namespace Gwent2
         public virtual string ToFormatAbilities()
         {
             return String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
-                _onDeployAbility.Length == 0? "" : (_onDeployAbility+"\n"),
+                _onDeployAbility.Length == 0 ? "" : (_onDeployAbility + "\n"),
                 _onDiscardAbility.Length == 0 ? "" : (_onDiscardAbility + "\n"),
                 _onBanishAbility.Length == 0 ? "" : (_onBanishAbility + "\n"),
                 _onDrawnAbility.Length == 0 ? "" : (_onDrawnAbility + "\n"),

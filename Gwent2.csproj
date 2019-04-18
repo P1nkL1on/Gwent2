@@ -47,7 +47,7 @@
     <Compile Include="AbilityHints.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="CardDeckGenerator.cs" />
-    <Compile Include="CardDrawer.cs" />
+    <Compile Include="UtilsDrawing.cs" />
     <Compile Include="CardMatch.cs" />
     <Compile Include="CardSpecial.cs" />
     <Compile Include="CardSpecialGenerator.cs" />
@@ -59,6 +59,7 @@
     <Compile Include="ConsoleSelector.cs" />
     <Compile Include="Effects.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="FieldDrawer.cs" />
     <Compile Include="Filters.cs" />
     <Compile Include="FontProblem.cs" />
     <Compile Include="PicGenerator.cs" />

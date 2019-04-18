@@ -35,6 +35,7 @@ namespace Gwent2
                 new List<Player>() { new PlayerHuman("Bonnie"), new PlayerAI("Jonson Bot") },
                 new List<List<Card>>() { Deck.SkelligeTest, Deck.ComputerTest }
                 );
+            FieldDrawer fd = new FieldDrawer(newgame);
             //CardDrawer cd = new CardDrawer(newgame);
             newgame.Start();
         }

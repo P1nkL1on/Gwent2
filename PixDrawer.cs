@@ -302,9 +302,13 @@ namespace Gwent2
             //Console.ResetColor();
         }
 
-        public PixColor drawPixel(Color color)
+        public ConsoleColor getClosestFore(Color color)
         {
-            return getClosestColor(color);
+            return (ConsoleColor)getClosestColor(color)._fore;
+        }
+        public ConsoleColor getClosestBack(Color color)
+        {
+            return (ConsoleColor)getClosestColor(color)._back;
         }
 
         public void drawRectangle(Rectangle place, Color color)
