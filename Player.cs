@@ -144,9 +144,6 @@ namespace Gwent2
         protected virtual int makeDescision(List<String> variants, string question)
         {
             return rnd.Next(variants.Count);
-            //int choise = rnd.Next(variants.Count);
-            //Console.WriteLine(String.Format("{1}: {0} chooses {2}", this.ToString(), question, variants[choise]));
-            //return choise;
         }
     }
 }
