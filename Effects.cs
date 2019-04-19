@@ -16,20 +16,14 @@ namespace Gwent2
 
         public static void Trajectory(Point from, Point to, ConsoleColor fore, int speedTravel, int tailSpeedTravel, int tailOffset, int timeForFrame)
         {
-            List<int> availableTopIndices = new List<int>() { 20, 30, 40 };
+            int border = Utils.fieldStartHorizontal + Utils.fieldPerPlayerHorizontal;
+            List<int> availableTopIndices = new List<int>() {  border - 2, border -1};
             Console.CursorVisible = false;
             List<Point> path = new List<Point>();
 
             Point currentPoint = from;
-            //do
-            //{
-            //    path.Add(currentPoint);
-            //    if (to.X < currentPoint.X) currentPoint.X--;
-            //    if (to.X > currentPoint.X) currentPoint.X++;
-            //    if (to.Y < currentPoint.Y) currentPoint.Y--;
-            //    if (to.Y > currentPoint.Y) currentPoint.Y++;
-            //}
-            //while (currentPoint.X != to.X || currentPoint.Y != to.Y);
+            int findTop = (from.X < availableTopIndices.First() && to.X < availableTopIndices.First())? 1 
+                : (from.X > availableTopIndices.Last() && to.X > availableTopIndices.Last())? -1 : 0;
             do
             {
                 path.Add(currentPoint);
@@ -39,20 +33,31 @@ namespace Gwent2
                 {
                     if (to.Y > _y) { _y++; }
                     if (to.Y < _y) { _y--; }
+                    findTop = 0;
                 }
                 else
                 {
-                    if (to.X > _x) { _x++; }
-                    if (to.X < _x) { _x--; }
+                    if (findTop == 0)
+                    {
+                        if (to.X > _x) { _x++; }
+                        if (to.X < _x) { _x--; }
+                        if (to.X == _x) {
+                            if (_x < availableTopIndices.Last()) findTop = 1;
+                            else if (_x > availableTopIndices.First()) findTop = -1;
+                        }
+                    }
+                    else
+                        _x += findTop;
                 }
                 currentPoint = new Point(_x, _y);
+                //Console.WriteLine(_x + "/" + _y);
             } while (currentPoint.X != to.X || currentPoint.Y != to.Y);
 
             int timePerSegment = timeForFrame;//Math.Max(1, overallTime / (path.Count));
 
             int nowHead = 0, nowTail = -tailOffset;
 
-            Console.ForegroundColor = fore;
+            
 
             for (; nowTail < path.Count; )
             {

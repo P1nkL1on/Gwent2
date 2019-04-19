@@ -18,7 +18,7 @@ namespace Gwent2
             Random rnd = new Random();
             while (true)
             {
-                Effects.Trajectory(new Point(rnd.Next(40), rnd.Next(40)), new Point(20 + rnd.Next(40), 20 + rnd.Next(40)), ConsoleColor.Green, 5, 2, 20, 15);
+                Effects.Trajectory(new Point(rnd.Next(200), rnd.Next(100)), new Point(rnd.Next(200), rnd.Next(100)), ConsoleColor.Green, 5, 4, 20, 15);
                 //Target.drawArrow(new Point(rnd.Next(40), rnd.Next(40)), new Point(40 + rnd.Next(40), 40 + rnd.Next(40)));
                 Console.ReadLine();
             }
