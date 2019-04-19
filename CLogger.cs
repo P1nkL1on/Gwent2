@@ -27,11 +27,21 @@ namespace Gwent2
             startX += xOff;
             startY += yOff;
         }
+        public int X { get { return startX; } }
+        public int Y { get { return startY; } }
+        public void AddLogWithCurrentColor(string message)
+        {
+            AddLog(message, Console.ForegroundColor, Console.BackgroundColor);
+        }
         public void AddLog(string message)
         {
-            AddLog(message, ConsoleColor.Gray);
+            AddLog(message, ConsoleColor.Gray, loggerBackground);
         }
         public void AddLog(string message, ConsoleColor fore)
+        {
+            AddLog(message, fore, loggerBackground);
+        }
+        public void AddLog(string message, ConsoleColor fore, ConsoleColor back)
         {
             if (message.IndexOf('\n') >= 0)
             {
@@ -41,10 +51,10 @@ namespace Gwent2
             }
             int approximateLength = message.Length / wid + 1;
             if (usedSpace + approximateLength > hei)
-                ClearLogWindow(loggerBackground);
+                ClearLogWindow(back);
 
             Console.ForegroundColor = fore;
-            Console.BackgroundColor = loggerBackground;
+            Console.BackgroundColor = back;
             while (message.Length > wid)
             {
                 int separateOn = wid;

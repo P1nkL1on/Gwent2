@@ -10,7 +10,7 @@ namespace Gwent2
     {
         public string Question { get { return _question; } }
         public List<String> ChoiseOptions { get { return _choiseOptions; } }
-        public int OptionCount { get { return _choiseOptions.Count; } }
+        public int OptionsCount { get { return _choiseOptions.Count; } }
 
         public virtual string DescriptionForOption(int optionIndex) { return "..."; }
 
@@ -49,9 +49,13 @@ namespace Gwent2
     {
         protected Player _player;
 
-        public RowChoiseContext(Player rowsHost)
+        public RowChoiseContext(Player rowsHost, string Question)
         {
+            _question = Question;
             _player = rowsHost;
+            _choiseOptions = new List<string>();
+            foreach (string rowName in Utils.allRows)
+                _choiseOptions.Add(rowName);
         }
         public override string DescriptionForOption(int optionIndex)
         {
@@ -63,13 +67,40 @@ namespace Gwent2
     {
         protected List<Card> _cards;
 
-        public CardChoiseContext(List<Card> cards)
+        CardChoiseContext(List<Card> cards, string Question, bool canSelectNone, string noneVariantName)
         {
+            _question = Question;
             _cards = cards;
+            _hasExtraChoise = canSelectNone;
+            _extraChoise = noneVariantName;
+
+            _choiseOptions = new List<string>();
+            if (_hasExtraChoise) 
+                _choiseOptions.Add(_extraChoise);
+
+            foreach (Card c in cards)
+                _choiseOptions.Add(c.ToString());
         }
         public override string DescriptionForOption(int optionIndex)
         {
+            if (_hasExtraChoise && optionIndex == 0)
+                return "";
             return _cards[optionIndex - (_hasExtraChoise ? 1 : 0)].ToFormat();
+        }
+
+        public static CardChoiseContext Default(List<Card> cards)
+        {
+            return new CardChoiseContext(cards, "", false, "");
+        }
+
+        public static CardChoiseContext Default(List<Card> cards, string Question)
+        {
+            return new CardChoiseContext(cards, Question, false, "");
+        }
+
+        public static CardChoiseContext WithNoneOption(List<Card> cards, string Question, string NoneName)
+        {
+            return new CardChoiseContext(cards, Question, true, NoneName);
         }
     }
 }

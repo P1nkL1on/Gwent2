@@ -43,11 +43,7 @@ namespace Gwent2
 
             for (int i = 0; i < nCardsToSelect; ++i)
             {
-                List<string> options = new List<string>();
-                foreach (Card u in fromList)
-                    options.Add(u.ToString());
-
-                int decidedIndex = makeDescision(options, question);
+                int decidedIndex = makeDescision(CardChoiseContext.Default(fromList, question));
                 resChoise.Add(fromList[decidedIndex]);
                 fromList.RemoveAt(decidedIndex);
             }
@@ -63,11 +59,7 @@ namespace Gwent2
             List<Card> resChoise = new List<Card>();
             for (int i = 0; i < nUpToCardsToSelect; ++i)
             {
-                List<string> options = new List<string>();
-                options.Add(extraName);
-                foreach (Card u in fromList)
-                    options.Add(u.ToString());
-                int decidedIndex = makeDescision(options, question) - 1;
+                int decidedIndex = makeDescision(CardChoiseContext.WithNoneOption(fromList, question, extraName)) - 1;
                 if (decidedIndex < 0)
                     return resChoise;
                 resChoise.Add(fromList[decidedIndex]);
@@ -120,11 +112,11 @@ namespace Gwent2
 
         public virtual int chooseRow(string question)
         {
-            return makeDescision(Utils.allRows, question);
+            return makeDescision(new RowChoiseContext(this, question));
         }
         public virtual int chooseEnemyRow(Player enemy, string question)
         {
-            return makeDescision(Utils.allRows, question);
+            return makeDescision(new RowChoiseContext(enemy, question));
         }
         public virtual Player chooseEnemy(Match context, string question)
         {
@@ -134,16 +126,13 @@ namespace Gwent2
                     enemies.Add(p);
             if (enemies.Count == 1)
                 return enemies[0];
-            List<string> playerNames = new List<string>();
-            foreach (Player en in enemies)
-                playerNames.Add(en.ToString());
-            return enemies[makeDescision(playerNames, question)];
+            return enemies[makeDescision(new PlayerChoiseContext(enemies, question))];
         }
         protected Random rnd = new Random();
 
-        protected virtual int makeDescision(List<String> variants, string question)
+        protected virtual int makeDescision(ChoiseContext choiseContext)
         {
-            return rnd.Next(variants.Count);
+            return rnd.Next(choiseContext.OptionsCount);
         }
     }
 }

@@ -302,7 +302,7 @@ namespace Gwent2
                 Card selected = currentPlayer.selectCardOrNone(_handOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
                 if (selected != null)
                 {
-                    topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
+                    //topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
                     // current player plays a selected card
                     currentPlayer.playCard(selected);
                 }
