@@ -15,14 +15,6 @@ namespace Gwent2
         {
             PixDrawer.SetFullScreen(false);
 
-            Random rnd = new Random();
-            while (true)
-            {
-                Effects.Trajectory(new Point(rnd.Next(200), rnd.Next(100)), new Point(rnd.Next(200), rnd.Next(100)), ConsoleColor.Green, 5, 4, 20, 15);
-                //Target.drawArrow(new Point(rnd.Next(40), rnd.Next(40)), new Point(40 + rnd.Next(40), 40 + rnd.Next(40)));
-                Console.ReadLine();
-            }
-
             //PixDrawer p = PixDrawer.FromPalette("dd");
             //p.drawRectangle(new Rectangle(5, 6, 15, 10), Color.DarkCyan, PixDrawer.rectangleStyleWithBorder);
             //Console.ReadLine();

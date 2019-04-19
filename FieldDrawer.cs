@@ -51,6 +51,7 @@ namespace Gwent2
             _position = newPosition;
             upd = UpdateType.placeChanged;
         }
+        public Point position { get { return _position;} }
         public void callAutoDraw(Player watcher)
         {
             _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);

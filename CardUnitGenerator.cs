@@ -610,8 +610,8 @@ namespace Gwent2
                         out willBeDiscraded,
                         "Select a card to draw. The other one will be discarded.");
 
-                    s.context._drawCard(s.baseHost, willBeDrawn);
-                    willBeDiscraded.move(Place.graveyard);
+                    if (willBeDrawn != null) s.context._drawCard(s.baseHost, willBeDrawn);
+                    if (willBeDiscraded != null) willBeDiscraded.move(Place.graveyard);
                 }, 1, false);
                 self.setOnDeploy((s, f) =>
                 {

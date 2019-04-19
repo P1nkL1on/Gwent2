@@ -8,15 +8,36 @@ using System.Drawing;
 
 namespace Gwent2
 {
+    enum showAction
+    {
+        damage,
+        boost
+    }
+
     class Effects
     {
         //static string frames = " ░▒▓█";
         static string frames = " .,+oO";
         //static string frames = " .,oO0";
 
-        public static void Trajectory(Point from, Point to, ConsoleColor fore, int speedTravel, int tailSpeedTravel, int tailOffset, int timeForFrame)
+        public static void Trajectory(Card source, Card self, showAction type)
         {
-            int border = Utils.fieldStartHorizontal + Utils.fieldPerPlayerHorizontal;
+            if (type == showAction.damage) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Red, 5, 5, 20, 15);
+            if (type == showAction.boost) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Green, 4, 2, 15, 22);
+        }
+        static Point pointOf(Card c)
+        {
+            if (c._show.position.X < Utils.fieldPerPlayerHorizontal + Utils.fieldStartHorizontal)
+                return new Point(c._show.position.X + c.ToString().Length, c._show.position.Y);
+            else
+                return new Point(c._show.position.X - 1, c._show.position.Y);
+        }
+        
+        static void Trajectory(Point from, Point to, ConsoleColor fore, int speedTravel, int tailSpeedTravel, int tailOffset, int timeForFrame)
+        {
+            if (from == to)
+                return;
+            int border = Utils.fieldStartHorizontal + Utils.fieldPerPlayerHorizontal - 10;
             List<int> availableTopIndices = new List<int>() {  border - 2, border -1};
             Console.CursorVisible = false;
             List<Point> path = new List<Point>();
@@ -57,8 +78,6 @@ namespace Gwent2
 
             int nowHead = 0, nowTail = -tailOffset;
 
-            
-
             for (; nowTail < path.Count; )
             {
                 nowHead += speedTravel;
@@ -73,7 +92,10 @@ namespace Gwent2
 
                     char symbol = (i <= 0) ? frames[0] : frames[Math.Min((int)(i * 1.0 / (length -1) * frames.Length + 1), frames.Length - 1)];
                     
-                    Console.SetCursorPosition(path[pathIndex].X, path[pathIndex].Y);
+                    // kostil coloring background
+                    Console.BackgroundColor = (path[pathIndex].X < Utils.fieldStartHorizontal + Utils.fieldPerPlayerHorizontal) ? ConsoleColor.DarkBlue : ConsoleColor.DarkRed;
+
+                    Console.SetCursorPosition(path[pathIndex].X, path[pathIndex].Y + Utils.fieldStartVerticalOffset);
                     Console.Write(symbol);
                 }
                 Thread.Sleep(timePerSegment);

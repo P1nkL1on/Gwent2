@@ -75,6 +75,7 @@ namespace Gwent2
                 return;
 
             _power -= X;
+            Effects.Trajectory(source, this, showAction.damage);
             _show.redrawCausedChangeValue();
             _onDamaged(this, source, X);
 
@@ -102,6 +103,7 @@ namespace Gwent2
             if (X <= 0)
                 return;
             _power += X;
+            Effects.Trajectory(source, this, showAction.boost);
             _show.redrawCausedChangeValue();
             _onBoosted(this, source, X);
         }
