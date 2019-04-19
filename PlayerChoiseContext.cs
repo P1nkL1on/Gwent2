@@ -13,6 +13,9 @@ namespace Gwent2
         public int OptionsCount { get { return _choiseOptions.Count; } }
 
         public virtual string DescriptionForOption(int optionIndex) { return "..."; }
+        public void HighlightSelected(int optionIndex) { for (int i = 0; i < OptionsCount; ++i) if (i == optionIndex) mark(i); else demark(i); }
+        protected virtual void mark(int optionIndex) { }
+        protected virtual void demark(int optionIndex){  }
 
         protected bool _hasExtraChoise = false;
         protected string _extraChoise;
@@ -85,7 +88,25 @@ namespace Gwent2
         {
             if (_hasExtraChoise && optionIndex == 0)
                 return "";
+            
             return _cards[optionIndex - (_hasExtraChoise ? 1 : 0)].ToFormat();
+        }
+        protected override void mark(int optionIndex)
+        {
+            markOrDemark(optionIndex, true);
+        }
+        protected override void demark(int optionIndex)
+        {
+            markOrDemark(optionIndex, false);
+        }
+
+        void markOrDemark(int optionIndex, bool high)
+        {
+            if (optionIndex == 0 && _hasExtraChoise) return;
+            Card m = _cards[optionIndex - (_hasExtraChoise ? 1 : 0)];
+            bool needRedraw = m._show._isSelected != high;
+            m._show._isSelected = high;
+            if (needRedraw) m._show.redrawSelectedInstant();
         }
 
         public static CardChoiseContext Default(List<Card> cards)

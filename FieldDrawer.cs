@@ -23,6 +23,7 @@ namespace Gwent2
         // inner funcs
         ConsoleColor _rarityColor;
         bool _isUnit;
+        public bool _isSelected = false;
 
         // pos
         Point _position;
@@ -55,7 +56,9 @@ namespace Gwent2
         public void callAutoDraw(Player watcher)
         {
             _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
+
             _global.setPosition(_position);
+            if (_isSelected) _global.swapColor(ConsoleColor.Black);
             string shortName = _source.Show(watcher);
             if (shortName == Card.InvisibleCardString)
             {
@@ -75,8 +78,9 @@ namespace Gwent2
             }
             else
                 Console.Write(shortName);
-
+            
             _global.popColor();
+            if (_isSelected) _global.popColor();
         }
         public void clearUpdate()
         {
@@ -96,10 +100,17 @@ namespace Gwent2
             _global.setAllCardPositions();
             callGlobalRedraw();
         }
-        void callGlobalRedraw()
+        public void redrawSelectedInstant()
+        {
+            if (upd == UpdateType.none)
+                upd = UpdateType.valueChanged;
+            callGlobalRedraw(false);
+        }
+        
+        void callGlobalRedraw(bool sleep = true)
         {
             _global.redraw();
-            Thread.Sleep(redrawSpeed);
+            if (sleep)Thread.Sleep(redrawSpeed);
         }
     }
     class FieldDrawer

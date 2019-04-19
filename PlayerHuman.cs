@@ -75,7 +75,8 @@ namespace Gwent2
                     answer = (answer == 0 ? choise.OptionsCount : answer) - 1;
                     needRedraw.Add(answer);
                 }
-
+                if (needRedraw.Count > 0)
+                    choise.HighlightSelected(answer);
                 foreach (int i in needRedraw)
                 {
                     if (i == answer) SwapColors();
