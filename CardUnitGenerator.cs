@@ -12,7 +12,7 @@ namespace Gwent2
         static Random unitDecisionsRandomiser = new Random();
 
         // universal templates
-        static Unit createToken(Unit preset, Card source)
+        public static Unit createToken(Unit preset, Card source)
         {
             preset.SetDefaultHost(source.host, source.context);
             source.context.AddCardToGame(preset);

@@ -11,7 +11,7 @@ namespace Gwent2
         public virtual void setLeaderAttributes()
         {
             addTag(Tag.leader);
-            place = Place.handLeader;
+            place = Place.leader;
         }
     }
 }

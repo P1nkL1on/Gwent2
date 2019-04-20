@@ -14,7 +14,7 @@ namespace Gwent2
         battlefield,
         graveyard,
         banish,
-        handLeader
+        leader
     }
 
     enum Rarity
@@ -75,7 +75,7 @@ namespace Gwent2
 
     class Utils
     {
-        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.handLeader, Place.deck, Place.graveyard, Place.banish };
+        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.leader, Place.deck, Place.graveyard, Place.banish };
         public static List<string> allRows = new List<string>() { "melee", "ranged", "support"};
 
         // line out

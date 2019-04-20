@@ -112,6 +112,7 @@ namespace Gwent2
             };
         }
         public static UnitPredicat nonLeader() { return (t) => { return !t.hasTag(Tag.leader); }; }
+        public static UnitPredicat nonSpying() { return (t) => { return !t.isSpy; }; }
         public static UnitPredicat anyUnitInBaseHostDeck(Card source) { return (t) => { return t.place == Place.deck && t.host == source.baseHost; }; }
         public static UnitPredicat anyUnitInBaseHostBattlefield(Card source) { return (t) => { return t.place == Place.battlefield && t.host == source.baseHost; }; }
 

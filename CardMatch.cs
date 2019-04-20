@@ -201,7 +201,7 @@ namespace Gwent2
         List<Card> _handWithLeaderOf(Player player)
         {
             var res = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.hand, player));
-            var allPossibleLeadersToPlay = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.handLeader, player));
+            var allPossibleLeadersToPlay = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.leader, player));
             foreach (Card c in allPossibleLeadersToPlay)
                 res.Add(c);
             return res;

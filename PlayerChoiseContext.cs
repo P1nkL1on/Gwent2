@@ -119,6 +119,8 @@ namespace Gwent2
         {
             if (optionIndex == 0 && _hasExtraChoise) return;
             Card m = _cards[optionIndex - (_hasExtraChoise ? 1 : 0)];
+            if (m._show == null)
+                return;
             bool needRedraw = m._show._isSelected != high;
             m._show._isSelected = high;
             if (needRedraw) m._show.redrawSelectedInstant();
