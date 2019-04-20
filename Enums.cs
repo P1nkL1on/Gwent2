@@ -73,7 +73,7 @@ namespace Gwent2
 
         // line out
         public static int leftTextColumnWidth = 45;
-        public static int leftTextColumnHeigth = 30;
+        public static int leftTextColumnHeigth = 44;
         public static int fieldHeigth = 70;
         public static int fieldStartHorizontal = leftTextColumnWidth + 2;
         public static int fieldPerPlayerHorizontal = 60;

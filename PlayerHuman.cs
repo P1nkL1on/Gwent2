@@ -11,9 +11,11 @@ namespace Gwent2
         public PlayerHuman(string Name)
         {
             _name = Name;
+            descriptionWindow.AddOffset(0, Utils.leftTextColumnHeigth / 2);
         }
 
         private ConsoleWindowText decideWindow = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.leftTextColumnHeigth);
+        private ConsoleWindowText descriptionWindow = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.leftTextColumnHeigth);
 
         //protected override int makeDescision(ChoiseContext choise)
         //{
@@ -76,7 +78,11 @@ namespace Gwent2
                     needRedraw.Add(answer);
                 }
                 if (needRedraw.Count > 0)
+                {
                     choise.HighlightSelected(answer);
+                    descriptionWindow.ClearLogWindow();
+                    descriptionWindow.AddLog(choise.DescriptionForOption(answer), ConsoleColor.Cyan);
+                }
                 foreach (int i in needRedraw)
                 {
                     if (i == answer) SwapColors();
@@ -86,6 +92,7 @@ namespace Gwent2
                 }
             } while (pressed != ConsoleKey.Enter);
 
+            choise.HighlightSelected(-1);
             decideWindow.ClearLogWindow();
             return answer;
         }
