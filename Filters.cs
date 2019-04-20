@@ -59,7 +59,7 @@ namespace Gwent2
         public static UnitPredicat anyUnitNotInRow(int row) { return (t) => { return t.row != row; }; }
         public static UnitPredicat anyUnitHostBy(Player player) { return (t) => { return t.host == player; }; }
         
-        public static CardPredicat anyCardHasTag(params Tag[] anyOfTags)
+        public static CardPredicat anyCardHasTagAnyFrom(params Tag[] anyOfTags)
         {
             return (t) =>
             {
@@ -69,7 +69,7 @@ namespace Gwent2
                 return false;
             };
         }
-        public static UnitPredicat anyUnitHasTag(params Tag[] anyOfTags)
+        public static UnitPredicat anyUnitHasTagAnyFrom(params Tag[] anyOfTags)
         {
             return (t) =>
             {
@@ -99,6 +99,8 @@ namespace Gwent2
                 return false;
             };
         }
+        public static UnitPredicat anyUnitHasClan(Clan clan){ return (t) => { return t.clan == clan; }; }
+
         public static UnitPredicat anyUnitHasColorNot(params Rarity[] anyOfProhibitedRarity)
         {
             return (t) =>
@@ -109,6 +111,7 @@ namespace Gwent2
                 return true;
             };
         }
+        public static UnitPredicat nonLeader() { return (t) => { return !t.hasTag(Tag.leader); }; }
         public static UnitPredicat anyUnitInBaseHostDeck(Card source) { return (t) => { return t.place == Place.deck && t.host == source.baseHost; }; }
         public static UnitPredicat anyUnitInBaseHostBattlefield(Card source) { return (t) => { return t.place == Place.battlefield && t.host == source.baseHost; }; }
 

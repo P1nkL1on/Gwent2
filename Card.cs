@@ -24,9 +24,10 @@ namespace Gwent2
         public Match context { get { return _context; } }
         protected List<Tag> _tags;
         public bool hasTag(Tag tag) { return _tags.IndexOf(tag) >= 0; }
+        public void addTag(Tag tag) { if (!hasTag(tag)) _tags.Insert(0, tag); }
         protected List<Player> _visibleTo = new List<Player>();
         protected void makeVisibleTo(Player watcher) { if (_visibleTo.IndexOf(watcher) < 0)_visibleTo.Add(watcher); }
-        protected void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
+        public void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
         public bool isVisibleTo(Player watcher) { return _visibleTo.IndexOf(watcher) >= 0; }
 
         public CardRedrawContainer _show = null;
@@ -59,8 +60,18 @@ namespace Gwent2
         {
             Place to = place;
             if (to == Place.hand) _onDrawn(this, from);
-            if (to == Place.battlefield) _onDeploy(this, from);
-            if (to == Place.graveyard && (from == Place.hand || from == Place.deck)) _onDiscard(this, from);
+            if (to == Place.battlefield)
+            {
+                foreach (Card c in this.context.cards)
+                    if (c as Unit != null) (c as Unit)._onCardPlayed(c as Unit, this, 0);
+                _onDeploy(this, from);
+            }
+            if (to == Place.graveyard && (from == Place.hand || from == Place.deck))
+            {
+                foreach (Card c in this.context.cards)
+                    if (c as Unit != null) (c as Unit)._onCardDiscarded(c as Unit, this, 0);
+                _onDiscard(this, from);
+            }
             if (to == Place.banish) _onBanish(this, from);
             if (to == Place.deck && from == Place.hand) _onSwap(this, from);
             if (to == Place.deck && from != Place.hand) _onShuffled(this, from);
@@ -104,6 +115,12 @@ namespace Gwent2
         public void setOnBanish(TriggerMove trigger, string description) { _onBanish = trigger; _onBanishAbility = description; }
         public void setOnSwap(TriggerMove trigger, string description) { _onSwap = trigger; _onSwapAbility = description; }
         public void setOnShuffled(TriggerMove trigger, string description) { _onShuffled = trigger; _onShuffleAbility = description; }
+        public virtual void repeatDeployAbility()
+        {
+            if (this.place != Place.battlefield)
+                return; // can not repeat, cause not ever done :^)
+            _onDeploy(this, this.place);
+        }
 
         public void setOnTurnStart(TriggerTurn trigger, string description) { _onTurnStart = trigger; _onTurnStartAbility = description; }
         public void setOnTurnEnd(TriggerTurn trigger, string description) { _onTurnEnd = trigger; _onTurnEndAbility = description; }
@@ -139,7 +156,7 @@ namespace Gwent2
             _name = Name;
             place = Place.token;
         }
-        
+
         // format outputs
         public virtual string ToFormatAbilities()
         {
@@ -199,7 +216,7 @@ namespace Gwent2
     delegate void TriggerTurn(Card self);
     delegate void TriggerMove(Card self, Place from);
     delegate void TriggerRecieve(Unit self, Card source, int X);
-    delegate void TriggerUnitAction(Unit self, Unit source, int X);
+    delegate void TriggerUnitAction(Unit self, Card source, int X);
     delegate void TriggerUnitSelf(Unit self, Card source);
 
 }

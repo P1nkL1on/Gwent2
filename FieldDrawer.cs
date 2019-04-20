@@ -172,11 +172,14 @@ namespace Gwent2
                 clearLine(i);
 
             foreach (Card c in _context.cards)
-            {
-                CardRedrawContainer crc = new CardRedrawContainer(c);
-                crc._global = this;
-                _containers.Add(crc);
-            }
+                addContainerFor(c);
+        }
+
+        public void addContainerFor(Card c)
+        {
+            CardRedrawContainer crc = new CardRedrawContainer(c);
+            crc._global = this;
+            _containers.Add(crc);
         }
 
         public void clearLine(int playerIndex, int lineIndex, int upToLineIndex)
@@ -283,8 +286,8 @@ namespace Gwent2
                             lastWasInvisible = !c.isVisibleTo(watcher);
                         }
                         cardsInPlaces.Add(cardsInPlace);
-                        if (cardsInPlace == 0)
-                            linesForPlaces[linesForPlaces.Count - 1] = -1;
+                        //if (cardsInPlace == 0 && place != Place.deck)
+                        //    linesForPlaces[linesForPlaces.Count - 1] = -1;
                     }
                 // indexes changes to ignore battlefield
                 for (int j = 0; j < linesForPlaces.Count; ++j)
@@ -293,9 +296,10 @@ namespace Gwent2
                     Console.SetCursorPosition(playerCardAllignLeft, linesForPlaces[j] + Utils.fieldStartVerticalOffset);
                     swapColor(_lightPlayerColors[i], ConsoleColor.White);
                     if (linesForPlaces[j] < 0) continue;
-                    Console.Write(String.Format("{0}'s {1}:{2}",
+                    if (cardsInPlaces[j] > 0)
+                        Console.Write(String.Format("{0}'s {1}:{2}",
                         p, Utils.allPlaces[j + 1],
-                        cardsInPlaces[j] > 0 ? String.Format("  <{0}>", cardsInPlaces[j]) : ""));
+                        String.Format("  <{0}>", cardsInPlaces[j])));
                     popColor();
                 }
             }

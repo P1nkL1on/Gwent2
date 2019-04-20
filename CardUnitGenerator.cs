@@ -66,7 +66,7 @@ namespace Gwent2
                     foreach (Unit a in
                         Select.Units(s.context.cards,
                             Filter.anyOtherAllyUnitInBattlefieldHandDeck(s as Unit),
-                            Filter.anyUnitHasTag(Tag.clanTuirseach)))
+                            Filter.anyUnitHasTagAnyFrom(Tag.clanTuirseach)))
                         a.strengthen(s as Unit, 1);
                 }, "Strengthen all your other Clan Tuirseach units in hand, deck, and on board by 1.");
                 return self;
@@ -106,7 +106,7 @@ namespace Gwent2
             get
             {
                 Unit self = new Unit();
-                self.setAttributesToken(Clan.skellige, Rarity.bronze, "Bear");
+                self.setAttributesToken(Clan.neutral, Rarity.bronze, "Bear");
                 self.setUnitAttributes(11, Tag.beast, Tag.cursed);
                 return self;
             }
@@ -155,12 +155,14 @@ namespace Gwent2
                 {
                     (s as Unit).gainArmor(s, 2);
                 }, "2 Armor.");
-                self.setOnUnitDamaged((s, otherUnit, X) =>
+                self.setOnUnitDamaged((s, otherCard, X) =>
                 {
-                    Unit unit = s as Unit;
+                    Unit unit = s as Unit, otherUnit = otherCard as Unit;
+                    if (otherUnit == null)
+                        return;
                     if (unit.place != Place.battlefield)
                         return;
-                    if (otherUnit.host != unit.host && otherUnit.row == unit.row)
+                    if (otherCard.host != unit.host && otherUnit.row == unit.row)
                         unit.boost(unit, 1);
                 }, "Whenever an enemy on the opposite row is damaged, boost self by 1.");
                 return self;
@@ -175,7 +177,7 @@ namespace Gwent2
                 self.setUnitAttributes(1, Tag.support, Tag.clanHeyMaey, Tag.doomed);
                 self.setOnDeploy((s, f) =>
                 {
-                    resurrectAllyUnit(s, Filter.anyUnitHasTag(Tag.soldier), Filter.anyUnitHasColor(Rarity.bronze));
+                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.soldier), Filter.anyUnitHasColor(Rarity.bronze));
                 }, "Resurrect a Bronze Soldier.");
                 return self;
             }
@@ -211,7 +213,7 @@ namespace Gwent2
                     Unit u = s.host.selectUnit(
                         Select.Units(s.context.cards,
                         Filter.anyAllyUnitInDeck(s as Unit),
-                        Filter.anyUnitHasTag(Tag.clanDimun),
+                        Filter.anyUnitHasTagAnyFrom(Tag.clanDimun),
                         Filter.anyUnitHasColor(Rarity.bronze),
                         Filter.anyOtherUnitByName(s as Unit)),
                         s.QestionString());
@@ -248,7 +250,7 @@ namespace Gwent2
                 self.setUnitAttributes(3, Tag.support, Tag.clanDimun, Tag.doomed);
                 self.setOnDeploy((s, f) =>
                 {
-                    resurrectAllyUnit(s, Filter.anyUnitHasTag(Tag.machine), Filter.anyUnitHasColor(Rarity.bronze));
+                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.machine), Filter.anyUnitHasColor(Rarity.bronze));
                 }, "Resurrect a Bronze Machine.");
                 return self;
             }
@@ -434,7 +436,7 @@ namespace Gwent2
                 self.setUnitAttributes(10, Tag.support, Tag.clanHeyMaey);
                 self.setOnDeploy((s, f) =>
                 {
-                    s.context._removeRowEffect(s.host, (s as Unit).row, Filter.anyCardHasTag(Tag.hazzard));
+                    s.context._removeRowEffect(s.host, (s as Unit).row, Filter.anyCardHasTagAnyFrom(Tag.hazzard));
                     s.host.selectUnits(
                         Select.Units(s.context.cards,
                         Filter.anyOtherAllyUnitInBattlefield(s as Unit),
@@ -455,7 +457,7 @@ namespace Gwent2
                 {
                     Card item = Filter.randomCardFrom(Select.Cards(s.context.cards,
                         Filter.anyCardInYourDeck(s),
-                        Filter.anyCardHasTag(Tag.hazzard, Tag.organic),
+                        Filter.anyCardHasTagAnyFrom(Tag.hazzard, Tag.organic),
                         Filter.anyCardHasColor(Rarity.bronze)));
                     if (item != null)
                         s.host.playCard(item);
@@ -474,7 +476,7 @@ namespace Gwent2
                 {
                     Card item = s.host.selectCard(Select.Cards(s.context.cards,
                         Filter.anyCardInYourDeck(s),
-                        Filter.anyCardHasTag(Tag.item),
+                        Filter.anyCardHasTagAnyFrom(Tag.item),
                         Filter.anyCardHasColor(Rarity.bronze)),
                         s.QestionString());
                     if (item != null)
@@ -504,7 +506,7 @@ namespace Gwent2
                     Unit ally = s.host.selectUnit(
                         Select.Units(s.context.cards,
                             Filter.anyOtherAllyUnitInBattlefield(s as Unit),
-                            Filter.anyUnitHasTag(possibleClans.ToArray())),
+                            Filter.anyUnitHasTagAnyFrom(possibleClans.ToArray())),
                         s.QestionString());
                     if (ally == null)
                         return;
@@ -516,7 +518,7 @@ namespace Gwent2
                         return;
                     foreach (Unit u in Select.Units(s.context.cards,
                         Filter.anyAllyUnitInBattlefield(s),
-                        Filter.anyUnitHasTag(clanItHas)))
+                        Filter.anyUnitHasTagAnyFrom(clanItHas)))
                         u.boost(s, 1);
                 }, "Boost all allies from a Clan of your choice by 1.");
                 return self;
@@ -534,7 +536,7 @@ namespace Gwent2
                     Unit t = s.host.selectUnit(
                         Select.Units(s.context.cards,
                         Filter.anyOtherAllyUnitInBattlefield(s as Unit),
-                        Filter.anyUnitHasTag(Tag.soldier, Tag.machine),
+                        Filter.anyUnitHasTagAnyFrom(Tag.soldier, Tag.machine),
                         Filter.anyUnitHasColor(Rarity.bronze)),
                         s.QestionString());
 
@@ -551,9 +553,63 @@ namespace Gwent2
             }
         }
         //Raging Berserker
-        //Savage Bear
-        //Dimun Warship
-        //An Craite Longship
+        public static Unit SavageBear
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Savage Bear");
+                self.setUnitAttributes(9, Tag.beast, Tag.cursed);
+                self.setOnCardPlayed((s, f, X) =>
+                {
+                    // if bear is not on field || card has is on out field || card is not a unit
+                    if (s.place != Place.battlefield || f.host == s.host || f as Unit == null)
+                        return;
+                    (f as Unit).damage(s, 1);
+                }, "Whenever a unit is played from either hand on your opponent's side, deal 1 damage to it.");
+                return self;
+            }
+        }
+        public static Unit DimunWarship
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Dimun Warship");
+                self.setUnitAttributes(7, Tag.machine, Tag.clanDimun);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit target = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyOtherUnitInBattlefield(s as Unit)), s.QestionString());
+                    if (target == null)
+                        return;
+                    for (int i = 0; i < 4; i++)
+                        target.damage(s, 1);
+                }, "Deal 1 damage to the same unit 4 times.");
+                return self;
+            }
+        }
+        public static Unit AnCraiteLongship
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "An Craite Longship");
+                self.setUnitAttributes(7, Tag.machine, Tag.clanAnCraite);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit randomEnemy = Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)));
+                    if (randomEnemy != null)
+                        randomEnemy.damage(s, 2);
+                }, "Deal 2 damage to a random enemy.");
+                self.setOnCardDiscarded((s, f, X) =>
+                {
+                    // if is on battlefield and discarded card is yours
+                    if (s.place == Place.battlefield && f.host == s.host)
+                        s.repeatDeployAbility();
+                }, "Repeat this ability whenever you Discard a card.");
+                return self;
+            }
+        }
         public static Unit DimunLightLongship
         {
             get
@@ -572,7 +628,7 @@ namespace Gwent2
                 return self;
             }
         }
-        
+
         // < > silver skellige
         public static Unit JuttaanDimun
         {
@@ -677,7 +733,7 @@ namespace Gwent2
                                 Select.Units(s.context.cards,
                                     Filter.anyAllyUnitInDeck(s),
                                     Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver),
-                                    Filter.anyUnitHasTag(Tag.cursed)));
+                                    Filter.anyUnitHasTagAnyFrom(Tag.cursed)));
                         if (u != null)
                             u.host.playCard(u);
                     },

@@ -13,11 +13,15 @@ namespace Gwent2
             get
             {
                 List<Card> deck = new List<Card>();
-                deck.AddRange(new List<Card>() { 
-                    SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, 
-                    SpawnUnit.DimunCorsair, SpawnUnit.DimunCorsair, SpawnUnit.DimunCorsair,
-                    SpawnUnit.DimunPirateCaptain, SpawnUnit.DimunPirateCaptain, SpawnUnit.DimunPirateCaptain,
-                    SpawnUnit.DimunLightLongship, SpawnUnit.Udalryk, SpawnUnit.Udalryk, SpawnUnit.Udalryk, SpawnUnit.Udalryk
+                deck.AddRange(new List<Card>() {
+                    SpawnLeader.HaraldtheCripple,
+                    SpawnUnit.DrummondWarmonger,
+                    SpawnUnit.SvanrigeTuirseach,
+                    SpawnUnit.SvanrigeTuirseach,
+                    SpawnUnit.TuirseachBearmaster,
+                    SpawnUnit.AnCraiteWarrior,
+                    SpawnSpecial.Restore,
+                    SpawnSpecial.Restore
                 });
 
                 return deck;

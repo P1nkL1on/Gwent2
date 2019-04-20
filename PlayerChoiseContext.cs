@@ -24,6 +24,21 @@ namespace Gwent2
         // . . . no descriptions
     }
 
+    class ChoiseOptionContext : ChoiseContext
+    {
+        ChoiseOptionContext(List<string> variants, int nSelect)
+        {
+            _question = String.Format("Select {0} of {1}:", nSelect, variants.Count);
+            _choiseOptions = variants;
+            _hasExtraChoise = false;
+            _extraChoise = "";
+        }
+        public static ChoiseOptionContext OneOfTwo(string a, string b)
+        {
+            return new ChoiseOptionContext(new List<string>() { a, b}, 1);
+        }
+    }
+
     class PlayerChoiseContext : ChoiseContext
     {
         protected List<Player> _players;

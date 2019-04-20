@@ -177,7 +177,7 @@ namespace Gwent2
                 {
                     Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
                     int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
-                    s.context._removeRowEffect(enemy, row, Filter.anyCardHasTag(Tag.boon));
+                    s.context._removeRowEffect(enemy, row, Filter.anyCardHasTagAnyFrom(Tag.boon));
                     foreach (Unit t in Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s), Filter.anyUnitInRow(row)))
                         t.damage(s, 2);
 
@@ -197,8 +197,8 @@ namespace Gwent2
                     for (int row = 0; row < 3; ++row)
                     {
                         Unit t = Filter.randomUnitFrom(
-                            Select.Units(s.context.cards, 
-                            Filter.anyAllyUnitInBattlefield(s), 
+                            Select.Units(s.context.cards,
+                            Filter.anyAllyUnitInBattlefield(s),
                             Filter.anyUnitInRow(row)));
                         if (t != null)
                             t.boost(s, 4);
@@ -267,7 +267,7 @@ namespace Gwent2
                     });
             }
         }
-        
+
         static string HazzardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
         static string HazzardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
         static string BoonQuestionRow(string name) { return String.Format("Select row to apply {0}", name); }
@@ -300,6 +300,78 @@ namespace Gwent2
             }, description);
             return spec;
         }
+
+
+        // skiellege
+        public static Special BoneTalisman
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.skellige, Rarity.bronze, "Bone Talisman");
+                spec.setSpecialAttributes(Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    if (s.host.selectOption(ChoiseOptionContext.OneOfTwo(
+                        "Resurrect a Bronze Beast or Cultist.",
+                        "Heal an ally and Strengthen it by 3."))
+                        == 0)
+                    {
+                        Unit u = s.host.selectUnit(
+                            Select.Units(s.context.cards,
+                                Filter.anyAllyUnitInDiscard(s),
+                                Filter.anyUnitHasTagAnyFrom(Tag.beast, Tag.cultist),
+                                Filter.anyUnitHasColor(Rarity.bronze)),
+                            s.QestionString());
+                        if (u != null)
+                            s.host.playCard(u);
+                    }
+                    else
+                    {
+                        Unit u = s.host.selectUnit(
+                            Select.Units(s.context.cards,
+                                Filter.anyAllyUnitInBattlefield(s)),
+                            s.QestionString());
+                        if (u != null)
+                        {
+                            u.heal(s);
+                            u.strengthen(s, 3);
+                        }
+                    }
+                }, "Choose One: Resurrect a Bronze Beast or Cultist; or Heal an ally and Strengthen it by 3.");
+                return spec;
+            }
+        }
+        public static Special Restore
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.skellige, Rarity.silver, "Restore");
+                spec.setSpecialAttributes(Tag.spell);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit u = s.host.selectUnit(
+                            Select.Units(s.context.cards,
+                                Filter.anyAllyUnitInDiscard(s),
+                                Filter.anyUnitHasClan(Clan.skellige),
+                                Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver)),
+                            s.QestionString());
+                    if (u != null)
+                    {
+                        // return it to hand, power -> 8, added doomed
+                        u.setBasePowerTo(s, 8);
+                        u.addTag(Tag.doomed);
+                        u.move(Place.hand);
+                    }
+                    Card p = s.host.selectCard(Select.Cards(s.context.cards, Filter.anyCardInYourHand(s)), "Select a card to play");
+                    if (p != null)
+                        s.host.playCard(p);
+                }, "Return a Bronze or Silver Skellige unit from your graveyard to your hand, add the Doomed category to it, and set its base power to 8. Then play a card.");
+                return spec;
+            }
+        }
+
     }
     class RowEffect
     {

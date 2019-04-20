@@ -92,7 +92,10 @@ namespace Gwent2
             Card choosen = selectCard(fromListU, question);
             return choosen == null ? null : (choosen as Unit);
         }
-
+        public virtual int selectOption(ChoiseOptionContext options)
+        {
+            return makeDescision(options);
+        }
         public virtual void playCard(Card card)
         {
             card.context.Log(card, "played by " + this.ToString());

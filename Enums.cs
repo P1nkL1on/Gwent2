@@ -8,12 +8,13 @@ namespace Gwent2
 {
     enum Place
     {
-        token = -1,
-        deck = 0,
-        hand = 1,
-        battlefield = 2,
-        graveyard = 3,
-        banish = 4
+        token,
+        deck,
+        hand,
+        battlefield,
+        graveyard,
+        banish,
+        handLeader
     }
 
     enum Rarity
@@ -37,7 +38,13 @@ namespace Gwent2
     enum Tag
     {
         none,
-
+        /// <summary>
+        /// special unit card type, used one per deck
+        /// </summary>
+        leader,
+        /// <summary>
+        /// doomed units will be banished instead of sending to graveyard after destroying or round end
+        /// </summary>
         doomed,
         cursed,
 
@@ -68,7 +75,7 @@ namespace Gwent2
 
     class Utils
     {
-        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.deck, Place.graveyard, Place.banish };
+        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.handLeader, Place.deck, Place.graveyard, Place.banish };
         public static List<string> allRows = new List<string>() { "melee", "ranged", "support"};
 
         // line out

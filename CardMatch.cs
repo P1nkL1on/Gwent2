@@ -23,7 +23,13 @@ namespace Gwent2
         {
             Log(String.Format("{0} : {1}", source.ToString(), message));
         }
-        public void AddCardToGame(Card card) { Log(card, "added to game"); cards.Add(card); }
+        public void AddCardToGame(Card card) { 
+            Log(card, "added to game"); 
+            cards.Add(card);
+            if (card._show == null)
+                cards[0]._show._global.addContainerFor(card);
+            
+        }
 
         public Match(List<Player> participants, List<List<Card>> decks)
         {
@@ -117,8 +123,6 @@ namespace Gwent2
             //                                              [7] 4 6
             // or even [5] 8 9 --> 8 9 [5]
 
-            newUnit.context.Log(newUnitInList + " -> " + wantPlace);
-
             if (newUnitInList == wantPlace)
                 return; //luckly this unit is on place he wants
 
@@ -141,6 +145,28 @@ namespace Gwent2
             if (index == 0)
                 return null;
             return us[index - 1];
+        }
+        public Unit _unitToTheRight(Unit self)
+        {
+            var us = _allUnitsInRow(self.row, self.host);
+            int index = us.IndexOf(self);
+            if (index > us.Count)
+                return null;    // critical error
+            if (index == us.Count - 1)
+                return null;
+            return us[index + 1];
+        }
+        public List<Unit> _adjastedUnits(Unit self, int nCountForEachSide)
+        {
+            var us = _allUnitsInRow(self.row, self.host);
+            int index = us.IndexOf(self);
+            int from = Math.Max(0, index - nCountForEachSide);
+            int to = Math.Min(us.Count - 1, index + nCountForEachSide);
+            List<Unit> res = new List<Unit>();
+            for (int i = from; i < to; ++i)
+                if (us[i] != self)
+                    res.Add(us[i]);
+            return res;
         }
         public Card _topCardOfDeck(Player player)
         {
@@ -172,7 +198,14 @@ namespace Gwent2
         {
             return Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.hand, player));
         }
-
+        List<Card> _handWithLeaderOf(Player player)
+        {
+            var res = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.hand, player));
+            var allPossibleLeadersToPlay = Select.Cards(cards, Filter.anyCardHostByPlayerIn(Place.handLeader, player));
+            foreach (Card c in allPossibleLeadersToPlay)
+                res.Add(c);
+            return res;
+        }
         Random shuffleRandomiser = new Random(DateTime.Now.Millisecond);
         void _shuffleCards(List<int> indices)
         {
@@ -284,7 +317,13 @@ namespace Gwent2
                     return r;
             return null;
         }
-        
+        void _makeLeadersVisibleToAll()
+        {
+            foreach (Card c in cards)
+                if (c as Leader != null)
+                    (c as Leader).makeVisibleAll();
+        }
+
         public List<Player> currentlyWinning
         {
             get
@@ -355,7 +394,7 @@ namespace Gwent2
                 player.passed = false;
                 switch (roundIndex)
                 {
-                    case 1: _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
+                    case 1: _makeLeadersVisibleToAll(); _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
                     case 2: _drawCard(player, 2); _mulliganOnRoundStart(player, 2); continue;
                     case 3: _drawCard(player, 1); _mulliganOnRoundStart(player, 1); continue;
                     default: continue;
@@ -381,7 +420,7 @@ namespace Gwent2
             {
                 // draw current state for human player
                 //if (currentPlayer as PlayerHuman != null) { State(); Console.ReadLine(); State(); }
-                Card selected = currentPlayer.selectCardOrNone(_handOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
+                Card selected = currentPlayer.selectCardOrNone(_handWithLeaderOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
                 if (selected != null)
                 {
                     //topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);

@@ -24,6 +24,8 @@ namespace Gwent2
         TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
 
         TriggerUnitAction _onUnitDamaged = (s, by, X) => { /*s._context.Log(s, String.Format("watchs how {0} suffers {1} damage", by.ToString(), X));*/ };
+        public TriggerUnitAction _onCardPlayed = (s, by, X) => { };
+        public TriggerUnitAction _onCardDiscarded = (s, by, X) => { };
         TriggerUnitSelf _onDestroy = (s, by) => { s._context.Log(s, "destroyed");};
 
         string _onDamagedAbility = "";
@@ -32,6 +34,8 @@ namespace Gwent2
         string _onStrengthledAbility = "";
         string _onHealedAbility = "";
         string _onArmorGainAbility = "";
+        string _onCardPlayedAbility = "";
+        string _onCardDiscardedAbility = "";
         string _onUnitDamagedAbility = "";
         string _onDestroyAbility = "";
 
@@ -44,6 +48,8 @@ namespace Gwent2
 
         public void setOnDestroy(TriggerUnitSelf trigger, string description) { _onDestroy = trigger; _onDestroyAbility = description; }
         public void setOnUnitDamaged(TriggerUnitAction trigger, string description) { _onUnitDamaged = trigger; _onUnitDamagedAbility = description; }
+        public void setOnCardPlayed(TriggerUnitAction trigger, string description) { _onCardPlayed = trigger; _onCardPlayedAbility = description; }
+        public void setOnCardDiscarded(TriggerUnitAction trigger, string description) { _onCardDiscarded = trigger; _onCardDiscardedAbility = description; }
 
         public override int power { get { return _power; } }
         public int basePower { get { return _basePower; } }
@@ -63,16 +69,27 @@ namespace Gwent2
             _show.redrawCausedMove();
             _onMove(source, Place.battlefield);
         }
-        public virtual void damage  (Card source, int X)
+        public virtual void setBasePowerTo(Card source, int X)
         {
+            //Effects.Trajectory(source, this, showAction.boost);
+            _basePower = _power = X;
+        }
+        // return was unit destroyed or not
+        public virtual bool damage  (Card source, int X)
+        {
+            // can not deal any damage to unit in deck, graveyard or banish
+            // in hand unit can be only SET HEALTH to low his power
+            // in battlefield all actions are inlaw
+            if (place != Place.battlefield)
+                return false;
             if (X <= 0)
-                return;
+                return false;
 
             int unitHasArmor = status.armor;
             status.armor = Math.Max(0, unitHasArmor - X);
             X = X - unitHasArmor;
             if (X <= 0)
-                return;
+                return false;
 
             _power -= X;
             Effects.Trajectory(source, this, showAction.damage);
@@ -85,6 +102,8 @@ namespace Gwent2
 
             if (isMustbeDestroyed)
                 destroy(source);
+
+            return isMustbeDestroyed;
         }
         public virtual void weaken(Card source, int X)
         {
@@ -179,7 +198,7 @@ namespace Gwent2
         public override string ToFormatAbilities()
         {
             string baseAbilities = base.ToFormatAbilities();
-            string abilities = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
+            string abilities = String.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}",
                 baseAbilities.Length == 0 ? "" : baseAbilities,
                 _onDestroyAbility.Length == 0 ? "" : (_onDestroyAbility + "\n"),
                 _onDamagedAbility.Length == 0 ? "" : (_onDamagedAbility + "\n"),
@@ -188,7 +207,10 @@ namespace Gwent2
                 _onStrengthledAbility.Length == 0 ? "" : (_onStrengthledAbility + "\n"),
                 _onHealedAbility.Length == 0 ? "" : (_onHealedAbility + "\n"),
                 _onArmorGainAbility.Length == 0 ? "" : (_onArmorGainAbility + "\n"),
-                _onUnitDamagedAbility.Length == 0 ? "" : (_onUnitDamagedAbility + "\n"));
+                _onUnitDamagedAbility.Length == 0 ? "" : (_onUnitDamagedAbility + "\n"),
+                _onCardPlayedAbility.Length == 0 ? "" : (_onCardPlayedAbility + "\n"),
+                _onCardDiscardedAbility.Length == 0 ? "" : (_onCardDiscardedAbility + "\n")
+                );
             return String.Format("{0}{1}", abilities, AbilityHints.addHitsTo(abilities));
         }
 
