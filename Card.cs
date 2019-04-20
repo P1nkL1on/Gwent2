@@ -15,7 +15,7 @@ namespace Gwent2
         protected Player _baseHost;
         protected Player _host;
         public Timer timer = new Timer();
-        public String name { get { return _name; } }
+        public String name { get { return _name; } set { _name = value; } }
         public Clan clan { get { return _clan; } }
         public Rarity rarity { get { return _rarity; } }
         public Player host { get { return _host; } }

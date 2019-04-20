@@ -17,6 +17,7 @@ namespace Gwent2
         private ConsoleWindowText decideWindow = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.leftTextColumnHeigth);
         private ConsoleWindowText descriptionWindow = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.leftTextColumnHeigth);
 
+        // with readings
         //protected override int makeDescision(ChoiseContext choise)
         //{
         //    if (choise.OptionsCount == 1)
@@ -38,6 +39,7 @@ namespace Gwent2
         //    decideWindow.ClearLogWindow();
         //    return answer;
         //}
+
         protected void SwapColors()
         {
             ConsoleColor tmp = Console.ForegroundColor;
@@ -57,7 +59,7 @@ namespace Gwent2
             foreach (string v in choise.ChoiseOptions)
             {
                 if (lineIndex == answer) SwapColors();
-                decideWindow.AddLogWithCurrentColor(String.Format("  {0} >\t{1}", ++index, v));
+                decideWindow.AddLogWithCurrentColor(String.Format("    {1}", ++index, v));
                 ++lineIndex;
             }
             ConsoleKey pressed = ConsoleKey.NoName;
@@ -87,7 +89,7 @@ namespace Gwent2
                 {
                     if (i == answer) SwapColors();
                     Console.SetCursorPosition(decideWindow.X, decideWindow.Y + i + 1);
-                    Console.Write(String.Format("  {0} >\t{1}", i + 1, choise.ChoiseOptions[i]));
+                    Console.Write(String.Format("    {1}", i + 1, choise.ChoiseOptions[i]));
                     if (i == answer) SwapColors();
                 }
             } while (pressed != ConsoleKey.Enter);

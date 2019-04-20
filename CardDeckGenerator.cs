@@ -14,15 +14,12 @@ namespace Gwent2
             {
                 List<Card> deck = new List<Card>();
                 deck.AddRange(new List<Card>() { 
-                    SpawnUnit.JuttaanDimun,SpawnUnit.JuttaanDimun,
-                    SpawnUnit.JuttaanDimun,SpawnUnit.AnCraiteRaider,
                     SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, SpawnUnit.DrummondWarmonger, 
-                    SpawnUnit.Morkvarg, SpawnUnit.Morkvarg,
-                    SpawnUnit.Yoana, SpawnUnit.JuttaanDimun, SpawnUnit.Udalryk, SpawnUnit.SvanrigeTuirseach, SpawnUnit.Skjall
+                    SpawnUnit.DimunCorsair, SpawnUnit.DimunCorsair, SpawnUnit.DimunCorsair,
+                    SpawnUnit.DimunPirateCaptain, SpawnUnit.DimunPirateCaptain, SpawnUnit.DimunPirateCaptain,
+                    SpawnUnit.DimunLightLongship, SpawnUnit.Udalryk, SpawnUnit.Udalryk, SpawnUnit.Udalryk, SpawnUnit.Udalryk
                 });
-                //int nCount = 10;
-                //while (nCount-- > 0)
-                //    deck.Add(SpawnUnit.DrummondShieldmaid);
+
                 return deck;
             }
         }
@@ -34,14 +31,14 @@ namespace Gwent2
                 List<Card> deck = new List<Card>();
                 int nCount = 15;
                 while (nCount-- > 0)
-                    deck.Add(SpawnUnit.TuirseachHunter);
-                nCount = 2;
-                while (nCount-- > 0)
-                    deck.Add(SpawnUnit.Emissary);
+                    deck.Add(SpawnUnit.Skjall);
+                //nCount = 2;
+                //while (nCount-- > 0)
+                //    deck.Add(SpawnUnit.Emissary);
 
-                deck.AddRange(new List<Card>() { 
-                    SpawnSpecial.TorrentialRain, SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog,
-                });
+                //deck.AddRange(new List<Card>() { 
+                //    SpawnSpecial.TorrentialRain, SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog,
+                //});
 
                 return deck;
             }

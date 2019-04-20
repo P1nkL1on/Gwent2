@@ -554,6 +554,25 @@ namespace Gwent2
         //Savage Bear
         //Dimun Warship
         //An Craite Longship
+        public static Unit DimunLightLongship
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.bronze, "Dimun Light Longship");
+                self.setUnitAttributes(7, Tag.machine, Tag.clanDimun);
+                self.setOnTurnEnd((s) =>
+                {
+                    Unit left = s.context._unitToTheLeft(s as Unit);
+                    if (left == null)
+                        return;
+                    left.damage(s, 1);
+                    (s as Unit).boost(s, 2);
+                }, "On turn end, deal 1 damage to the unit to the right, then boost self by 2.");
+                return self;
+            }
+        }
+        
         // < > silver skellige
         public static Unit JuttaanDimun
         {

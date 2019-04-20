@@ -99,14 +99,12 @@ namespace Gwent2
             Unit unit = card as Unit;
             if (unit != null)
                 if (!unit.isSpy)
-                    unit.row = chooseRow("Select row for " + card.ToString());
+                    choosePlaceForUnit(unit);
                 else
                 {
-                    Player newSpyHost = chooseEnemy(card.context, "Select new host for " + card.ToString());
-                    unit.setSpyHost(newSpyHost, this);
-                    unit.row = chooseEnemyRow(newSpyHost, String.Format("Select {0}'s row for {1}", newSpyHost.ToString(), card.ToString()));
+                    unit.setSpyHost(chooseEnemy(card.context, "Select new host for " + card.ToString()), this);
+                    choosePlaceForSpyUnit(unit);
                 }
-
             card.move(Place.battlefield);
         }
 
@@ -118,6 +116,17 @@ namespace Gwent2
         {
             return makeDescision(new RowChoiseContext(enemy, question));
         }
+        public virtual void choosePlaceForUnit(Unit unit){
+            unit.row = chooseRow("Select row for " + unit.ToString());
+            int wantedPlace = chooseUnitsPlaceInRow(unit.context._allUnitsInRow(unit.row, unit.host));
+            unit.context._setUnitToPositionInRow(unit, wantedPlace);
+        }
+        public virtual void choosePlaceForSpyUnit(Unit unit)
+        {
+            unit.row = chooseEnemyRow(unit.host, String.Format("Select {0}'s row for {1}", unit.host.ToString(), unit.ToString()));
+            int wantedPlace = chooseUnitsPlaceInRow(unit.context._allUnitsInRow(unit.row, unit.host));
+            unit.context._setUnitToPositionInRow(unit, wantedPlace);
+        }
         public virtual Player chooseEnemy(Match context, string question)
         {
             List<Player> enemies = new List<Player>();
@@ -128,6 +137,11 @@ namespace Gwent2
                 return enemies[0];
             return enemies[makeDescision(new PlayerChoiseContext(enemies, question))];
         }
+        public virtual int chooseUnitsPlaceInRow(List<Unit> neigthboors)
+        {
+            return makeDescision(CardChoiseContext.WithNoneOption(neigthboors, "Select a unit to left", "Become the most left"));
+        }
+
         protected Random rnd = new Random();
 
         protected virtual int makeDescision(ChoiseContext choiseContext)

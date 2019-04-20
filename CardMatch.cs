@@ -78,6 +78,70 @@ namespace Gwent2
                 exactCard.move(Place.hand);
         }
 
+        public List<Unit> _allUnitsInRow(int row, Player p)
+        {
+            return Select.Units(cards, Filter.anyUnitInBattlefield(), Filter.anyUnitHostBy(p), Filter.anyUnitInRow(row));
+        }
+        public void _setUnitToPositionInRow(Card newUnit, int wantPlace)
+        {
+            List<int> allRowIndices = _getIndicesOfUnits(Filter.anyAllyUnitInBattlefield(newUnit), Filter.anyUnitInRow((newUnit as Unit).row));
+            if (allRowIndices.Count == 0)
+                return;
+
+            int newUnitIndex = cards.IndexOf(newUnit);
+            if (allRowIndices.Count == 1)
+            {
+                int neighIndex = allRowIndices[0];
+                if ((wantPlace == 0 && newUnitIndex > neighIndex)
+                    || (wantPlace == 1 && newUnitIndex < neighIndex))
+                {
+                    Card tmp = newUnit;
+                    cards[newUnitIndex] = cards[neighIndex];
+                    cards[neighIndex] = tmp;
+                }
+                // else there is cool by this way
+                return;
+            }
+            int newUnitInList = -1;
+            for (int i = 0; i < allRowIndices.Count - 1; ++i)
+                if (allRowIndices[i] <= newUnitIndex && allRowIndices[i + 1] >= newUnitIndex)
+                { allRowIndices.Insert(i + 1, newUnitIndex); newUnitInList = i + 1;  break; }
+            if (newUnitInList == -1)
+            {
+                if (newUnitIndex < allRowIndices[0]) { newUnitInList = 0; allRowIndices.Insert(0, newUnitIndex); }
+                if (newUnitIndex > allRowIndices.Last()) { newUnitInList = allRowIndices.Count; allRowIndices.Add(newUnitIndex); }
+            }
+            // now we have an array like 1 4 6 [7] 10 11, where [7] is a position of choosen unit and he wants from ind3 to <wantPlace>
+            // if wantPlace = 1, then -->1 [7] 4 6 10 11
+            // and only theese cards should be moved out    4 6 [7]
+            //                                              [7] 4 6
+            // or even [5] 8 9 --> 8 9 [5]
+
+            newUnit.context.Log(newUnitInList + " -> " + wantPlace);
+
+            if (newUnitInList == wantPlace)
+                return; //luckly this unit is on place he wants
+
+            bool moveLeft = wantPlace < newUnitInList;
+            if (moveLeft)
+                for (int i = newUnitInList; i > wantPlace; i--)
+                    cards[allRowIndices[i]] = cards[allRowIndices[i - 1]];
+            else
+                for (int i = newUnitInList; i < wantPlace; ++i)
+                    cards[allRowIndices[i]] = cards[allRowIndices[i + 1]];
+            
+            cards[allRowIndices[wantPlace]] = newUnit;
+        }
+        public Unit _unitToTheLeft(Unit self)
+        {
+            var us = _allUnitsInRow(self.row, self.host);
+            int index = us.IndexOf(self);
+            if (index == -1)
+                return null;    // critical error
+            if (index == 0)
+                return null;
+            return us[index - 1];
+        }
         public Card _topCardOfDeck(Player player)
         {
             var deck = _deckOf(player);
@@ -133,6 +197,23 @@ namespace Gwent2
                 bool accepted = true;
                 foreach (CardPredicat f in filters)
                     if (!f(cards[ind]))
+                    {
+                        accepted = false;
+                        break;
+                    }
+                if (accepted)
+                    res.Add(ind);
+            }
+            return res;
+        }
+        List<int> _getIndicesOfUnits(params UnitPredicat[] filters)
+        {
+            List<int> res = new List<int>();
+            for (int ind = 0; ind < cards.Count; ++ind)
+            {
+                bool accepted = true;
+                foreach (UnitPredicat f in filters)
+                    if (cards[ind] as Unit != null && !f(cards[ind] as Unit))
                     {
                         accepted = false;
                         break;
@@ -203,6 +284,7 @@ namespace Gwent2
                     return r;
             return null;
         }
+        
         public List<Player> currentlyWinning
         {
             get

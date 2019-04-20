@@ -123,5 +123,13 @@ namespace Gwent2
         {
             return new CardChoiseContext(cards, Question, true, NoneName);
         }
+
+        public static CardChoiseContext WithNoneOption(List<Unit> units, string Question, string NoneName)
+        {
+            List<Card> cards = new List<Card>();
+            foreach (Unit u in units)
+                cards.Add(u);
+            return new CardChoiseContext(cards, Question, true, NoneName);
+        }
     }
 }
