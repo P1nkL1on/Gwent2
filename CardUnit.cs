@@ -100,10 +100,11 @@ namespace Gwent2
                 if (c as Unit != null)
                     (c as Unit)._onUnitDamaged(c as Unit, this, X);
 
-            if (isMustbeDestroyed)
+            bool mustBeDestroyed = isMustbeDestroyed;
+            if (mustBeDestroyed)
                 destroy(source);
 
-            return isMustbeDestroyed;
+            return mustBeDestroyed;
         }
         public virtual void weaken(Card source, int X)
         {

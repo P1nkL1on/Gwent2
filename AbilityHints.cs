@@ -21,7 +21,8 @@ namespace Gwent2
                 "Lowest", "Lowest power, ties are resolved randomly.",
                 "Highest", "Highest power, ties are resolved randomly.",
                 "Single-Use", "This card's ability can be used only once per game.",
-                "Doomed","Status that removes the unit from the game when it leaves the battlefield."
+                "Doomed","Status that removes the unit from the game when it leaves the battlefield.",
+                "Duel", "Units take turns dealing damage equal to their power until one of them is destroyed."
         };
         public static string addHitsTo(string sourceAbilities)
         {

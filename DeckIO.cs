@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
+using System.Linq;
 
 namespace Gwent2
 {
@@ -87,7 +88,7 @@ namespace Gwent2
                         found = true;
                         break;
                     }
-                if (!found) 
+                if (!found)
                     res.Add(null);
             }
             return res;
@@ -108,7 +109,7 @@ namespace Gwent2
             string[] deckLines = File.ReadAllLines("../Decks/" + fileName + ".txt");
 
             string availableCountCharacters = "123";
-            string availableClanNames = ""; for (int i = 1; i < clanNames.Count; ++i) availableClanNames += clanNames[i] + ((i < clanNames.Count - 1)?", " : "");
+            string availableClanNames = ""; for (int i = 1; i < clanNames.Count; ++i) availableClanNames += clanNames[i] + ((i < clanNames.Count - 1) ? ", " : "");
 
             int readenIndex = 0;
             for (int i = 0; i < deckLines.Length; ++i)
@@ -138,16 +139,63 @@ namespace Gwent2
             }
             List<Card> invokedCards = invokeCardsByNames(_cardNames);
 
-            checkDeckStandart(_cardNames, invokedCards, ref _warnings, ref _errors);
+            var cards = checkDeckStandart(_cardNames, invokedCards, ref _warnings, ref _errors);
 
-            return Deck.FromCards(invokeCardsByNames(_cardNames), fileName);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            foreach (string w in _warnings)
+                Console.WriteLine(w);
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            foreach (string e in _errors)
+                Console.WriteLine(e);
+
+            Console.ResetColor();
+            Console.ReadLine();
+
+            if (cards == null)
+                return null;
+            return Deck.FromCards(cards, fileName);
         }
 
-        static bool checkDeckStandart(List<string> loadingNames, List<Card> invokedCards, ref List<string> warnins, ref List<string> errors)
+        static List<Card> checkDeckStandart(List<string> loadingNames, List<Card> invokedCards, ref List<string> warnings, ref List<string> errors)
         {
+            // equale to Enum Rarity, 3 is leaders
+            List<Card> resDeck = new List<Card>();
+            List<Dictionary<string, int>> copies 
+                = new List<Dictionary<string,int>>(){
+                    new Dictionary<string,int>(), 
+                    new Dictionary<string,int>(), 
+                    new Dictionary<string,int>(), 
+                    new Dictionary<string,int>()};
+            for (int i = 0; i < loadingNames.Count; ++i)
+            {
+                string name = loadingNames[i];
+                Card c = invokedCards[i];
+                if (c == null)
+                {
+                    string warning = String.Format("Can not invoke card \"{0}\".", name);
+                    if (warnings.IndexOf(warning) < 0)warnings.Add(warning);
+                    continue;
+                }
+                resDeck.Add(c);
 
-
-            return false;
+                int di = (c as Leader != null)? 3 : (int)c.rarity;
+                int prevCount = 0;
+                if (copies[di].TryGetValue(name, out prevCount))
+                    copies[di][name]++;
+                else
+                    copies[di].Add(name, 1);
+            }
+            int nCards = resDeck.Count - 1; // 1 leader is not in the deck
+            if (copies[3].Count != 1)errors.Add("Deck must contain exactly one Leader!");
+            if (nCards < 25)errors.Add("Deck must contain at least 25 cards!");
+            if (nCards > 40)errors.Add("Deck must contain not more then 40 cards!");
+            if (copies[2].Count > 4) errors.Add("Deck must contain not more then 4 Gold cards!");
+            if (copies[1].Count > 6) errors.Add("Deck must contain not more then 6 Silver cards!");
+            foreach (int bronzeCount in copies[1].Values.ToList())if (bronzeCount > 1)errors.Add("Deck must contain not more then 1 copiy of each Gold card!");
+            foreach (int bronzeCount in copies[2].Values.ToList())if (bronzeCount > 1)errors.Add("Deck must contain not more then 1 copiy of each Silver card!");
+            foreach (int bronzeCount in copies[0].Values.ToList())if (bronzeCount > 3)errors.Add("Deck must contain not more then 3 copies of each Bronze card!");
+            return errors.Count > 0? null : resDeck;
         }
     }
 }

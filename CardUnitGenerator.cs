@@ -32,14 +32,38 @@ namespace Gwent2
             if (u != null)
                 self.host.playCard(u);
         }
-        static void dealDamage(Card self, int damageValue)
+        static bool dealDamage(Card self, int damageValue)
         {
             Unit t = self.host.selectUnit(
                         Select.Units(self.context.cards, Filter.anyOtherUnitInBattlefield(self as Unit)),
                         self.QestionString());
             if (t != null)
-                t.damage(self, damageValue);
+                return t.damage(self, damageValue);
+            return false;
         }
+        static Unit weatherMage(string Name, string description, Clan clan, Card option1, Card option2, Card option3, params Tag [] tags)
+        {
+            Unit self = new Unit();
+            self.setAttributes(clan, Rarity.silver, Name);
+            self.setUnitAttributes(4, tags);
+            self.setOnDeploy((s, f) =>
+            {
+                List<Card> vars = new List<Card>() { option1, option2, option3 };
+                s.host.playCard(SpawnSpecial.addSpecialToGame(s.host.selectCard(vars, s.QestionString()) as Special, s));
+            }, description);
+            return self;
+        }
+        static void duel (Unit self, Unit fightWith)
+        {
+            for (; ; )
+            {
+                bool opponentDead = fightWith.damage(self, self.power);
+                if (opponentDead) return;
+                bool selfDead = self.damage(fightWith, fightWith.power);
+                if (selfDead) return;
+            }
+        }
+        
 
         // ||| SKELIGE |||
         // < > bronze skellige
@@ -436,7 +460,7 @@ namespace Gwent2
                 self.setUnitAttributes(10, Tag.support, Tag.clanHeyMaey);
                 self.setOnDeploy((s, f) =>
                 {
-                    s.context._removeRowEffect(s.host, (s as Unit).row, Filter.anyCardHasTagAnyFrom(Tag.hazzard));
+                    s.context._removeRowEffect(s.host, (s as Unit).row, Filter.anyCardHasTagAnyFrom(Tag.hazard));
                     s.host.selectUnits(
                         Select.Units(s.context.cards,
                         Filter.anyOtherAllyUnitInBattlefield(s as Unit),
@@ -457,7 +481,7 @@ namespace Gwent2
                 {
                     Card item = Filter.randomCardFrom(Select.Cards(s.context.cards,
                         Filter.anyCardInYourDeck(s),
-                        Filter.anyCardHasTagAnyFrom(Tag.hazzard, Tag.organic),
+                        Filter.anyCardHasTagAnyFrom(Tag.hazard, Tag.organic),
                         Filter.anyCardHasColor(Rarity.bronze)));
                     if (item != null)
                         s.host.playCard(item);
@@ -494,24 +518,15 @@ namespace Gwent2
                 self.setUnitAttributes(9, Tag.support, Tag.clanHeyMaey);
                 self.setOnDeploy((s, f) =>
                 {
-                    List<Tag> possibleClans = new List<Tag>(){
-                        Tag.clanAnCraite,
-                        Tag.clanDimun,
-                        Tag.clanDrummond,
-                        Tag.clanHeyMaey,
-                        Tag.clanTuirseach,
-                        Tag.clanTordarroch,
-                        Tag.clanBrokvar
-                    };
                     Unit ally = s.host.selectUnit(
                         Select.Units(s.context.cards,
                             Filter.anyOtherAllyUnitInBattlefield(s as Unit),
-                            Filter.anyUnitHasTagAnyFrom(possibleClans.ToArray())),
+                            Filter.anyUnitHasTagAnyFrom(Utils.possibleClans.ToArray())),
                         s.QestionString());
                     if (ally == null)
                         return;
                     Tag clanItHas = Tag.none;
-                    foreach (Tag cl in possibleClans)
+                    foreach (Tag cl in Utils.possibleClans)
                         if (ally.hasTag(cl))
                             clanItHas = cl;
                     if (clanItHas == Tag.none)
@@ -767,7 +782,116 @@ namespace Gwent2
                 return self;
             }
         }
+        public static Unit Sigrdrifa
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Sigrdrifa");
+                self.setUnitAttributes(3, Tag.support, Tag.doomed);
+                self.setOnDeploy((s, f) =>
+                {
+                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Utils.possibleClans.ToArray()), Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver));
+                }, "Resurrect a Bronze Soldier.");
+                return self;
+            }
+        }
+        //Harald Houndsnout
+        //Blueboy Lugos
+        //Donar an Hindar
+        //Spectral Whale
+        //Giant Boar
+        public static Unit HolgerBlackhand
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Holger Blackhand");
+                self.setUnitAttributes(6, Tag.soldier, Tag.clanDimun);
+                self.setOnDeploy((s, f) =>
+                {
+                    bool destroyed = dealDamage(s, 6);
+                    Unit u = Filter.highestUnit(Select.Units(s.context.cards, Filter.anyAllyUnitInDiscard(s)));
+                    if (u != null)
+                        u.strengthen(s, 3);
+                }, "Deal 6 damage. If the unit was destroyed, Strengthen the Highest unit in your graveyard by 3.");
+                return self;
+            }
+        }
+        public static Unit DraigBonDhu
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Draig Bon-Dhu");
+                self.setUnitAttributes(6, Tag.support);
+                self.setOnDeploy((s, f) =>
+                {
+                    foreach (Card u in s.host.selectCardsOrNone(
+                        Select.Cards(s.context.cards,
+                            Filter.anyUnit(),
+                            Filter.anyCardInYourGraveyard(s),
+                            Filter.nonLeaderCard()),
+                    2, s.QestionString()))
+                        (u as Unit).strengthen(s, 3);
 
+                }, "Strengthen 2 non-Leader units in your graveyard by 3.");
+                return self;
+            }
+        }
+        public static Unit DjengeFrett
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Djenge Frett");
+                self.setUnitAttributes(10, Tag.soldier, Tag.clanDimun);
+                self.setOnDeploy((s, f) => {
+                    foreach (Unit u in s.host.selectUnits(
+                        Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)),
+                        2, s.QestionString()))
+                    {
+                        u.damage(s, 1);
+                        (s as Unit).strengthen(s, 2);
+                    }
+
+                }, "Deal 1 damage to 2 allies and Strengthen self by 2 for each.");
+                return self;
+            }
+        }
+        public static Unit Derran
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Derran");
+                self.setUnitAttributes(6, Tag.cursed, Tag.clanTuirseach);
+                self.setOnUnitDamaged((s, otherCard, X) =>
+                {
+                    Unit unit = s as Unit, otherUnit = otherCard as Unit;
+                    if (otherUnit != null && unit.place == Place.battlefield && otherCard.host != unit.host)
+                        unit.boost(unit, 1);
+                }, "Whenever an enemy is damaged, boost self by 1.");
+                return self;
+            }
+        }
+        public static Unit ChampionofHov
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Champion of Hov");
+                self.setUnitAttributes(7, Tag.ogroid);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit target = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), s.QestionString());
+                    if (target != null)
+                        duel(s as Unit, target);
+                }, "Duel an enemy.");
+                return self;
+            }
+        }
+        
         // < > golden skellige
         public static Unit Vabjorn
         {
@@ -845,6 +969,41 @@ namespace Gwent2
 
                 }, "Spying.\nBoost an ally by 12.");
                 return self;
+            }
+        }
+
+
+        // weather mages
+        public static Unit Gremist
+        {
+            get
+            {
+                return weatherMage("Gremist", "Spawn Torrential Rain, Clear Skies or Bloodcurdling Roar.", Clan.skellige,
+                    SpawnSpecial.TorrentialRain, SpawnSpecial.ClearSkies, SpawnSpecial.BloodcurdlingRoar, Tag.support);
+            }
+        }
+        public static Unit IdaEmeanaepSivney
+        {
+            get
+            {
+                return weatherMage("Ida Emean aep Sivney", "Spawn Impenetrable Fog, Clear Skies or Alzur's Thunder.", Clan.scoetaels,
+                    SpawnSpecial.ImpenetrableFog, SpawnSpecial.ClearSkies, SpawnSpecial.AlzursThunder, Tag.elf, Tag.mage);
+            }
+        }
+        public static Unit Dethmold
+        {
+            get
+            {
+                return weatherMage("Dethmold", "Spawn Torrential Rain, Clear Skies or Alzur's Thunder.", Clan.northen,
+                    SpawnSpecial.TorrentialRain, SpawnSpecial.ClearSkies, SpawnSpecial.AlzursThunder, Tag.kaedwen, Tag.mage);
+            }
+        }
+        public static Unit Vanhemar
+        {
+            get
+            {
+                return weatherMage("Vanhemar", "Spawn Biting Frost, Clear Skies or Shrike.", Clan.nilfgaard,
+                    SpawnSpecial.BitingFrost, SpawnSpecial.ClearSkies, SpawnSpecial.Shrike, Tag.mage);
             }
         }
     }

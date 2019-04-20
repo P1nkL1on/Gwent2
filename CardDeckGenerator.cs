@@ -14,7 +14,7 @@ namespace Gwent2
             {
                 List<Card> cards = new List<Card>();
                 cards.AddRange(new List<Card>() {
-                    SpawnLeader.EistTuirseach,
+                    SpawnLeader.BranTuirseach,
 
                     SpawnUnit.DrummondWarmonger,
                     SpawnUnit.SvanrigeTuirseach,
@@ -23,14 +23,11 @@ namespace Gwent2
                     SpawnUnit.AnCraiteWarrior,
                     SpawnSpecial.Restore,
                     SpawnSpecial.Restore,
-                    SpawnUnit.Udalryk,
-                    SpawnUnit.Udalryk,
-                    SpawnUnit.Vabjorn,
-                    SpawnUnit.JuttaanDimun,
-                    SpawnUnit.AnCraiteWarrior,
-                    SpawnUnit.AnCraiteRaider
+                    SpawnUnit.ChampionofHov,
+                    SpawnUnit.ChampionofHov,
+                    SpawnUnit.ChampionofHov,
+                    SpawnUnit.ChampionofHov
                 });
-
                 return Deck.FromCards(cards, "Skellige Test");
             }
         }
@@ -42,6 +39,7 @@ namespace Gwent2
                 List<Card> cards = new List<Card>();
                 int nCount = 15;
                 while (nCount-- > 0)
+                    cards.Add(SpawnUnit.AnCraiteBlacksmith);
                     cards.Add(SpawnUnit.Skjall);
                 //nCount = 2;
                 //while (nCount-- > 0)

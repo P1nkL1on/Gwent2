@@ -112,6 +112,7 @@ namespace Gwent2
             };
         }
         public static UnitPredicat nonLeader() { return (t) => { return !t.hasTag(Tag.leader); }; }
+        public static CardPredicat nonLeaderCard() { return (t) => { return !t.hasTag(Tag.leader); }; }
         public static UnitPredicat nonSpying() { return (t) => { return !t.isSpy; }; }
         public static UnitPredicat anyUnitInBaseHostDeck(Card source) { return (t) => { return t.place == Place.deck && t.host == source.baseHost; }; }
         public static UnitPredicat anyUnitInBaseHostBattlefield(Card source) { return (t) => { return t.place == Place.battlefield && t.host == source.baseHost; }; }
@@ -128,7 +129,7 @@ namespace Gwent2
         public static UnitPredicat anyOtherAllyUnitInBattlefieldHandDeck(Unit source) { return anyAllyUnitInPlace(source, true, Place.battlefield, Place.hand, Place.deck); }
 
         // <...> For cards
-
+        public static CardPredicat anyUnit(){return (c) => { return c as Unit != null; };}
         public static CardPredicat anyCardIn(Place place)
         {
             return (c) => { return c.place == place; };
@@ -155,6 +156,7 @@ namespace Gwent2
                 return false;
             };
         }
+        public static CardPredicat anyCardInYourGraveyard(Card source) { return anyCardAllyIn(Place.graveyard, source); }
         public static CardPredicat anyCardInYourHand(Card source) { return anyCardAllyIn(Place.hand, source); }
         public static CardPredicat anyCardInYourDeck(Card source) { return anyCardAllyIn(Place.deck, source); }
         public static CardPredicat anyCardInBaseHostDeck(Card source) { return (c) => { return c.host == source.baseHost && c.place == Place.deck; }; }

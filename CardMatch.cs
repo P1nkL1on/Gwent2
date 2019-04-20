@@ -291,7 +291,7 @@ namespace Gwent2
         public void _removeAllNegativeRowEffectsFromPlayer(Player player)
         {
             for (int i = 0; i < rowEffects.Count; ++i)
-                if (rowEffects[i].Source.hasTag(Tag.hazzard) && rowEffects[i].PlayerUnderEffect == player)
+                if (rowEffects[i].Source.hasTag(Tag.hazard) && rowEffects[i].PlayerUnderEffect == player)
                 {
                     rowEffects.RemoveAt(i);
                     i--;

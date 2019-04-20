@@ -8,6 +8,17 @@ namespace Gwent2
 {
     class SpawnSpecial
     {
+        
+        // universal templates
+        public static Special addSpecialToGame(Special preset, Card source)
+        {
+            preset.SetDefaultHost(source.host, source.context);
+            source.context.AddCardToGame(preset);
+            preset._show.setPosition(new System.Drawing.Point(source._show.position.X + source.ToString().Length + 2, source._show.position.Y));
+            return preset;
+        }
+
+
         // neutral
         public static Special Swallow
         {
@@ -68,6 +79,25 @@ namespace Gwent2
                     if (t != null)
                         t.damage(s, 9);
                 }, "Deal 9 damage.");
+                return spec;
+            }
+        }
+        public static Special BloodcurdlingRoar
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Bloodcurdling Roar");
+                spec.setSpecialAttributes(Tag.organic);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyAllyUnitInBattlefield(s)), s.QestionString());
+                    if (t != null)
+                    {
+                        t.destroy(s);
+                        s.host.playCard(SpawnUnit.createToken(SpawnUnit.TokenBear, s));
+                    }
+                }, "Destroy an Ally. Spawn a Bear.");
                 return spec;
             }
         }
@@ -176,8 +206,8 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.organic);
                 spec.setOnDeploy((s, f) =>
                 {
-                    Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
-                    int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
+                    Player enemy = s.host.chooseEnemy(s.context, HazardQuestionPlayer(s.name));
+                    int row = s.host.chooseEnemyRow(enemy, HazardQuestionRow(s.name));
                     s.context._removeRowEffect(enemy, row, Filter.anyCardHasTagAnyFrom(Tag.boon));
                     foreach (Unit t in Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s), Filter.anyUnitInRow(row)))
                         t.damage(s, 2);
@@ -213,7 +243,7 @@ namespace Gwent2
         {
             get
             {
-                return Hazzard(
+                return Hazard(
                     "Torrential Rain",
                     "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.",
                     (r) =>
@@ -227,7 +257,7 @@ namespace Gwent2
         {
             get
             {
-                return Hazzard(
+                return Hazard(
                     "Biting Frost",
                     "Apply a Hazard to an enemy row that deals 2 damage to the Lowest unit on turn start.",
                     (r) =>
@@ -242,7 +272,7 @@ namespace Gwent2
         {
             get
             {
-                return Hazzard(
+                return Hazard(
                     "Impenetrable Fog",
                     "Apply a Hazard to an enemy row that deals 2 damage to the Highest unit on turn start.",
                     (r) =>
@@ -268,19 +298,76 @@ namespace Gwent2
                     });
             }
         }
+        public static Special ClearSkies
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Clear Skies");
+                spec.setSpecialAttributes(Tag.doomed);
+                spec.setOnDeploy((s, f) =>
+                {
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        RowEffect r = s.context._rowEffectOn(i, s.host);
+                        if (r == null || !r.Source.hasTag(Tag.hazard)) continue;    // no hazard found
 
-        static string HazzardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
-        static string HazzardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
+                        s.context._removeRowEffect(s.host, i);
+                        foreach (Unit u in Select.Units(s.context.cards, Filter.anyUnitInRow(i), Filter.anyUnitHostBy(s.host), Filter.anyUnitDamaged()))
+                            u.boost(s, 2);
+                    }
+                }, "Boost all damaged allies under Hazards by 2 and clear all Hazards from your side.");
+                return spec;
+            }
+        }
+        public static Special Rally
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "Rally");
+                spec.setSpecialAttributes(Tag.tactic, Tag.doomed);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit u = Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyAllyUnitInDeck(s), Filter.anyUnitHasColor(Rarity.bronze)));
+                    if (u != null)
+                        s.host.playCard(u);
+                }, "Play a random Bronze unit from your deck.");
+                return spec;
+            }
+        }
+        public static Special FirstLight
+        {
+            get
+            {
+
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.bronze, "First Light");
+                spec.setSpecialAttributes(Tag.tactic);
+                spec.setOnDeploy((s, f) =>
+                {
+                    List<Card> vars = new List<Card>() { 
+                        SpawnSpecial.ClearSkies,
+                        SpawnSpecial.Rally
+                    };
+                    s.host.playCard(addSpecialToGame(s.host.selectCard(vars, s.QestionString()) as Special, s));
+                }, "Choose One: Boost all damaged allies under Hazards by 2 and clear all Hazards from your side; or Play a random Bronze unit from your deck.");
+                return spec;
+            }
+        }
+
+        static string HazardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
+        static string HazardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
         static string BoonQuestionRow(string name) { return String.Format("Select row to apply {0}", name); }
-        static Special Hazzard(string name, string description, TriggerTurnRowEffect trigger)
+        static Special Hazard(string name, string description, TriggerTurnRowEffect trigger)
         {
             Special spec = new Special();
             spec.setAttributes(Clan.neutral, Rarity.bronze, name);
-            spec.setSpecialAttributes(Tag.hazzard);
+            spec.setSpecialAttributes(Tag.hazard);
             spec.setOnDeploy((s, f) =>
             {
-                Player enemy = s.host.chooseEnemy(s.context, HazzardQuestionPlayer(s.name));
-                int row = s.host.chooseEnemyRow(enemy, HazzardQuestionRow(s.name));
+                Player enemy = s.host.chooseEnemy(s.context, HazardQuestionPlayer(s.name));
+                int row = s.host.chooseEnemyRow(enemy, HazardQuestionRow(s.name));
 
                 RowEffect hazz = new RowEffect(s, enemy, row);
                 hazz.SetBehaviour(trigger);

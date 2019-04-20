@@ -49,11 +49,15 @@ namespace Gwent2
         cursed,
 
         beast,
+        elf,
+        ogroid,
+
         machine,
         soldier,
         officer,
         support,
         cultist,
+        mage,
 
         clanAnCraite,
         clanTuirseach,
@@ -63,21 +67,43 @@ namespace Gwent2
         clanTordarroch,
         clanBrokvar,
 
+        kaedwen,
+
         special,
         spell,
         item,
         alchemy,
         tactic,
         organic,
-        hazzard,
+        hazard,
         boon
     }
 
     class Utils
     {
-        public static List<Place> allPlaces = new List<Place>() { Place.battlefield, Place.hand, Place.leader, Place.deck, Place.graveyard, Place.banish };
-        public static List<string> allRows = new List<string>() { "melee", "ranged", "support"};
-
+        public static List<Place> allPlaces 
+            = new List<Place>() {
+                Place.battlefield, 
+                Place.hand,
+                Place.leader,
+                Place.deck, 
+                Place.graveyard, 
+                Place.banish };
+        public static List<string> allRows
+            = new List<string>() { 
+                "melee", 
+                "ranged", 
+                "support"};
+        public static List<Tag> possibleClans
+            = new List<Tag>(){
+                Tag.clanAnCraite,
+                Tag.clanDimun,
+                Tag.clanDrummond,
+                Tag.clanHeyMaey,
+                Tag.clanTuirseach,
+                Tag.clanTordarroch,
+                Tag.clanBrokvar
+            };
         // line out
         public static int leftTextColumnWidth = 45;
         public static int leftTextColumnHeigth = 44;
