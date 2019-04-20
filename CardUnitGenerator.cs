@@ -847,21 +847,5 @@ namespace Gwent2
                 return self;
             }
         }
-
-        // misc
-        public static void showCaseAllUnits()
-        {
-            Type spawner = (new SpawnUnit()).GetType();
-            foreach (var unitMethod in spawner.GetMethods())
-            {
-                Console.Clear();
-                try
-                {
-                    Console.WriteLine(((unitMethod.Invoke(new SpawnUnit(), null)) as Unit).ToFormat());
-                    Console.ReadLine();
-                }
-                catch (Exception e) { }
-            }
-        }
     }
 }

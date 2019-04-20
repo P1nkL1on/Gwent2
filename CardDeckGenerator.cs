@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class Deck
+    class DefaultDeck
     {
-        public static List<Card> SkelligeTest
+        public static Deck SkelligeTest
         {
             get
             {
-                List<Card> deck = new List<Card>();
-                deck.AddRange(new List<Card>() {
-                    SpawnLeader.BranTuirseach,
+                List<Card> cards = new List<Card>();
+                cards.AddRange(new List<Card>() {
+                    SpawnLeader.EistTuirseach,
 
                     SpawnUnit.DrummondWarmonger,
                     SpawnUnit.SvanrigeTuirseach,
@@ -31,18 +31,18 @@ namespace Gwent2
                     SpawnUnit.AnCraiteRaider
                 });
 
-                return deck;
+                return Deck.FromCards(cards, "Skellige Test");
             }
         }
 
-        public static List<Card> ComputerTest
+        public static Deck ComputerTest
         {
             get
             {
-                List<Card> deck = new List<Card>();
+                List<Card> cards = new List<Card>();
                 int nCount = 15;
                 while (nCount-- > 0)
-                    deck.Add(SpawnUnit.Skjall);
+                    cards.Add(SpawnUnit.Skjall);
                 //nCount = 2;
                 //while (nCount-- > 0)
                 //    deck.Add(SpawnUnit.Emissary);
@@ -50,8 +50,9 @@ namespace Gwent2
                 //deck.AddRange(new List<Card>() { 
                 //    SpawnSpecial.TorrentialRain, SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog,
                 //});
-
-                return deck;
+                cards.Add(SpawnLeader.HaraldtheCripple);
+                
+                return Deck.FromCards(cards, "Computer Test");
             }
         }
     }

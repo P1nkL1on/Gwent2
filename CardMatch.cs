@@ -31,15 +31,16 @@ namespace Gwent2
             
         }
 
-        public Match(List<Player> participants, List<List<Card>> decks)
+        public Match(List<Player> participants, List<Deck> decks)
         {
             for (int i = 0; i < participants.Count; ++i)
             {
-                foreach (Card c in decks[i])
+                foreach (Card c in decks[i].cards)
                     c.SetDefaultHost(participants[i], this);
-                cards.AddRange(decks[i]);
+                cards.AddRange(decks[i].cards);
             }
             players = participants;
+            _currentPlayerIndex = shuffleRandomiser.Next(players.Count);
 
             topLeftTextBox = new ConsoleWindowText(Utils.leftTextColumnWidth, Utils.fieldHeigth - Utils.leftTextColumnHeigth);
             topLeftTextBox.AddOffset(0, Utils.leftTextColumnHeigth);
@@ -323,7 +324,13 @@ namespace Gwent2
                 if (c as Leader != null)
                     (c as Leader).makeVisibleAll();
         }
-
+        void _createTacticalAdvantage()
+        {
+            Leader ta = SpawnLeader.TacticalAdvantage;
+            ta.SetDefaultHost(currentPlayer, this);
+            AddCardToGame(ta);
+            ta.makeVisibleAll();
+        }
         public List<Player> currentlyWinning
         {
             get
@@ -343,6 +350,7 @@ namespace Gwent2
             }
         }
 
+        public int RoundNumber { get { return _round; } }
         public bool everyPlayerPassed
         {
             get
@@ -389,12 +397,17 @@ namespace Gwent2
             _clearAllRowEffects();
             foreach (Unit u in Select.Units(cards, Filter.anyUnitInBattlefield()))
                 u.move(Place.graveyard);
+            if (roundIndex == 1)
+            {
+                _createTacticalAdvantage(); 
+                _makeLeadersVisibleToAll();
+            }
             foreach (Player player in players)
             {
                 player.passed = false;
                 switch (roundIndex)
                 {
-                    case 1: _makeLeadersVisibleToAll(); _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
+                    case 1: _drawCard(player, 10); _mulliganOnRoundStart(player, 3); continue;
                     case 2: _drawCard(player, 2); _mulliganOnRoundStart(player, 2); continue;
                     case 3: _drawCard(player, 1); _mulliganOnRoundStart(player, 1); continue;
                     default: continue;

@@ -8,6 +8,7 @@ namespace Gwent2
 {
     class SpawnSpecial
     {
+        // neutral
         public static Special Swallow
         {
             get

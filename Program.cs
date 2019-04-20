@@ -25,10 +25,11 @@ namespace Gwent2
             //SpawnUnit.showCaseAllUnits();
 
             PlayerHuman bonnie = new PlayerHuman("Bonnie");
+            Deck readenDeck = DeckIO.readDeckFromFile("WinnerSkellige");
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
-                new List<List<Card>>() { Deck.SkelligeTest, Deck.ComputerTest }
+                new List<Deck>() { DefaultDeck.SkelligeTest, DefaultDeck.ComputerTest }
                 );
             FieldDrawer fd = new FieldDrawer(newgame, bonnie);
 

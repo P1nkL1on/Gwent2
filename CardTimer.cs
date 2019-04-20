@@ -72,5 +72,9 @@ namespace Gwent2
                     _enabled = false;
             }
         }
+        public bool IsEverTicked()
+        {
+            return _current != 0;
+        }
     }
 }
