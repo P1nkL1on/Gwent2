@@ -9,25 +9,24 @@ namespace Gwent2
     class SpawnLeader
     {
         // game mechanics
-        public static Leader TacticalAdvantage
+        public static Leader TacticalAdvantage(Player host, Match context)
         {
-            get
+            Leader ta = new Leader();
+            ta.setAttributes(Clan.neutral, Rarity.gold, "Tactical Advantage");
+            ta.setUnitAttributes(0, Tag.special);
+            ta.place = Place.banish;
+            ta.SetDefaultHost(host, context);
+            ta.timer = new Timer(ta, (s) => { }, 1, false);
+            ta.setOnCardPlayed((t, card, X) =>
             {
-                Leader ta = new Leader();
-                ta.setAttributes(Clan.neutral, Rarity.gold, "Tactical Advantage");
-                ta.setUnitAttributes(0, Tag.special);
-                ta.place = Place.banish;
-                ta.timer = new Timer(ta, (s) => { }, 1, false);
-                ta.setOnCardPlayed((t, card, X) => {
-                    if (t.context.RoundNumber != 1 || card.host != t.host || !card.hasTag(Tag.leader))
-                        return;
-                    if (t.timer.IsEverTicked())
-                        return;
-                    t.timer.Tick();
-                    (card as Unit).boost(t, 10);
-                }, "Single-Use: Whenever you play a Leader while first round, boost it by 10.");
-                return ta;
-            }
+                if (t.context.RoundNumber != 1 || card.host != t.host || !card.hasTag(Tag.leader))
+                    return;
+                if (t.timer.IsEverTicked())
+                    return;
+                t.timer.Tick();
+                (card as Unit).boost(t, 10);
+            }, "Single-Use: Whenever you play a Leader while first round, boost it by 10.");
+            return ta;
         }
         public static Leader HaraldtheCripple
         {

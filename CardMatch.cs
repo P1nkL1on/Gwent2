@@ -334,8 +334,7 @@ namespace Gwent2
         }
         void _createTacticalAdvantage()
         {
-            Leader ta = SpawnLeader.TacticalAdvantage;
-            ta.SetDefaultHost(currentPlayer, this);
+            Leader ta = SpawnLeader.TacticalAdvantage(currentPlayer, this);
             AddCardToGame(ta);
             ta.makeVisibleAll();
         }
