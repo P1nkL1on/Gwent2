@@ -28,8 +28,8 @@ namespace Gwent2
 
 
             DeckBuilder db = new DeckBuilder();
-            db.Edit(bonnie);
-            Console.ReadLine();
+            //db.Edit(bonnie);
+            //Console.ReadLine();
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },

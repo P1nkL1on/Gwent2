@@ -49,8 +49,10 @@
     <Compile Include="CardDeckGenerator.cs" />
     <Compile Include="CardLeader.cs" />
     <Compile Include="CardLeaderGenerator.cs" />
+    <Compile Include="DeckBuilder.cs" />
     <Compile Include="DeckIO.cs" />
     <Compile Include="PlayerChoiseContext.cs" />
+    <Compile Include="PlayerChoiseWindows.cs" />
     <Compile Include="UtilsDrawing.cs" />
     <Compile Include="CardMatch.cs" />
     <Compile Include="CardSpecial.cs" />

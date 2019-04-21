@@ -172,31 +172,12 @@ namespace Gwent2
         {
             warnings.Clear();
             errors.Clear();
-            checkDeckStandart(deckCards, ref warnings, ref errors);
+            List<string> names = new List<string>();
+            foreach (Card c in deckCards)
+                names.Add(c.name);
+            checkDeckStandart(names, deckCards, ref warnings, ref errors);
 
             return errors.Count == 0;
-        }
-    }
-
-    class DeckBuilder
-    {
-        ConsoleWindowText deckPreview = new ConsoleWindowText(Utils.fieldStartHorizontal, 45 /*max size of deck + 5*/);
-        ConsoleWindowText allCardsPreview = new ConsoleWindowText(Utils.fieldStartHorizontal, 45 /*max size of deck + 5*/);
-        ConsoleWindowText logger = new ConsoleWindowText(2 * Utils.fieldStartHorizontal, 10);
-
-
-        public DeckBuilder()
-        {
-            allCardsPreview.AddOffset(Utils.fieldStartHorizontal, 0);
-            logger.AddOffset(0, 45);
-            logger.AddLog("Welcome to deck builder!", ConsoleColor.Cyan);
-        }
-
-        public void Edit(Player editor)
-        {
-            List<Card> allCards = DeckIO.invokeAllCards();
-            foreach (Card c in allCards)
-                allCardsPreview.AddLog(c.ToString(), UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(c.rarity)));
         }
     }
 }
