@@ -53,6 +53,7 @@ namespace Gwent2
         }
         public static UnitPredicat anyOtherUnitByName(Unit source) { return (t) => { return t.name != source.name; }; }
         public static UnitPredicat anyCopie(Unit source) { return (t) => { return t.name == source.name; }; }
+        public static UnitPredicat anyUnitNotDamaged() { return (t) => { return !t.isDamaged; }; }
         public static UnitPredicat anyUnitDamaged() { return (t) => { return t.isDamaged; }; }
         public static UnitPredicat anyUnitDamagedOrCursed() { return (t) => { return t.isDamaged || t.hasTag(Tag.cursed); }; }
         public static UnitPredicat anyUnitInRow(int row) { return (t) => { return t.row == row; }; }

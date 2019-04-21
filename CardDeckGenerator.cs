@@ -36,7 +36,7 @@ namespace Gwent2
                 List<Card> cards = new List<Card>();
                 int nCount = 10;
                 while (nCount-- > 0)
-                    cards.Add(SpawnUnit.AnCraiteGreatsword);
+                    cards.Add(SpawnSpecial.Restore);
                 //nCount = 2;
                 //while (nCount-- > 0)
                 //    deck.Add(SpawnUnit.Emissary);

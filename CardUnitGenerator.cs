@@ -101,9 +101,12 @@ namespace Gwent2
         }
         public static Card createCard(Card source, List<Card> listOriginal, params CardPredicat[] filters)
         {
-            for (int i = 0; i < listOriginal.Count; ++i) if (listOriginal[i].name == source.name) { listOriginal.RemoveAt(i); break; }
             if (listOriginal.Count == 0)
                 return null;
+            var fs = filters.ToList();
+            fs.Add((crd) => { return crd.name != source.name; });
+            filters = fs.ToArray();
+
             Card c = source.host.selectCard(
                 Filter.randomCardsFrom(
                     Select.Cards(listOriginal, filters),
@@ -708,10 +711,10 @@ namespace Gwent2
                 {
                     if (s.place != Place.battlefield)
                         return;
-                    Unit left = s.context._unitToTheRight(s as Unit);
-                    if (left == null)
+                    Unit right = s.context._unitToTheRight(s as Unit);
+                    if (right == null)
                         return;
-                    left.damage(s, 1);
+                    right.damage(s, 1);
                     (s as Unit).boost(s, 2);
                 }, "On turn end, deal 1 damage to the unit to the right, then boost self by 2.");
                 return self;
@@ -1076,7 +1079,92 @@ namespace Gwent2
                 return self;
             }
         }
-
+        public static Unit WildBoaroftheSea
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Wild Boar of the Sea");
+                self.setUnitAttributes(8, Tag.machine, Tag.clanAnCraite);
+                self.setOnDeploy((s, f) =>
+                {
+                    (s as Unit).gainArmor(s, 5);
+                }, "5 Armor.");
+                self.setOnTurnEnd((s) =>
+                {
+                    if (s.place != Place.battlefield) return;
+                    Unit right = s.context._unitToTheRight(s as Unit),
+                         left = s.context._unitToTheLeft(s as Unit);
+                    if (right == null) right.damage(s, 1);
+                    if (left == null) left.strengthen(s, 1);
+                }, "On turn end, Strengthen the unit to the left by 1, then deal 1 damage to the unit to the right.");
+                return self;
+            }
+        }
+        public static Unit Ulfhedinn
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Ulfhedinn");
+                self.setUnitAttributes(6, Tag.beast, Tag.cursed);
+                self.setOnDeploy((s, f) =>
+                {
+                    var notDamaged = Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s), Filter.anyUnitNotDamaged());
+                    var alreadyDamaged = Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s), Filter.anyUnitDamaged());
+                    foreach (Unit e in notDamaged)
+                        e.damage(s, 1);
+                    foreach (Unit e in alreadyDamaged)
+                        e.damage(s, 2);
+                }, "Deal 1 damage to all enemies. If they were already damaged, deal 2 damage instead.");
+                return self;
+            }
+        }
+        public static Unit MadmanLugos
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Madman Lugos");
+                self.setUnitAttributes(6, Tag.officer, Tag.clanDrummond);
+                self.setOnDeploy((s, f) =>
+                {
+                    Card u = s.host.selectCard(
+                        Select.Cards(s.context.cards,
+                            Filter.anyUnit(),
+                            Filter.anyCardInYourDeck(s as Unit),
+                            Filter.anyCardHasColor(Rarity.bronze)),
+                        s.QestionString());
+                    if (u != null)
+                    {
+                        u.move(Place.graveyard);
+                        dealDamage(s, (u as Unit).basePower);
+                    }
+                }, "Discard a Bronze unit from your deck, then deal damage equal to its base power to an enemy.");
+                return self;
+            }
+        }
+        public static Unit Ermion
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Ermionh");
+                self.setUnitAttributes(10, Tag.support, Tag.clanAnCraite);
+                self.setOnDeploy(
+                    (s, f) =>
+                    {
+                        s.context._drawCard(s.host, 2);
+                        // short way discarding
+                        var cardsToDiscard = s.host.selectCards(
+                            Select.Cards(s.context.cards, Filter.anyCardInYourHand(s)), 
+                            2, "Discard a card");
+                        foreach (Card c in cardsToDiscard)
+                            c.move(Place.graveyard);
+                    }, "Draw 2 cards, then Discard 2 cards.");
+                return self;
+            }
+        }
 
         // ||| NILFGAARD |||
         // < > bronze inlfgaard
