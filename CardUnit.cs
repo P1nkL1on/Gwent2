@@ -56,6 +56,7 @@ namespace Gwent2
         public bool isSpy { get { return _isSpy; } }
         public void setSpying() { _isSpy = true; }
         public void setSpyHost(Player spyHost, Player playedBy) { _host = spyHost; _baseHost = playedBy; }
+        public void setCharmHost(Player charmer) { _host = charmer; status.SetSpying(_baseHost != charmer); }
 
         public virtual void setUnitAttributes (int DefaultPower, params Tag[] Tags){
             _defaultPower = _basePower = _power = DefaultPower;
@@ -165,7 +166,7 @@ namespace Gwent2
             _show.redrawCausedChangeValue();
             _onHealed(this, source, healCount);
         }
-        public virtual void restore(Card source)
+        public virtual void reset(Card source)
         {
             _power = _basePower;
             _show.redrawCausedChangeValue();

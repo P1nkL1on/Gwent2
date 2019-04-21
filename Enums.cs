@@ -58,6 +58,7 @@ namespace Gwent2
         support,
         cultist,
         mage,
+        witcher,
 
         clanAnCraite,
         clanTuirseach,

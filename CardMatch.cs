@@ -28,9 +28,17 @@ namespace Gwent2
             cards.Add(card);
             if (card._show == null)
                 cards[0]._show._global.addContainerFor(card);
-            
         }
-
+        public void ReplaceCardInGame(Card card, Card toReplace)
+        {
+            Log(toReplace, "transformed into " + card.ToString());
+            if (card._show == null)
+                toReplace._show._global.addContainerFor(card);
+            card._show.setPosition(toReplace._show.position);
+            int ind = cards.IndexOf(toReplace);
+            cards.RemoveAt(ind);
+            cards.Insert(ind, card);
+        }
         public Match(List<Player> participants, List<Deck> decks)
         {
             for (int i = 0; i < participants.Count; ++i)

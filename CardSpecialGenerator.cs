@@ -8,18 +8,25 @@ namespace Gwent2
 {
     class SpawnSpecial
     {
-        
+
         // universal templates
         public static Special addSpecialToGame(Special preset, Card source)
         {
             preset.SetDefaultHost(source.host, source.context);
             source.context.AddCardToGame(preset);
             preset._show.setPosition(new System.Drawing.Point(source._show.position.X + source.ToString().Length + 2, source._show.position.Y));
+            preset._show._doNotCleanLine = true;
+            preset.makeVisibleAll();
             return preset;
         }
-
+        public static void charm(Card source, Unit target)
+        {
+            source.context.Log(target, "charmed by " + source.ToString());
+            target.setCharmHost(source.host);
+        }
 
         // neutral
+        // bronze
         public static Special Swallow
         {
             get
@@ -238,50 +245,91 @@ namespace Gwent2
                 return spec;
             }
         }
-        // hazzards
-        public static Special TorrentialRain
+
+        // silver
+        public static Special Mandrake
         {
             get
             {
-                return Hazard(
-                    "Torrential Rain",
-                    "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.",
-                    (r) =>
+                Special spec = new Special();
+                spec.setAttributes(Clan.skellige, Rarity.silver, "Mandrake");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.organic);
+                spec.setOnDeploy((s, f) =>
+                {
+                    if (s.host.selectOption(ChoiseOptionContext.OneOfTwo(
+                        "Heal a unit and Strengthen it by 6",
+                        "Reset a unit and Weaken it by 6."))
+                        == 0)
                     {
-                        foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))
-                            t.damage(r.Source, 1);
-                    });
+                        Unit u = s.host.selectUnit(Select.Units(s.context.cards,Filter.anyUnitInBattlefield()),s.QestionString());
+                        if (u == null) return;
+                        u.heal(s);
+                        u.strengthen(s, 6);
+                    }
+                    else
+                    {
+                        Unit u = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyUnitInBattlefield()), s.QestionString());
+                        if (u == null) return;
+                        u.reset(s);
+                        u.weaken(s, 6);
+                    }
+                }, "Choose One: Heal a unit and Strengthen it by 6; or Reset a unit and Weaken it by 6.");
+                return spec;
             }
+        }
+
+        // gold
+        public static Special Muzzle
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.neutral, Rarity.gold, "Muzzle");
+                spec.setSpecialAttributes(Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit t = s.host.selectUnit(
+                        Select.Units(s.context.cards,
+                            Filter.anyEnemyUnitInBattlefield(s),
+                            Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver),
+                            (u) => { return u.power <= 8; }), 
+                        s.QestionString());
+
+                    if (t != null)
+                        charm(s, t);
+                }, "Charm a Bronze or Silver enemy with 8 power or less.");
+                return spec;
+            }
+        }
+        
+
+        // hazzards
+        public static TriggerTurnRowEffect rain = (r) => { foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))t.damage(r.Source, 1); };
+        public static TriggerTurnRowEffect frost = (r) => { Unit t = Filter.lowestUnit(r.allRowUnits); if (t != null)t.damage(r.Source, 2); };
+        public static TriggerTurnRowEffect fog = (r) => { Unit t = Filter.highestUnit(r.allRowUnits); if (t != null)t.damage(r.Source, 2); };
+        public static TriggerTurnRowEffect storm = (r) =>
+        {
+            List<int> damageFromLeft = new List<int>() { 2, 1, 1 };
+            List<Unit> ts = r.allRowUnits;
+            for (int i = 0; i < Math.Min(damageFromLeft.Count, ts.Count); ++i)
+                ts[i].damage(r.Source, damageFromLeft[i]);
+        };
+
+        public static Special TorrentialRain
+        {
+            get { return Hazard("Torrential Rain", "Apply a Hazard to an enemy row that deals 1 damage to 2 random units on turn start.", rain); }
         }
         public static Special BitingFrost
         {
-            get
-            {
-                return Hazard(
-                    "Biting Frost",
-                    "Apply a Hazard to an enemy row that deals 2 damage to the Lowest unit on turn start.",
-                    (r) =>
-                    {
-                        Unit t = Filter.lowestUnit(r.allRowUnits);
-                        if (t != null)
-                            t.damage(r.Source, 2);
-                    });
-            }
+            get { return Hazard("Biting Frost", "Apply a Hazard to an enemy row that deals 2 damage to the Lowest unit on turn start.", frost); }
         }
         public static Special ImpenetrableFog
         {
-            get
-            {
-                return Hazard(
-                    "Impenetrable Fog",
-                    "Apply a Hazard to an enemy row that deals 2 damage to the Highest unit on turn start.",
-                    (r) =>
-                    {
-                        Unit t = Filter.highestUnit(r.allRowUnits);
-                        if (t != null)
-                            t.damage(r.Source, 2);
-                    });
-            }
+            get { return Hazard("Impenetrable Fog", "Apply a Hazard to an enemy row that deals 2 damage to the Highest unit on turn start.", fog); }
+        }
+        public static Special SkelligeStorm
+        {
+            get { return Hazard("Skellige Storm", "Apply a Hazard to an enemy row that deals 2, 1 and 1 damage to the leftmost units on the row on turn start.", storm); }
         }
         // boons
         public static Special GoldenFroth
@@ -355,14 +403,13 @@ namespace Gwent2
                 return spec;
             }
         }
-
         static string HazardQuestionPlayer(string name) { return String.Format("Select enemy player to apply {0}", name); }
         static string HazardQuestionRow(string name) { return String.Format("Select enemy's row to apply {0}", name); }
         static string BoonQuestionRow(string name) { return String.Format("Select row to apply {0}", name); }
-        static Special Hazard(string name, string description, TriggerTurnRowEffect trigger)
+        static Special Hazard(string name, string description, TriggerTurnRowEffect trigger, Rarity rarity = Rarity.bronze)
         {
             Special spec = new Special();
-            spec.setAttributes(Clan.neutral, Rarity.bronze, name);
+            spec.setAttributes(Clan.neutral, rarity, name);
             spec.setSpecialAttributes(Tag.hazard);
             spec.setOnDeploy((s, f) =>
             {

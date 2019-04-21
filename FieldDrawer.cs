@@ -30,6 +30,7 @@ namespace Gwent2
         // type of update required
         UpdateType upd = UpdateType.placeChanged;
         public UpdateType requiredUpdate { get { return upd; } }
+        public bool _doNotCleanLine = false;
 
         public CardRedrawContainer(Card source)
         {
@@ -48,14 +49,16 @@ namespace Gwent2
         {
             if (_position == newPosition)
                 return;
-            _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
+            if (!_doNotCleanLine)
+                _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
             _position = newPosition;
             upd = UpdateType.placeChanged;
         }
         public Point position { get { return _position;} }
         public void callAutoDraw(Player watcher)
         {
-            _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
+            if (!_doNotCleanLine)
+                _global.clearLine(_source.context.players.IndexOf(_source.host), _position.Y);
 
             _global.setPosition(_position);
             if (_isSelected) _global.swapColor(ConsoleColor.Black);

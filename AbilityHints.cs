@@ -22,7 +22,10 @@ namespace Gwent2
                 "Highest", "Highest power, ties are resolved randomly.",
                 "Single-Use", "This card's ability can be used only once per game.",
                 "Doomed","Status that removes the unit from the game when it leaves the battlefield.",
-                "Duel", "Units take turns dealing damage equal to their power until one of them is destroyed."
+                "Duel", "Units take turns dealing damage equal to their power until one of them is destroyed.",
+                "Charm", "Move an enemy to the opposite row.",
+                "Weaken", "Decrease the base power of a unit. If it falls below 1, remove it from the game. Does not trigger Deathwish abilities.",
+                "Reset", "Restore a card to its default state (as it would appear in the Deck Builder)."
         };
         public static string addHitsTo(string sourceAbilities)
         {

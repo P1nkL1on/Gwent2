@@ -36,6 +36,10 @@ namespace Gwent2
         {
             isSpy = !isSpy;
         }
+        public void SetSpying(bool isSpy)
+        {
+            this.isSpy = isSpy;
+        }
         public void ToggleLocking()
         {
             isLocked = !isLocked;

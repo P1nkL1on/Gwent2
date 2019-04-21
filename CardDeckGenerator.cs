@@ -18,15 +18,17 @@ namespace Gwent2
 
                     SpawnUnit.DrummondWarmonger,
                     SpawnUnit.SvanrigeTuirseach,
-                    SpawnUnit.SvanrigeTuirseach,
-                    SpawnUnit.TuirseachBearmaster,
-                    SpawnUnit.AnCraiteWarrior,
-                    SpawnSpecial.Restore,
-                    SpawnSpecial.Restore,
-                    SpawnUnit.ChampionofHov,
-                    SpawnUnit.ChampionofHov,
-                    SpawnUnit.ChampionofHov,
-                    SpawnUnit.ChampionofHov
+                    SpawnUnit.TuirseachArcher,
+                    SpawnUnit.TuirseachArcher,
+                    SpawnUnit.TuirseachArcher,
+                    SpawnSpecial.SkelligeStorm,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle,
+                    SpawnSpecial.Muzzle
                 });
                 return Deck.FromCards(cards, "Skellige Test");
             }
@@ -37,10 +39,12 @@ namespace Gwent2
             get
             {
                 List<Card> cards = new List<Card>();
-                int nCount = 15;
+                int nCount = 5;
                 while (nCount-- > 0)
-                    cards.Add(SpawnUnit.AnCraiteBlacksmith);
                     cards.Add(SpawnUnit.Skjall);
+                nCount = 4;
+                while (nCount-- > 0) 
+                    cards.Add(SpawnSpecial.Muzzle);
                 //nCount = 2;
                 //while (nCount-- > 0)
                 //    deck.Add(SpawnUnit.Emissary);

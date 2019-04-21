@@ -25,7 +25,7 @@ namespace Gwent2
             //SpawnUnit.showCaseAllUnits();
 
             PlayerHuman bonnie = new PlayerHuman("Bonnie");
-            //Deck readenDeck = DeckIO.readDeckFromFile("WinnerAlchemy");
+            //Deck readenDeck = DeckIO.readDeckFromFile("WinnerSkellige");
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
