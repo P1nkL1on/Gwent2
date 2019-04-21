@@ -27,6 +27,7 @@ namespace Gwent2
             PlayerHuman bonnie = new PlayerHuman("Bonnie");
 
             DeckBuilder db = new DeckBuilder();
+            db.Edit(bonnie);
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },

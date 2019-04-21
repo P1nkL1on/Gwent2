@@ -16,14 +16,19 @@ namespace Gwent2
         }
         public override Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy)
         {
+            Leader copy = this.spawnCard() as Leader;
+            copy.SetDefaultHost(newHost, sourceOfMakeingCopy.context);
+            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+        }
+        public override Card spawnCard()
+        {
             string methodName = name, callMethodName = "";
             for (int i = 0; i < methodName.Length; ++i)
                 if (alphabet.IndexOf(methodName[i]) >= 0)
                     callMethodName += methodName[i];
             SpawnLeader spun = new SpawnLeader();
             PropertyInfo m = spun.GetType().GetProperty(callMethodName);
-            Leader copy = m.GetMethod.Invoke(spun, null) as Leader;
-            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+            return m.GetMethod.Invoke(spun, null) as Leader;
         }
     }
 }

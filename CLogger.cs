@@ -28,6 +28,7 @@ namespace Gwent2
             startY += yOff;
         }
         public int Width { get { return wid; } }
+        public int Heigth { get { return hei; } }
         public int X { get { return startX; } }
         public int Y { get { return startY; } }
         public void AddLogWithCurrentColor(string message)

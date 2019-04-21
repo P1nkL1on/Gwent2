@@ -39,7 +39,7 @@ namespace Gwent2
                 res += String.Format("{0}: {1}\n", keyvalues[i], keyvalues[i+1]);
             }
 
-            res = ((res.Length > 0) ? "---------------" : "") + "\n" + res;
+            res = ((res.Length > 0) ? "".PadRight(30, '_') : "") + "\n\n" + res;
             return res;
         }
     }

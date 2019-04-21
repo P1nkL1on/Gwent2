@@ -31,7 +31,17 @@ namespace Gwent2
             return String.Format("{0}\n\n{1} {2} card\n{3}\n\n{4}",
                 name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(), ToFormatAbilities());
         }
+        public override string ToFormatCollection()
+        {
+            return ToFormat();
+        }
+
         public override Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy)
+        {
+            Special copy = this.spawnCard() as Special;
+            return SpawnSpecial.addSpecialToGame(copy, sourceOfMakeingCopy);
+        }
+        public override Card spawnCard()
         {
             string methodName = name, callMethodName = "";
             for (int i = 0; i < methodName.Length; ++i)
@@ -39,8 +49,7 @@ namespace Gwent2
                     callMethodName += methodName[i];
             SpawnSpecial spun = new SpawnSpecial();
             PropertyInfo m = spun.GetType().GetProperty(callMethodName);
-            Special copy = m.GetMethod.Invoke(spun, null) as Special;
-            return SpawnSpecial.addSpecialToGame(copy, sourceOfMakeingCopy);
+            return m.GetMethod.Invoke(spun, null) as Special;
         }
     }
 }

@@ -243,7 +243,7 @@ namespace Gwent2
                 return self;
             }
         }
-        public static Unit PriestessOfFreya
+        public static Unit PriestessofFreya
         {
             get
             {
@@ -1226,7 +1226,7 @@ namespace Gwent2
         {
             get
             {
-                return weatherMage("Vanhemar", "Spawn Biting Frost, Impenetrable Fog or Alzur's Thunder.", Clan.neutral,
+                return weatherMage("Vaedermakar", "Spawn Biting Frost, Impenetrable Fog or Alzur's Thunder.", Clan.neutral,
                     SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog, SpawnSpecial.AlzursThunder, Tag.mage);
             }
         }

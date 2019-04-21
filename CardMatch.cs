@@ -64,7 +64,7 @@ namespace Gwent2
 
             for (int muliganUsed = 0; muliganUsed < nMuliganCount; ++muliganUsed)
             {
-                Card choose = player.selectCardOrNone(_handOf(player), String.Format("Select card for mulligan [{0}/{1}]", muliganUsed, nMuliganCount));
+                Card choose = player.selectCardOrNone(_handOf(player), String.Format("Select card for mulligan [{0}/{1}]", muliganUsed, nMuliganCount), "Finish mulligan");
                 if (choose == null)
                     return; // stop, when selected no more cards
                 // if selected, then mulligan it

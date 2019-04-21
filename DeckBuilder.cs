@@ -11,21 +11,24 @@ namespace Gwent2
         ConsoleWindowText deckPreview = new ConsoleWindowText(Utils.fieldStartHorizontal, 45 /*max size of deck + 5*/);
         ConsoleWindowText allCardsPreview = new ConsoleWindowText(Utils.fieldStartHorizontal, 45 /*max size of deck + 5*/);
         ConsoleWindowText logger = new ConsoleWindowText(2 * Utils.fieldStartHorizontal, 10);
+        ConsoleWindowText previewContext = new ConsoleWindowText(30, 60);
 
 
         public DeckBuilder()
         {
             allCardsPreview.AddOffset(Utils.fieldStartHorizontal, 0);
             logger.AddOffset(0, 45);
+            previewContext.AddOffset(Utils.fieldStartHorizontal * 2, 0);
             logger.AddLog("Welcome to deck builder!", ConsoleColor.Cyan);
         }
 
         public void Edit(Player editor)
         {
             List<Card> allCards = DeckIO.invokeAllCards();
-            foreach (Card c in allCards)
-                allCardsPreview.AddLog(c.ToString(), UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(c.rarity)));
+            //foreach (Card c in allCards)
+            //    allCardsPreview.AddLog(c.ToString(), UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(c.rarity)));
             Check(new List<Card>());
+            PlayerChoiseDialog.ScrollDialog(CardChoiseContext.WithNoneOption(allCards, "Cards in library", "Finish deck building"), allCardsPreview, previewContext); 
         }
 
         bool Check(List<Card> deck)

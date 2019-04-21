@@ -61,16 +61,20 @@ namespace Gwent2
 
         public override Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy)
         {
+            Unit copy = this.spawnCard() as Unit;
+            copy.SetDefaultHost(newHost, sourceOfMakeingCopy.context);
+            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+        }
+        public override Card spawnCard()
+        {
             string methodName = name, callMethodName = "";
             for (int i = 0; i < methodName.Length; ++i)
                 if (alphabet.IndexOf(methodName[i]) >= 0)
                     callMethodName += methodName[i];
             SpawnUnit spun = new SpawnUnit();
             PropertyInfo m = spun.GetType().GetProperty(callMethodName);
-            Unit copy = m.GetMethod.Invoke(spun, null) as Unit;
-            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+            return m.GetMethod.Invoke(spun, null) as Unit;
         }
-
         public virtual void setUnitAttributes(int DefaultPower, params Tag[] Tags)
         {
             _defaultPower = _basePower = _power = DefaultPower;
@@ -206,10 +210,11 @@ namespace Gwent2
 
         public override string ToString()
         {
-            return String.Format("[{0} {1}]{2}__{3}{4}_{5}", power, base.ToString(), status.ToStringBattlefield(),
-                _host == null ? 'X' : _host.ToString()[0],
-                _baseHost == null ? 'X' : _baseHost.ToString()[0], pid
-                );
+            return String.Format("[{0} {1}]{2}", power, base.ToString(), status.ToStringBattlefield());
+            //return String.Format("[{0} {1}]{2}__{3}{4}_{5}", power, base.ToString(), status.ToStringBattlefield(),
+            //    _host == null ? 'X' : _host.ToString()[0],
+            //    _baseHost == null ? 'X' : _baseHost.ToString()[0], pid
+            //    );
         }
         public override string ToStringFull()
         {
@@ -233,7 +238,8 @@ namespace Gwent2
                 _onCardPlayedAbility.Length == 0 ? "" : (_onCardPlayedAbility + "\n"),
                 _onCardDiscardedAbility.Length == 0 ? "" : (_onCardDiscardedAbility + "\n")
                 );
-            return String.Format("{0}{1}", abilities, AbilityHints.addHitsTo(abilities));
+            string res = String.Format("{0}{1}", abilities, AbilityHints.addHitsTo(abilities));
+            return res.Trim().Length == 0? "No abilities." : res;
         }
 
         public override string ToFormat()
@@ -241,6 +247,11 @@ namespace Gwent2
             return String.Format("{0}\n\n{1} {2} unit\n{3}\n\nPower = {4} (base = {5}, default = {6})\nStatus = {7}\n\n{8}",
                 name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(),
                 _power, _basePower, _defaultPower, status.ToString(), ToFormatAbilities());
+        }
+        public override string ToFormatCollection()
+        {
+            return String.Format("{0}\n\n{1} {2} unit\n{3}\n\nPower {4}.\n\n{5}",
+                name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(),_basePower, ToFormatAbilities());
         }
     }
 }

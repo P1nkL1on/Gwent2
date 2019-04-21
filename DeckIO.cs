@@ -89,7 +89,7 @@ namespace Gwent2
                 foreach (Card c in allCard)
                     if (c.name.ToUpper() == name.ToUpper())
                     {
-                        res.Add(c);
+                        res.Add(c.spawnCard());
                         found = true;
                         break;
                     }

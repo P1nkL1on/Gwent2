@@ -30,6 +30,7 @@ namespace Gwent2
         public void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
         public bool isVisibleTo(Player watcher) { return _visibleTo.IndexOf(watcher) >= 0; }
         public virtual Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy) { return null; }
+        public virtual Card spawnCard() { return null; }
         public CardRedrawContainer _show = null;
         protected Match _context;
         protected static string alphabet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -182,6 +183,10 @@ namespace Gwent2
                 _onTurnEndAbility.Length == 0 ? "" : (_onTurnEndAbility + "\n"));
         }
         public virtual string ToFormat()
+        {
+            return name;
+        }
+        public virtual string ToFormatCollection()
         {
             return name;
         }

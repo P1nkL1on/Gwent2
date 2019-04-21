@@ -8,13 +8,14 @@ namespace Gwent2
 {
     class PlayerChoiseDialog
     {
+        public static PreviewType previewType = PreviewType.inGame;
+
         protected static void SwapColors()
         {
             ConsoleColor tmp = Console.ForegroundColor;
             Console.ForegroundColor = Console.BackgroundColor;
             Console.BackgroundColor = tmp;
         }
-
         public static int classicSmallDialog(ChoiseContext choise, ConsoleWindowText decideWindow, ConsoleWindowText descriptionWindow)
         {
             Console.CursorVisible = false;
@@ -72,15 +73,77 @@ namespace Gwent2
             decideWindow.ClearLogWindow();
             return answer;
         }
-        //
+        public static int ScrollDialog(ChoiseContext choise, ConsoleWindowText decideWindow, ConsoleWindowText descriptionWindow)
+        {
+            Console.CursorVisible = false;
+            if (choise.OptionsCount == 1)
+                return 0;
+
+            PreviewType wasPreviewType = previewType;
+            previewType = PreviewType.inCollection;
+
+            decideWindow.ClearLogWindow();
+            decideWindow.AddLog(choise.Question.Length == 0 ? "Make a descision:" : (choise.Question + ":"));
+            int answer = 0, index = 0, lineIndex = 0, intFrom = 0;
+            foreach (string v in choise.ChoiseOptions)
+            {
+                if (lineIndex == answer) SwapColors();
+                decideWindow.AddLogWithCurrentColor(String.Format("    {1}", ++index, v));
+                ++lineIndex;
+            }
+            ConsoleKey pressed = ConsoleKey.NoName;
+            do
+            {
+                pressed = Console.ReadKey().Key;
+                List<int> needRedraw = new List<int>();
+                if (pressed == ConsoleKey.DownArrow)
+                {
+                    //needRedraw.Add(answer);
+                    answer = (answer + 1) % choise.OptionsCount;
+                    //needRedraw.Add(answer);
+                    for (int i = 0; i < Math.Min(decideWindow.Heigth, choise.OptionsCount); ++i)
+                        needRedraw.Add(intFrom + i);
+                }
+                if (pressed == ConsoleKey.UpArrow)
+                {
+                    //needRedraw.Add(answer);
+                    answer = (answer == 0 ? choise.OptionsCount : answer) - 1;
+                    //needRedraw.Add(answer);
+                    for (int i = 0; i < Math.Min(decideWindow.Heigth, choise.OptionsCount); ++i)
+                        needRedraw.Add(intFrom + i);
+                }
+                if (needRedraw.Count > 0)
+                {
+                    choise.HighlightSelected(answer);
+                    if (!choise.PreviewSelected(answer, descriptionWindow))
+                    {
+                        descriptionWindow.ClearLogWindow();
+                        descriptionWindow.AddLog(choise.DescriptionForOption(answer));
+                    }
+                }
+                foreach (int i in needRedraw)
+                {
+                    if (i == answer) SwapColors();
+                    Console.SetCursorPosition(decideWindow.X, decideWindow.Y + i + 1);
+                    Console.Write(String.Format("    {1}", i + 1, choise.ChoiseOptions[i]));
+                    if (i == answer) SwapColors();
+                }
+            } while (pressed != ConsoleKey.Enter);
+
+            choise.HighlightSelected(-1);
+            decideWindow.ClearLogWindow();
+
+            previewType = wasPreviewType;
+            return answer;
+        }
         static string borderSymbols = "▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒";
-        //
+
         public static void PreviewCard(Card card, ConsoleWindowText window)
         {
             window.ClearLogWindow();
             if (card == null)
                 return;
-            var cardLines = card.ToFormat().Split('\n');
+            var cardLines = (previewType == PreviewType.inGame? card.ToFormat() : card.ToFormatCollection()).Split('\n');
             var clanColor = UtilsDrawing.please.getClosest(UtilsDrawing.colorsOfClan(card.clan));
             int wid = window.Width;
             string border = borderSymbols.Substring(0, wid), borderCap = borderSymbols.Substring(0, (wid - cardLines[0].Length) / 2 - 1);
@@ -93,9 +156,14 @@ namespace Gwent2
                 if (i < 0 || i == 1)window.AddLog(border, f, b);    //borders
                 else if (i == 0) window.AddLog(String.Format("{1} {0} {1}{2}", cardLines[i], borderCap, needOneExtra ? ("" + borderCap[0]) : ""), fR, b);//name
                 else {
-                    if (cardLines[i].Length > 0 && cardLines[i][0] == '-') isDescrip = true;
-                    window.AddLog(cardLines[i], isDescrip? ConsoleColor.DarkGray : ConsoleColor.Gray); 
+                    if (cardLines[i].Length > 0 && cardLines[i][0] == '_') isDescrip = true;
+                    window.AddLog(cardLines[i], isDescrip? ConsoleColor.DarkRed : ConsoleColor.Gray); 
                 }           //parameters
         }
+    }
+    enum PreviewType
+    {
+        inGame,
+        inCollection
     }
 }

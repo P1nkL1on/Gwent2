@@ -512,7 +512,7 @@ namespace Gwent2
             {
                 Special spec = new Special();
                 spec.setAttributes(Clan.skellige, Rarity.silver, "Stribog Runestone");
-                spec.setSpecialAttributes(Tag.organic);
+                spec.setSpecialAttributes(Tag.alchemy);
                 spec.setOnDeploy((s, f) =>
                 {
                     s.host.playCard(SpawnUnit.createCard(s,
