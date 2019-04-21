@@ -20,17 +20,10 @@ namespace Gwent2
                     SpawnUnit.SvanrigeTuirseach,
                     SpawnUnit.TuirseachArcher,
                     SpawnUnit.TuirseachArcher,
+                    SpawnUnit.DjengeFrett,
                     SpawnSpecial.StribogRunestone,
-                    SpawnSpecial.StribogRunestone,
-                    SpawnSpecial.StribogRunestone,
-                    SpawnSpecial.StribogRunestone,
-                    SpawnUnit.Hym,
-                    SpawnUnit.Hym,
-                    SpawnUnit.Hym,
-                    SpawnUnit.Hym,
-                    SpawnUnit.Skjall,
-                    SpawnUnit.Udalryk,
-                    SpawnUnit.Morkvarg
+                    SpawnUnit.GiantBoar,
+                    SpawnSpecial.OrnamentalSword
                 });
                 return Deck.FromCards(cards, "Skellige Test");
             }

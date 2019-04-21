@@ -873,14 +873,31 @@ namespace Gwent2
         //Blueboy Lugos
         //Donar an Hindar
         //Spectral Whale
-        //Giant Boar
+        public static Unit GiantBoar
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.silver, "Giant Boar");
+                self.setUnitAttributes(8, Tag.beast);
+                self.setOnDeploy((s, f) =>
+                {
+                    Unit randomAllyToDestroy = Filter.randomUnitFrom(Select.Units(s.context.cards, Filter.anyOtherAllyUnitInBattlefield(s as Unit)));
+                    if (randomAllyToDestroy == null)
+                        return;
+                    randomAllyToDestroy.destroy(s);
+                    (s as Unit).boost(s, 10);
+                }, "Destroy a random ally, excluding this unit, then boost self by 10.");
+                return self;
+            }
+        }
         public static Unit HolgerBlackhand
         {
             get
             {
                 Unit self = new Unit();
                 self.setAttributes(Clan.skellige, Rarity.silver, "Holger Blackhand");
-                self.setUnitAttributes(6, Tag.soldier, Tag.clanDimun);
+                self.setUnitAttributes(6, Tag.officer, Tag.clanDimun);
                 self.setOnDeploy((s, f) =>
                 {
                     bool destroyed = dealDamage(s, 6);

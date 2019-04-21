@@ -31,7 +31,7 @@ namespace Gwent2
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
-                new List<Deck>() { db.Load("WinnerSkellige"), DefaultDeck.AllGameCards }
+                new List<Deck>() { DefaultDeck.SkelligeTest, DefaultDeck.AllGameCards }
                 );
             FieldDrawer fd = new FieldDrawer(newgame, bonnie);
 

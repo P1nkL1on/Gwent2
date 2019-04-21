@@ -524,6 +524,27 @@ namespace Gwent2
                 return spec;
             }
         }
+        public static Special OrnamentalSword
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.skellige, Rarity.silver, "Ornamental Sword");
+                spec.setSpecialAttributes(Tag.item);
+                spec.setOnDeploy((s, f) =>
+                {
+                    Unit soldier = SpawnUnit.createCard(s,
+                        SpawnUnit.allCards,
+                        Filter.anyCardHasClan(Clan.skellige),
+                        Filter.anyCardHasTagAnyFrom(Tag.soldier),
+                        Filter.anyCardHasColor(Rarity.silver, Rarity.bronze)) as Unit;
+                    if (soldier == null) return;
+                    soldier.strengthen(soldier, 3);
+                    s.host.playCard(soldier);
+                }, "Create a Bronze or Silver Skellige Soldier and Strengthen it by 3.");
+                return spec;
+            }
+        }
 
     }
     class RowEffect
