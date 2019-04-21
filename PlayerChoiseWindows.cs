@@ -16,6 +16,8 @@ namespace Gwent2
             Console.ForegroundColor = Console.BackgroundColor;
             Console.BackgroundColor = tmp;
         }
+        
+        
         public static int classicSmallDialog(
             ChoiseContext choise, 
             ConsoleWindowText decideWindow,
@@ -76,6 +78,8 @@ namespace Gwent2
             decideWindow.ClearLogWindow();
             return answer;
         }
+        
+        
         public static int deckCreatingDialog(
             List<Card> deckCards,
             List<Card> collectionCads,
@@ -104,8 +108,8 @@ namespace Gwent2
             RedrawScrollCollection(null, choiseDeck.ChoiseOptions, 0, 0, deckWindow);
             while (true)
             {
-                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, collectionSelected, collectionFromIndex, collectionWindow);
-                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, -1, deckFromIndex, deckWindow);
+                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, collectionSelected, collectionFromIndex, collectionWindow, true);
+                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow, false);
                 ScrollChooser(ref collectionSelected, ref collectionFromIndex, choiseCollection, collectionWindow, descriptionWindow, ConsoleKey.Tab, ConsoleKey.LeftArrow,
                     RedrawScrollCollection,
                     () =>
@@ -114,11 +118,11 @@ namespace Gwent2
                             return;
                         deckCards.Add(collectionCads[collectionSelected - 1].spawnCard());
                         choiseDeck = CardChoiseContext.WithNoneOption(deckCards, "DECK", "Save deck");
-                        RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow);
+                        RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow, false);
                         DeckBuilder.Check(deckCards, console);
                     });
-                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, -1, collectionFromIndex, collectionWindow);
-                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow);
+                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, collectionSelected, collectionFromIndex, collectionWindow, false);
+                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow, true);
                 ScrollChooser(ref deckSelected, ref deckFromIndex, choiseDeck, deckWindow, descriptionWindow, ConsoleKey.Tab, ConsoleKey.RightArrow,
                     RedrawScrollCollection,
                     () =>
@@ -177,27 +181,30 @@ namespace Gwent2
                         descriptionWindow.AddLog(choise.DescriptionForOption(answer));
                     }
                 }
-                redraw(needRedraw, choise.ChoiseOptions, answer, intFrom, collectionWindow);
+                redraw(needRedraw, choise.ChoiseOptions, answer, intFrom, collectionWindow, true);
                 //
                 if (pressed == use)
                     onUseItem();
             } while (pressed != exit);
         }
         //choise.ChoiseOptions
-        static void RedrawScrollCollection(List<int> needRedraw, List<string> choiseOptions, int answer, int intFrom, ConsoleWindowText collectionWindow)
+        static void RedrawScrollCollection(List<int> needRedraw, List<string> choiseOptions, int answer, int intFrom, ConsoleWindowText collectionWindow, bool selected = true)
         {
             if (needRedraw == null)
             {
                 needRedraw = new List<int>();
-                for (int i = 0; i < Math.Min(choiseOptions.Count, collectionWindow.Heigth); ++i) needRedraw.Add(i);
+                for (int i = 0; i < Math.Min(choiseOptions.Count, collectionWindow.Heigth); ++i) needRedraw.Add(intFrom + i);
             }
+            Console.ForegroundColor = selected? ConsoleColor.Gray : ConsoleColor.DarkGreen;
             foreach (int i in needRedraw)
             {
                 if (i == answer) SwapColors();
                 Console.SetCursorPosition(collectionWindow.X, collectionWindow.Y + i + 1 - intFrom);
-                Console.Write((choiseOptions[i]).PadRight(collectionWindow.Width));
+                
+                Console.Write(((i < choiseOptions.Count)? choiseOptions[i] : "").PadRight(collectionWindow.Width));
                 if (i == answer) SwapColors();
             }
+            Console.ResetColor();
         }
 
 
@@ -232,5 +239,5 @@ namespace Gwent2
         inCollection
     }
     delegate void CallBack();
-    delegate void UpdateCallBack(List<int> a, List<string> b, int c, int d, ConsoleWindowText e);
+    delegate void UpdateCallBack(List<int> a, List<string> b, int c, int d, ConsoleWindowText e, bool selected);
 }

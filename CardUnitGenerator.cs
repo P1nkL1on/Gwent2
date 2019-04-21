@@ -706,7 +706,9 @@ namespace Gwent2
                 self.setUnitAttributes(7, Tag.machine, Tag.clanDimun);
                 self.setOnTurnEnd((s) =>
                 {
-                    Unit left = s.context._unitToTheLeft(s as Unit);
+                    if (s.place != Place.battlefield)
+                        return;
+                    Unit left = s.context._unitToTheRight(s as Unit);
                     if (left == null)
                         return;
                     left.damage(s, 1);
