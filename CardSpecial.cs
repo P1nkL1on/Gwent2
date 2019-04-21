@@ -23,7 +23,7 @@ namespace Gwent2
         }
         public override string ToString()
         {
-            return String.Format("[* {0}]", name);
+            return String.Format("[♦ {0}]", name);
         }
 
         public override string ToFormat()

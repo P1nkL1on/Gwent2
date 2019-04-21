@@ -22,13 +22,12 @@ namespace Gwent2
             logger.AddLog("Welcome to deck builder!", ConsoleColor.Cyan);
         }
 
-        public void Edit(Player editor)
+        public void Edit(Player editor, Deck editingDeck)
         {
             List<Card> allCards = DeckIO.invokeAllCards();
             //foreach (Card c in allCards)
             //    allCardsPreview.AddLog(c.ToString(), UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(c.rarity)));
-            Check(new List<Card>());
-            PlayerChoiseDialog.ScrollDialog(CardChoiseContext.WithNoneOption(allCards, "Cards in library", "Finish deck building"), allCardsPreview, previewContext); 
+            PlayerChoiseDialog.deckCreatingDialog(editingDeck.cards, allCards, deckPreview, allCardsPreview, previewContext);
         }
 
         bool Check(List<Card> deck)

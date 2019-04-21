@@ -81,7 +81,6 @@ namespace Gwent2
             return String.Format("{0}'s {1} row", _player.ToString(), Utils.allRows[optionIndex - (_hasExtraChoise ? 1 : 0)]);
         }
     }
-
     class CardChoiseContext : ChoiseContext
     {
         protected List<Card> _cards;
