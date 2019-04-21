@@ -17,7 +17,7 @@ namespace Gwent2
         public DeckBuilder()
         {
             allCardsPreview.AddOffset(Utils.fieldStartHorizontal, 0);
-            logger.AddOffset(0, 45);
+            logger.AddOffset(0, 48);
             previewContext.AddOffset(Utils.fieldStartHorizontal * 2, 0);
             logger.AddLog("Welcome to deck builder!", ConsoleColor.Cyan);
         }
@@ -27,10 +27,10 @@ namespace Gwent2
             List<Card> allCards = DeckIO.invokeAllCards();
             //foreach (Card c in allCards)
             //    allCardsPreview.AddLog(c.ToString(), UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(c.rarity)));
-            PlayerChoiseDialog.deckCreatingDialog(editingDeck.cards, allCards, deckPreview, allCardsPreview, previewContext);
+            PlayerChoiseDialog.deckCreatingDialog(editingDeck.cards, allCards, deckPreview, allCardsPreview, previewContext, logger);
         }
 
-        bool Check(List<Card> deck)
+        static bool Check(List<Card> deck)
         {
             List<string> warns = new List<string>(), errors = new List<string>();
             DeckIO.checkDeckStandart(deck, ref warns, ref errors);
@@ -53,6 +53,18 @@ namespace Gwent2
             logger.AddLog(String.Format("Loaded deck \"{0}\".", fileName));
             ShowMessages(warns, errors);
             return Check(loaded.cards) ? loaded : null;
+        }
+
+        public static bool Check(List<Card> deck, ConsoleWindowText window)
+        {
+            List<string> warns = new List<string>(), errors = new List<string>();
+            DeckIO.checkDeckStandart(deck, ref warns, ref errors);
+            window.ClearLogWindow();
+            foreach (string w in warns)
+                window.AddLog("Warning: " + w, ConsoleColor.DarkYellow);
+            foreach (string e in errors)
+                window.AddLog("Error:   " + e, ConsoleColor.Red);
+            return errors.Count == 0;
         }
     }
 }

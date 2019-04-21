@@ -8,7 +8,7 @@ namespace Gwent2
 {
     public class ConsoleWindowText
     {
-        ConsoleColor loggerBackground = ConsoleColor.Black;
+        public ConsoleColor loggerBackground = ConsoleColor.Black;
         int startX = 0;
         int startY = 0;
         int wid;

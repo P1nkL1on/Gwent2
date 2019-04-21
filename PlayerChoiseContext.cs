@@ -16,7 +16,7 @@ namespace Gwent2
         public void HighlightSelected(int optionIndex) { for (int i = 0; i < OptionsCount; ++i) if (i == optionIndex) mark(i); else demark(i); }
         public virtual bool PreviewSelected(int optionIndex, ConsoleWindowText window) { return false; }
         protected virtual void mark(int optionIndex) { }
-        protected virtual void demark(int optionIndex){  }
+        protected virtual void demark(int optionIndex) { }
 
         protected bool _hasExtraChoise = false;
         protected string _extraChoise;
@@ -36,7 +36,7 @@ namespace Gwent2
         }
         public static ChoiseOptionContext OneOfTwo(string a, string b)
         {
-            return new ChoiseOptionContext(new List<string>() { a, b}, 1);
+            return new ChoiseOptionContext(new List<string>() { a, b }, 1);
         }
     }
 
@@ -56,11 +56,11 @@ namespace Gwent2
 
         public override string DescriptionForOption(int optionIndex)
         {
-            Player p = _players[optionIndex - (_hasExtraChoise? 1 : 0)];
+            Player p = _players[optionIndex - (_hasExtraChoise ? 1 : 0)];
             return String.Format("{2}{0}{1}",
                 p.ToString(),
-                "".PadLeft(p.roundsWin, '*') + (p.roundsWin > 0? String.Format("  ({0} rounds won)", p.roundsWin) : ""),
-                (p as PlayerHuman != null)? "[human]" : "[botAI]");
+                "".PadLeft(p.roundsWin, '*') + (p.roundsWin > 0 ? String.Format("  ({0} rounds won)", p.roundsWin) : ""),
+                (p as PlayerHuman != null) ? "[human]" : "[botAI]");
         }
     }
 
@@ -93,7 +93,7 @@ namespace Gwent2
             _extraChoise = noneVariantName;
 
             _choiseOptions = new List<string>();
-            if (_hasExtraChoise) 
+            if (_hasExtraChoise)
                 _choiseOptions.Add(_extraChoise);
 
             foreach (Card c in cards)
@@ -103,7 +103,7 @@ namespace Gwent2
         {
             if (_hasExtraChoise && optionIndex == 0)
                 return "";
-            
+
             return _cards[optionIndex - (_hasExtraChoise ? 1 : 0)].ToFormat();
         }
         protected override void mark(int optionIndex)
@@ -151,8 +151,13 @@ namespace Gwent2
         public override bool PreviewSelected(int optionIndex, ConsoleWindowText window)
         {
             int index = optionIndex - (_hasExtraChoise ? 1 : 0);
-            PlayerChoiseDialog.PreviewCard(index < 0? null : _cards[index], window);
+            PlayerChoiseDialog.PreviewCard(index < 0 ? null : _cards[index], window);
             return index >= 0;
+        }
+        public void RemoveAt(int i)
+        {
+            _cards.RemoveAt(i - (_hasExtraChoise ? 1 : 0));
+            _choiseOptions.RemoveAt(i);
         }
     }
 }

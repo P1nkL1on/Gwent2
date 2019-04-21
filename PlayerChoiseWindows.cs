@@ -16,7 +16,10 @@ namespace Gwent2
             Console.ForegroundColor = Console.BackgroundColor;
             Console.BackgroundColor = tmp;
         }
-        public static int classicSmallDialog(ChoiseContext choise, ConsoleWindowText decideWindow, ConsoleWindowText descriptionWindow)
+        public static int classicSmallDialog(
+            ChoiseContext choise, 
+            ConsoleWindowText decideWindow,
+            ConsoleWindowText descriptionWindow)
         {
             Console.CursorVisible = false;
             if (choise.OptionsCount == 1)
@@ -74,14 +77,17 @@ namespace Gwent2
             return answer;
         }
         public static int deckCreatingDialog(
-            List<Card> deckCards, List<Card> collectionCads,
-            ConsoleWindowText deckWindow, ConsoleWindowText collectionWindow,
-            ConsoleWindowText descriptionWindow)
+            List<Card> deckCards,
+            List<Card> collectionCads,
+            ConsoleWindowText deckWindow,
+            ConsoleWindowText collectionWindow,
+            ConsoleWindowText descriptionWindow,
+            ConsoleWindowText console)
         {
             CardChoiseContext choiseCollection =
                 CardChoiseContext.WithNoneOption(collectionCads, "COLLECTION", "Finish deck building");
             CardChoiseContext choiseDeck =
-                CardChoiseContext.WithNoneOption(deckCards, "DECK", "");
+                CardChoiseContext.WithNoneOption(deckCards, "DECK", "Save deck");
 
             // turning a deck into Card and Count
 
@@ -92,17 +98,40 @@ namespace Gwent2
 
             collectionWindow.ClearLogWindow();
             collectionWindow.AddLog((choiseCollection.Question.Length == 0 ? "Make a descision:" : (choiseCollection.Question + ":")).PadRight(collectionWindow.Width), ConsoleColor.Yellow, ConsoleColor.DarkGreen);
-            int collectionSelected = 0, collectionFromIndex = 0;
+            int collectionSelected = 0, collectionFromIndex = 0, deckSelected = 0, deckFromIndex = 0;
 
-            List<int> redrawCollection = new List<int>(); for (int i = 0; i < Math.Min(choiseCollection.OptionsCount, collectionWindow.Heigth); ++i) redrawCollection.Add(i);
-            RedrawScrollCollection(redrawCollection, choiseCollection.ChoiseOptions, 0, 0, collectionWindow);
-
-            ScrollChooser(ref collectionSelected, ref collectionFromIndex, choiseCollection, collectionWindow, descriptionWindow, ConsoleKey.Tab, ConsoleKey.LeftArrow,
-                RedrawScrollCollection,
-                () =>{
-                    deckCards.Add(collectionCads[collectionSelected - 1].spawnCard());
-                });
-
+            RedrawScrollCollection(null, choiseCollection.ChoiseOptions, 0, 0, collectionWindow);
+            RedrawScrollCollection(null, choiseDeck.ChoiseOptions, 0, 0, deckWindow);
+            while (true)
+            {
+                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, collectionSelected, collectionFromIndex, collectionWindow);
+                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, -1, deckFromIndex, deckWindow);
+                ScrollChooser(ref collectionSelected, ref collectionFromIndex, choiseCollection, collectionWindow, descriptionWindow, ConsoleKey.Tab, ConsoleKey.LeftArrow,
+                    RedrawScrollCollection,
+                    () =>
+                    {
+                        if (collectionSelected == 0)
+                            return;
+                        deckCards.Add(collectionCads[collectionSelected - 1].spawnCard());
+                        choiseDeck = CardChoiseContext.WithNoneOption(deckCards, "DECK", "Save deck");
+                        RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow);
+                        DeckBuilder.Check(deckCards, console);
+                    });
+                RedrawScrollCollection(null, choiseCollection.ChoiseOptions, -1, collectionFromIndex, collectionWindow);
+                RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow);
+                ScrollChooser(ref deckSelected, ref deckFromIndex, choiseDeck, deckWindow, descriptionWindow, ConsoleKey.Tab, ConsoleKey.RightArrow,
+                    RedrawScrollCollection,
+                    () =>
+                    {
+                        if (deckSelected == 0)
+                            return;
+                        choiseDeck.RemoveAt(deckSelected);
+                        if (deckSelected >= choiseDeck.OptionsCount) deckSelected = choiseDeck.OptionsCount - 1;
+                        deckWindow.ClearLogWindow();
+                        RedrawScrollCollection(null, choiseDeck.ChoiseOptions, deckSelected, deckFromIndex, deckWindow);
+                        DeckBuilder.Check(deckCards, console);
+                    });
+            }
             choiseCollection.HighlightSelected(-1);
             collectionWindow.ClearLogWindow();
 
@@ -128,9 +157,7 @@ namespace Gwent2
                 List<int> needRedraw = new List<int>();
                 if (pressed == ConsoleKey.DownArrow || pressed == ConsoleKey.UpArrow)
                 {
-
                     int offset = pressed == ConsoleKey.DownArrow ? 1 : -1;
-
                     answer += offset;
                     if (answer < 0) answer = choise.OptionsCount - 1;
                     if (answer > choise.OptionsCount - 1) answer = 0;
@@ -152,13 +179,18 @@ namespace Gwent2
                 }
                 redraw(needRedraw, choise.ChoiseOptions, answer, intFrom, collectionWindow);
                 //
-                if (pressed == use && answer != null)
+                if (pressed == use)
                     onUseItem();
             } while (pressed != exit);
         }
         //choise.ChoiseOptions
         static void RedrawScrollCollection(List<int> needRedraw, List<string> choiseOptions, int answer, int intFrom, ConsoleWindowText collectionWindow)
         {
+            if (needRedraw == null)
+            {
+                needRedraw = new List<int>();
+                for (int i = 0; i < Math.Min(choiseOptions.Count, collectionWindow.Heigth); ++i) needRedraw.Add(i);
+            }
             foreach (int i in needRedraw)
             {
                 if (i == answer) SwapColors();
