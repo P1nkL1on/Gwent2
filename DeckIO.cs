@@ -28,6 +28,26 @@ namespace Gwent2
 
     class DeckIO
     {
+        static List<Card> invokeAll(Spawner su, params Clan[] clansFrom)
+        {
+            List<Card> res = new List<Card>();
+            foreach (MethodInfo m in su.GetType().GetMethods())
+            {
+                Card u = null; try
+                {
+                    u = m.Invoke(su, null) as Card;
+                }
+                catch (Exception e) { }
+                bool shouldBeAdded = false;
+                if (u != null)
+                    foreach (Clan canBeFrom in clansFrom)
+                        if (u.clan == canBeFrom)
+                            shouldBeAdded = true;
+                if (shouldBeAdded)
+                    res.Add(u);
+            }
+            return res;
+        }
         public static List<Card> invokeAllCards()
         {
             SpawnUnit su = new SpawnUnit();
@@ -78,7 +98,7 @@ namespace Gwent2
             }
             return res;
         }
-        static List<string> clanNames = new List<string>() { "remember to uppercase them","NORTHERN REALMS","SKELLIGE","NILFGAARD","SCOIA’TAEL","MONSTERS"};
+        static List<string> clanNames = new List<string>() { "remember to uppercase them", "NORTHERN REALMS", "SKELLIGE", "NILFGAARD", "SCOIA’TAEL", "MONSTERS" };
 
         static ConsoleWindowText logger = new ConsoleWindowText(50, 50);
 
@@ -132,8 +152,8 @@ namespace Gwent2
         {
             // equale to Enum Rarity, 3 is leaders
             List<Card> resDeck = new List<Card>();
-            List<Dictionary<string, int>> copies 
-                = new List<Dictionary<string,int>>(){
+            List<Dictionary<string, int>> copies
+                = new List<Dictionary<string, int>>(){
                     new Dictionary<string,int>(), 
                     new Dictionary<string,int>(), 
                     new Dictionary<string,int>(), 
@@ -145,12 +165,12 @@ namespace Gwent2
                 if (c == null)
                 {
                     string warning = String.Format("Can not invoke card \"{0}\".", name);
-                    if (warnings.IndexOf(warning) < 0)warnings.Add(warning);
+                    if (warnings.IndexOf(warning) < 0) warnings.Add(warning);
                     continue;
                 }
                 resDeck.Add(c);
 
-                int di = (c as Leader != null)? 3 : (int)c.rarity;
+                int di = (c as Leader != null) ? 3 : (int)c.rarity;
                 int prevCount = 0;
                 if (copies[di].TryGetValue(name, out prevCount))
                     copies[di][name]++;
@@ -158,14 +178,16 @@ namespace Gwent2
                     copies[di].Add(name, 1);
             }
             int nCards = resDeck.Count - 1; // 1 leader is not in the deck
-            if (copies[3].Count != 1)errors.Add("Deck must contain exactly one Leader!");
-            if (nCards < 25)errors.Add("Deck must contain at least 25 cards!");
-            if (nCards > 40)errors.Add("Deck must contain not more then 40 cards!");
-            if (copies[2].Count > 4) errors.Add("Deck must contain not more then 4 Gold cards!");
-            if (copies[1].Count > 6) errors.Add("Deck must contain not more then 6 Silver cards!");
-            foreach (int bronzeCount in copies[1].Values.ToList())if (bronzeCount > 1)errors.Add("Deck must contain not more then 1 copiy of each Gold card!");
-            foreach (int bronzeCount in copies[2].Values.ToList())if (bronzeCount > 1)errors.Add("Deck must contain not more then 1 copiy of each Silver card!");
-            foreach (int bronzeCount in copies[0].Values.ToList())if (bronzeCount > 3)errors.Add("Deck must contain not more then 3 copies of each Bronze card!");
+            if (copies[3].Count != 1) errors.Add(String.Format("Deck must contain exactly one Leader. {0} granted!", copies[3].Count));
+            if (nCards < 25) errors.Add(String.Format("Deck must contain at least 25 cards. {0} granted!", nCards));
+            if (nCards > 40) errors.Add(String.Format("Deck must contain not more then 40 cards. {0} granted!", nCards));
+            if (copies[2].Count > 4) errors.Add(String.Format("Deck must contain not more then 4 Gold cards. {0} granted!", copies[2].Count));
+                else if (copies[2].Count < 4) warnings.Add(String.Format("Deck contains only {0} Gold cards from 4 permited.", copies[2].Count));
+            if (copies[1].Count > 6) errors.Add(String.Format("Deck must contain not more then 6 Silver cards. {0} granted!", copies[1].Count));
+                else if (copies[1].Count < 4) warnings.Add(String.Format("Deck contains only {0} Silver cards from 6 permited.", copies[1].Count));
+            foreach (int goldCount in copies[1].Values.ToList()) if (goldCount > 1) errors.Add(String.Format("Deck must contain not more then 1 copiy of each Gold card. {0} granted!", goldCount));
+            foreach (int silverCount in copies[2].Values.ToList()) if (silverCount > 1) errors.Add(String.Format("Deck must contain not more then 1 copiy of each Silver card. {0} granted!", silverCount));
+            foreach (int bronzeCount in copies[0].Values.ToList()) if (bronzeCount > 3) errors.Add(String.Format("Deck must contain not more then 3 copies of each Bronze card. {0} granted!", bronzeCount));
             return resDeck;
         }
         public static bool checkDeckStandart(List<Card> deckCards, ref List<string> warnings, ref List<string> errors)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class SpawnLeader
+    class SpawnLeader : Spawner
     {
         // game mechanics
         public static Leader TacticalAdvantage(Player host, Match context)

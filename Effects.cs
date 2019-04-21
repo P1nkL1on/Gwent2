@@ -11,19 +11,24 @@ namespace Gwent2
     enum showAction
     {
         damage,
-        boost
+        boost,
+        stretngthlen,
+        weaken,
+        armor
     }
 
     class Effects
     {
         //static string frames = " ░▒▓█";
-        static string frames = " .,+oO";
-        //static string frames = " .,oO0";
+        static string frames = " .oO";
 
         public static void Trajectory(Card source, Card self, showAction type)
         {
             if (type == showAction.damage) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Red, 5, 5, 20, 15);
+            if (type == showAction.armor) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Yellow, 4, 2, 35, 18);
             if (type == showAction.boost) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Green, 4, 2, 15, 22);
+            if (type == showAction.stretngthlen) Trajectory(pointOf(source), pointOf(self), ConsoleColor.White, 4, 2, 5, 30);
+            if (type == showAction.weaken) Trajectory(pointOf(source), pointOf(self), ConsoleColor.Magenta, 4, 2, 15, 30);
         }
         static Point pointOf(Card c)
         {

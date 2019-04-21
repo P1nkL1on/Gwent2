@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Reflection;
 
 namespace Gwent2
 {
@@ -15,18 +16,18 @@ namespace Gwent2
         int _power;
         bool _isSpy = false;
         public int row = -1;
-        
-        TriggerRecieve _onDamaged       = (s, by, X) => { s._context.Log(s, String.Format("damaged for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onWeakened      = (s, by, X) => { s._context.Log(s, String.Format("weakened for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onBoosted        = (s, by, X) => { s._context.Log(s, String.Format("boosted for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onStrengthled   = (s, by, X) => { s._context.Log(s, String.Format("strenghled for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onHealed        = (s, by, X) => { s._context.Log(s, String.Format("healed for {1} by {0}", by.ToString(), X)); };
-        TriggerRecieve _onArmorGain     = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
+
+        TriggerRecieve _onDamaged = (s, by, X) => { s._context.Log(s, String.Format("damaged for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onWeakened = (s, by, X) => { s._context.Log(s, String.Format("weakened for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onBoosted = (s, by, X) => { s._context.Log(s, String.Format("boosted for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onStrengthled = (s, by, X) => { s._context.Log(s, String.Format("strenghled for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onHealed = (s, by, X) => { s._context.Log(s, String.Format("healed for {1} by {0}", by.ToString(), X)); };
+        TriggerRecieve _onArmorGain = (s, by, X) => { s._context.Log(s, String.Format("gain {1} armor from {0}", by.ToString(), X)); };
 
         TriggerUnitAction _onUnitDamaged = (s, by, X) => { /*s._context.Log(s, String.Format("watchs how {0} suffers {1} damage", by.ToString(), X));*/ };
         public TriggerUnitAction _onCardPlayed = (s, by, X) => { };
         public TriggerUnitAction _onCardDiscarded = (s, by, X) => { };
-        TriggerUnitSelf _onDestroy = (s, by) => { s._context.Log(s, "destroyed");};
+        TriggerUnitSelf _onDestroy = (s, by) => { s._context.Log(s, "destroyed"); };
 
         string _onDamagedAbility = "";
         string _onWeakenedAbility = "";
@@ -58,7 +59,20 @@ namespace Gwent2
         public void setSpyHost(Player spyHost, Player playedBy) { _host = spyHost; _baseHost = playedBy; }
         public void setCharmHost(Player charmer) { _host = charmer; status.SetSpying(_baseHost != charmer); }
 
-        public virtual void setUnitAttributes (int DefaultPower, params Tag[] Tags){
+        public override Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy)
+        {
+            string methodName = name, callMethodName = "";
+            for (int i = 0; i < methodName.Length; ++i)
+                if (alphabet.IndexOf(methodName[i]) >= 0)
+                    callMethodName += methodName[i];
+            SpawnUnit spun = new SpawnUnit();
+            PropertyInfo m = spun.GetType().GetProperty(callMethodName);
+            Unit copy = m.GetMethod.Invoke(spun, null) as Unit;
+            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+        }
+
+        public virtual void setUnitAttributes(int DefaultPower, params Tag[] Tags)
+        {
             _defaultPower = _basePower = _power = DefaultPower;
             _tags = Tags.ToList();
         }
@@ -76,7 +90,7 @@ namespace Gwent2
             _basePower = _power = X;
         }
         // return was unit destroyed or not
-        public virtual bool damage  (Card source, int X)
+        public virtual bool damage(Card source, int X)
         {
             // can not deal any damage to unit in deck, graveyard or banish
             // in hand unit can be only SET HEALTH to low his power
@@ -113,6 +127,7 @@ namespace Gwent2
                 return;
             _power -= X;
             _basePower -= X;
+            Effects.Trajectory(source, this, showAction.weaken);
             _show.redrawCausedChangeValue();
             _onWeakened(this, source, X);
 
@@ -133,6 +148,7 @@ namespace Gwent2
             if (X <= 0)
                 return;
             status.armor += X;
+            Effects.Trajectory(source, this, showAction.armor);
             _show.redrawCausedChangeValue();
             _onArmorGain(this, source, X);
         }
@@ -142,6 +158,7 @@ namespace Gwent2
                 return;
             _power += X;
             _basePower += X;
+            Effects.Trajectory(source, this, showAction.stretngthlen);
             _show.redrawCausedChangeValue();
             _onStrengthled(this, source, X);
         }
@@ -189,7 +206,10 @@ namespace Gwent2
 
         public override string ToString()
         {
-            return String.Format("[{0} {1}]{2}", power, base.ToString(), status.ToStringBattlefield());
+            return String.Format("[{0} {1}]{2}__{3}{4}_{5}", power, base.ToString(), status.ToStringBattlefield(),
+                _host == null ? 'X' : _host.ToString()[0],
+                _baseHost == null ? 'X' : _baseHost.ToString()[0], pid
+                );
         }
         public override string ToStringFull()
         {
@@ -218,8 +238,8 @@ namespace Gwent2
 
         public override string ToFormat()
         {
-            return String.Format("{0}\n\n{1} {2} unit\n{3}\n\nPower = {4} (base = {5}, default = {6})\nStatus = {7}\n\n{8}", 
-                name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(), 
+            return String.Format("{0}\n\n{1} {2} unit\n{3}\n\nPower = {4} (base = {5}, default = {6})\nStatus = {7}\n\n{8}",
+                name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(),
                 _power, _basePower, _defaultPower, status.ToString(), ToFormatAbilities());
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Gwent2
 {
@@ -29,6 +30,17 @@ namespace Gwent2
         {
             return String.Format("{0}\n\n{1} {2} card\n{3}\n\n{4}",
                 name.ToUpper(), clan.ToString(), rarity.ToString(), tagsToString(), ToFormatAbilities());
+        }
+        public override Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy)
+        {
+            string methodName = name, callMethodName = "";
+            for (int i = 0; i < methodName.Length; ++i)
+                if (alphabet.IndexOf(methodName[i]) >= 0)
+                    callMethodName += methodName[i];
+            SpawnSpecial spun = new SpawnSpecial();
+            PropertyInfo m = spun.GetType().GetProperty(callMethodName);
+            Special copy = m.GetMethod.Invoke(spun, null) as Special;
+            return SpawnSpecial.addSpecialToGame(copy, sourceOfMakeingCopy);
         }
     }
 }

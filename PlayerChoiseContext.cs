@@ -14,6 +14,7 @@ namespace Gwent2
 
         public virtual string DescriptionForOption(int optionIndex) { return "..."; }
         public void HighlightSelected(int optionIndex) { for (int i = 0; i < OptionsCount; ++i) if (i == optionIndex) mark(i); else demark(i); }
+        public virtual bool PreviewSelected(int optionIndex, ConsoleWindowText window) { return false; }
         protected virtual void mark(int optionIndex) { }
         protected virtual void demark(int optionIndex){  }
 
@@ -147,6 +148,12 @@ namespace Gwent2
             foreach (Unit u in units)
                 cards.Add(u);
             return new CardChoiseContext(cards, Question, true, NoneName);
+        }
+        public override bool PreviewSelected(int optionIndex, ConsoleWindowText window)
+        {
+            int index = optionIndex - (_hasExtraChoise ? 1 : 0);
+            PlayerChoiseDialog.PreviewCard(index < 0? null : _cards[index], window);
+            return index >= 0;
         }
     }
 }

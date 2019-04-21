@@ -14,7 +14,7 @@ namespace Gwent2
             Console.ForegroundColor = Console.BackgroundColor;
             Console.BackgroundColor = tmp;
         }
-        
+
         public static int classicSmallDialog(ChoiseContext choise, ConsoleWindowText decideWindow, ConsoleWindowText descriptionWindow)
         {
             Console.CursorVisible = false;
@@ -50,8 +50,14 @@ namespace Gwent2
                 if (needRedraw.Count > 0)
                 {
                     choise.HighlightSelected(answer);
-                    descriptionWindow.ClearLogWindow();
-                    descriptionWindow.AddLog(choise.DescriptionForOption(answer), ConsoleColor.Cyan);
+                    // if can find a card to preview, then use a funcyion
+                    // PreviewCard (below)
+                    // else just ask for a casual desciption and write it
+                    if (!choise.PreviewSelected(answer, descriptionWindow))
+                    {
+                        descriptionWindow.ClearLogWindow();
+                        descriptionWindow.AddLog(choise.DescriptionForOption(answer));
+                    }
                 }
                 foreach (int i in needRedraw)
                 {
@@ -65,6 +71,31 @@ namespace Gwent2
             choise.HighlightSelected(-1);
             decideWindow.ClearLogWindow();
             return answer;
+        }
+        //
+        static string borderSymbols = "▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒▓▒";
+        //
+        public static void PreviewCard(Card card, ConsoleWindowText window)
+        {
+            window.ClearLogWindow();
+            if (card == null)
+                return;
+            var cardLines = card.ToFormat().Split('\n');
+            var clanColor = UtilsDrawing.please.getClosest(UtilsDrawing.colorsOfClan(card.clan));
+            int wid = window.Width;
+            string border = borderSymbols.Substring(0, wid), borderCap = borderSymbols.Substring(0, (wid - cardLines[0].Length) / 2 - 1);
+            bool needOneExtra = (wid - cardLines[0].Length) % 2 == 1;
+
+            ConsoleColor b = (ConsoleColor)clanColor._back, f = (ConsoleColor)clanColor._fore,
+                fR = UtilsDrawing.please.getClosestFore(UtilsDrawing.colorOfRarity(card.rarity));
+            bool isDescrip = false;
+            for (int i = -1; i < cardLines.Length; ++i)
+                if (i < 0 || i == 1)window.AddLog(border, f, b);    //borders
+                else if (i == 0) window.AddLog(String.Format("{1} {0} {1}{2}", cardLines[i], borderCap, needOneExtra ? ("" + borderCap[0]) : ""), fR, b);//name
+                else {
+                    if (cardLines[i].Length > 0 && cardLines[i][0] == '-') isDescrip = true;
+                    window.AddLog(cardLines[i], isDescrip? ConsoleColor.DarkGray : ConsoleColor.Gray); 
+                }           //parameters
         }
     }
 }

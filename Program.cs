@@ -26,14 +26,11 @@ namespace Gwent2
 
             PlayerHuman bonnie = new PlayerHuman("Bonnie");
 
-
             DeckBuilder db = new DeckBuilder();
-            //db.Edit(bonnie);
-            //Console.ReadLine();
 
             Match newgame = new Match(
                 new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
-                new List<Deck>() { DefaultDeck.SkelligeTest, DefaultDeck.ComputerTest }
+                new List<Deck>() { db.Load("WinnerSkellige"), DefaultDeck.AllGameCards }
                 );
             FieldDrawer fd = new FieldDrawer(newgame, bonnie);
 

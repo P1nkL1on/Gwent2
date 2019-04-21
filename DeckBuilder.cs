@@ -28,14 +28,29 @@ namespace Gwent2
             Check(new List<Card>());
         }
 
-        void Check(List<Card> deck)
+        bool Check(List<Card> deck)
         {
             List<string> warns = new List<string>(), errors = new List<string>();
             DeckIO.checkDeckStandart(deck, ref warns, ref errors);
+            //ShowMessages(warns, errors);
+            return errors.Count == 0;
+        }
+
+        void ShowMessages(List<string> warns, List<string> errors)
+        {
             foreach (string w in warns)
-                logger.AddLog(w, ConsoleColor.DarkYellow);
+                logger.AddLog("Warning: " + w, ConsoleColor.DarkYellow);
             foreach (string e in errors)
-                logger.AddLog(e, ConsoleColor.Red);
+                logger.AddLog("Error:   " + e, ConsoleColor.Red);
+        }
+
+        public Deck Load(string fileName)
+        {
+            List<string> warns = new List<string>(), errors = new List<string>();
+            Deck loaded = DeckIO.readDeckFromFile(fileName, ref warns, ref errors);
+            logger.AddLog(String.Format("Loaded deck \"{0}\".", fileName));
+            ShowMessages(warns, errors);
+            return Check(loaded.cards) ? loaded : null;
         }
     }
 }

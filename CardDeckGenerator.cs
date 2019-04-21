@@ -20,15 +20,17 @@ namespace Gwent2
                     SpawnUnit.SvanrigeTuirseach,
                     SpawnUnit.TuirseachArcher,
                     SpawnUnit.TuirseachArcher,
-                    SpawnUnit.TuirseachArcher,
-                    SpawnSpecial.SkelligeStorm,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle,
-                    SpawnSpecial.Muzzle
+                    SpawnSpecial.StribogRunestone,
+                    SpawnSpecial.StribogRunestone,
+                    SpawnSpecial.StribogRunestone,
+                    SpawnSpecial.StribogRunestone,
+                    SpawnUnit.Hym,
+                    SpawnUnit.Hym,
+                    SpawnUnit.Hym,
+                    SpawnUnit.Hym,
+                    SpawnUnit.Skjall,
+                    SpawnUnit.Udalryk,
+                    SpawnUnit.Morkvarg
                 });
                 return Deck.FromCards(cards, "Skellige Test");
             }
@@ -39,12 +41,9 @@ namespace Gwent2
             get
             {
                 List<Card> cards = new List<Card>();
-                int nCount = 5;
+                int nCount = 10;
                 while (nCount-- > 0)
-                    cards.Add(SpawnUnit.Skjall);
-                nCount = 4;
-                while (nCount-- > 0) 
-                    cards.Add(SpawnSpecial.Muzzle);
+                    cards.Add(SpawnUnit.AnCraiteGreatsword);
                 //nCount = 2;
                 //while (nCount-- > 0)
                 //    deck.Add(SpawnUnit.Emissary);
@@ -55,6 +54,13 @@ namespace Gwent2
                 cards.Add(SpawnLeader.HaraldtheCripple);
                 
                 return Deck.FromCards(cards, "Computer Test");
+            }
+        }
+        public static Deck AllGameCards
+        {
+            get
+            {
+                return Deck.FromCards(Filter.randomCardsFrom(DeckIO.invokeAllCards(), 40), "All cards");
             }
         }
     }

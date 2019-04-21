@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class SpawnSpecial
+    class SpawnSpecial : Spawner
     {
 
         // universal templates
@@ -14,7 +14,7 @@ namespace Gwent2
         {
             preset.SetDefaultHost(source.host, source.context);
             source.context.AddCardToGame(preset);
-            preset._show.setPosition(new System.Drawing.Point(source._show.position.X + source.ToString().Length + 2, source._show.position.Y));
+            preset._show.setPosition(new System.Drawing.Point(source._show.position.X + source.ToString().Length - 1, source._show.position.Y));
             preset._show._doNotCleanLine = true;
             preset.makeVisibleAll();
             return preset;
@@ -252,7 +252,7 @@ namespace Gwent2
             get
             {
                 Special spec = new Special();
-                spec.setAttributes(Clan.skellige, Rarity.silver, "Mandrake");
+                spec.setAttributes(Clan.neutral, Rarity.silver, "Mandrake");
                 spec.setSpecialAttributes(Tag.alchemy, Tag.organic);
                 spec.setOnDeploy((s, f) =>
                 {
@@ -277,7 +277,7 @@ namespace Gwent2
                 return spec;
             }
         }
-
+        
         // gold
         public static Special Muzzle
         {
@@ -329,7 +329,7 @@ namespace Gwent2
         }
         public static Special SkelligeStorm
         {
-            get { return Hazard("Skellige Storm", "Apply a Hazard to an enemy row that deals 2, 1 and 1 damage to the leftmost units on the row on turn start.", storm); }
+            get { return Hazard("Skellige Storm", "Apply a Hazard to an enemy row that deals 2, 1 and 1 damage to the leftmost units on the row on turn start.", storm, Rarity.silver); }
         }
         // boons
         public static Special GoldenFroth
@@ -503,6 +503,24 @@ namespace Gwent2
                     if (p != null)
                         s.host.playCard(p);
                 }, "Return a Bronze or Silver Skellige unit from your graveyard to your hand, add the Doomed category to it, and set its base power to 8. Then play a card.");
+                return spec;
+            }
+        }
+        public static Special StribogRunestone
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.skellige, Rarity.silver, "Stribog Runestone");
+                spec.setSpecialAttributes(Tag.organic);
+                spec.setOnDeploy((s, f) =>
+                {
+                    s.host.playCard(SpawnUnit.createCard(s,
+                        SpawnUnit.allCards,
+                        Filter.anyCardHasClan(Clan.skellige),
+                        Filter.anyCardHasColor(Rarity.silver),
+                        Filter.nonSpyingCard()));
+                }, "Create and play a silver Skellige card.");
                 return spec;
             }
         }

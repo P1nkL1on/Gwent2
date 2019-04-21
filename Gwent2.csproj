@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AbilityHints.cs" />
     <Compile Include="Card.cs" />
+    <Compile Include="CardAbstractGenerator.cs" />
     <Compile Include="CardDeckGenerator.cs" />
     <Compile Include="CardLeader.cs" />
     <Compile Include="CardLeaderGenerator.cs" />

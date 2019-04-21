@@ -301,7 +301,10 @@ namespace Gwent2
             Console.Write(style[4] + "".PadLeft(place.Width - 2, style[0]) + style[5]);
             //Console.ResetColor();
         }
-
+        public PixColor getClosest(Color color)
+        {
+            return getClosestColor(color);
+        }
         public ConsoleColor getClosestFore(Color color)
         {
             return (ConsoleColor)getClosestColor(color)._fore;

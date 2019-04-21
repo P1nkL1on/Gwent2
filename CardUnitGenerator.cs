@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class SpawnUnit
+    class SpawnUnit : Spawner
     {
         // random
+        static int createChoiseOptionCount = -1;
         static Random unitDecisionsRandomiser = new Random();
 
-        // universal templates
+        // ||| universal templates |||
+        // < >
+        public static List<Card> allCards = DeckIO.invokeAllCards();
         public static Unit transformUnit(Unit target, Unit transformInto, Card by)
         {
             var token = transformInto;
@@ -96,7 +99,32 @@ namespace Gwent2
             RowEffect hazz = new RowEffect(st, enemy, row);
             hazz.SetBehaviour(hazzardEffect);
         }
-        
+        public static Card createCard(Card source, List<Card> listOriginal, params CardPredicat[] filters)
+        {
+            for (int i = 0; i < listOriginal.Count; ++i) if (listOriginal[i].name == source.name) { listOriginal.RemoveAt(i); break; }
+            if (listOriginal.Count == 0)
+                return null;
+            Card c = source.host.selectCard(
+                Filter.randomCardsFrom(
+                    Select.Cards(listOriginal, filters),
+                    createChoiseOptionCount),
+                source.QestionString());
+            if (c == null)
+                return null;
+            if (c as Unit != null)
+            {
+                Unit u = c.spawnDefaultCopy(source.host, source) as Unit;
+                u.context.Log(u, "unit created by " + source.ToString());
+                return u;
+            }
+            if (c as Special != null)
+            {
+                Special s = c.spawnDefaultCopy(source.host, source) as Special;
+                s.context.Log(s, "special created by " + source.ToString());
+                return s;
+            }
+            return null;
+        }
         // ||| SKELIGE |||
         // < > tokens
         // < > bronze skellige
@@ -993,6 +1021,42 @@ namespace Gwent2
                 return self;
             }
         }
+        public static Unit Hym
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.skellige, Rarity.gold, "Hym");
+                self.setUnitAttributes(3, Tag.cursed);
+                self.setOnDeploy((s, f) =>
+                {
+                    if (s.host.selectOption(ChoiseOptionContext.OneOfTwo(
+                           "Play Cursed unit from your deck.",
+                           "Create Silver unit from enemy deck."))
+                           == 0)
+                    {
+                        Card cursedAllyFromDeck = s.host.selectCard(
+                            Select.Cards(s.context.cards,
+                            Filter.anyCardInYourDeck(s),
+                            Filter.anyCardHasTagAnyFrom(Tag.cursed),
+                            Filter.anyCardHasColor(Rarity.bronze, Rarity.silver)),
+                        s.QestionString());
+                        if (cursedAllyFromDeck != null)
+                            s.host.playCard(cursedAllyFromDeck);
+                    }
+                    else
+                    {
+                        Card u = createCard(s, s.context.startedDeck,
+                            Filter.anyUnit(),
+                            Filter.anyCardInEnemyDeck(s),
+                            Filter.anyCardHasColor(Rarity.silver));
+                        if (u != null)
+                            s.host.playCard(u);
+                    }
+                }, "Choose One: Play a Bronze or Silver Cursed unit from your deck; or Create a Silver unit from your opponent's starting deck.");
+                return self;
+            }
+        }
 
 
         // ||| NILFGAARD |||
@@ -1049,7 +1113,7 @@ namespace Gwent2
                 return self;
             }
         }
-        
+
         // ||| NORTHERN REALMS |||
         // < > tokens
         // < > bronze
@@ -1114,6 +1178,16 @@ namespace Gwent2
                 return self;
             }
         }
+        public static Unit GeraltofRivia
+        {
+            get
+            {
+                Unit self = new Unit();
+                self.setAttributes(Clan.neutral, Rarity.gold, "Geralt of Rivia");
+                self.setUnitAttributes(15, Tag.witcher);
+                return self;
+            }
+        }
 
         // ||| WEATHER |||
         public static Unit Gremist
@@ -1146,6 +1220,14 @@ namespace Gwent2
             {
                 return weatherMage("Vanhemar", "Spawn Biting Frost, Clear Skies or Shrike.", Clan.nilfgaard,
                     SpawnSpecial.BitingFrost, SpawnSpecial.ClearSkies, SpawnSpecial.Shrike, Tag.mage);
+            }
+        }
+        public static Unit Vaedermakar
+        {
+            get
+            {
+                return weatherMage("Vanhemar", "Spawn Biting Frost, Impenetrable Fog or Alzur's Thunder.", Clan.neutral,
+                    SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog, SpawnSpecial.AlzursThunder, Tag.mage);
             }
         }
     }

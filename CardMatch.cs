@@ -13,6 +13,7 @@ namespace Gwent2
         public Player currentPlayer { get { return players[_currentPlayerIndex]; } }
         public List<Player> players = new List<Player>();
         public List<Card> cards = new List<Card>();
+        public List<Card> startedDeck = new List<Card>();
         private ConsoleWindowText topLeftTextBox;
 
         public void Log(string message)
@@ -46,6 +47,7 @@ namespace Gwent2
                 foreach (Card c in decks[i].cards)
                     c.SetDefaultHost(participants[i], this);
                 cards.AddRange(decks[i].cards);
+                startedDeck.AddRange(decks[i].cards);
             }
             players = participants;
             _currentPlayerIndex = shuffleRandomiser.Next(players.Count);

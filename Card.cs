@@ -29,9 +29,13 @@ namespace Gwent2
         protected void makeVisibleTo(Player watcher) { if (_visibleTo.IndexOf(watcher) < 0)_visibleTo.Add(watcher); }
         public void makeVisibleAll() { _visibleTo.Clear(); foreach (Player p in context.players) _visibleTo.Add(p); }
         public bool isVisibleTo(Player watcher) { return _visibleTo.IndexOf(watcher) >= 0; }
-
+        public virtual Card spawnDefaultCopy(Player newHost, Card sourceOfMakeingCopy) { return null; }
         public CardRedrawContainer _show = null;
         protected Match _context;
+        protected static string alphabet = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        public static string Alphabet { get { return alphabet; } }
+        static protected int pids = 0;
+        protected int pid = -1;
 
         public virtual void move(Place to)
         {
@@ -138,6 +142,7 @@ namespace Gwent2
             _rarity = R;
             _name = N;
             place = P;
+            pid = pids++;
         }
         public void setAttributes(Clan C, Rarity R, String Name)
         {
@@ -148,6 +153,7 @@ namespace Gwent2
             _rarity = R;
             _name = Name;
             place = Place.deck;
+            pid = pids++;
         }
         public void setAttributesToken(Clan C, Rarity R, String Name)
         {
@@ -158,6 +164,7 @@ namespace Gwent2
             _rarity = R;
             _name = Name;
             place = Place.token;
+            pid = pids++;
         }
 
         // format outputs
