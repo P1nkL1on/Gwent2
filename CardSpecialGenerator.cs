@@ -261,7 +261,7 @@ namespace Gwent2
                         "Reset a unit and Weaken it by 6."))
                         == 0)
                     {
-                        Unit u = s.host.selectUnit(Select.Units(s.context.cards,Filter.anyUnitInBattlefield()),s.QestionString());
+                        Unit u = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyUnitInBattlefield()), s.QestionString());
                         if (u == null) return;
                         u.heal(s);
                         u.strengthen(s, 6);
@@ -277,7 +277,7 @@ namespace Gwent2
                 return spec;
             }
         }
-        
+
         // gold
         public static Special Muzzle
         {
@@ -292,7 +292,7 @@ namespace Gwent2
                         Select.Units(s.context.cards,
                             Filter.anyEnemyUnitInBattlefield(s),
                             Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver),
-                            (u) => { return u.power <= 8; }), 
+                            (u) => { return u.power <= 8; }),
                         s.QestionString());
 
                     if (t != null)
@@ -301,7 +301,7 @@ namespace Gwent2
                 return spec;
             }
         }
-        
+
         // hazzards
         public static TriggerTurnRowEffect rain = (r) => { foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))t.damage(r.Source, 1); };
         public static TriggerTurnRowEffect frost = (r) => { Unit t = Filter.lowestUnit(r.allRowUnits); if (t != null)t.damage(r.Source, 2); };
@@ -546,6 +546,73 @@ namespace Gwent2
         }
 
         // nilfgaard
+        // < > SPECIALS
+        // < > GOLD
+        public static Special Assassination
+        {
+            get
+	        {
+		        Special spec = new Special();
+		        spec.setAttributes(Clan.nilfgaard, Rarity.gold, "Assassination");
+		        spec.setSpecialAttributes(Tag.tactic);
+		
+		        // Do not forget to check and RECHECK correctence of current ability,
+		        // its triggering condition and signature of delegate!
+		        spec.setOnDeploy ((s, f) => 
+		        {}, "Deal 8 damage to an enemy. Repeat once.");
+		
+		        return spec;
+	        }
+        }
+        // < > SILVER
+        public static Special Cadaverine
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Cadaverine");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Choose One: Deal 2 damage to an enemy and all units that share its categories; or Destroy a Bronze or Silver Neutral unit.");
+
+                return spec;
+            }
+        }
+        public static Special DazhbogRunestone
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Dazhbog Runestone");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Create a Silver Nilfgaard card.");
+
+                return spec;
+            }
+        }
+        public static Special NilfgaardianGate
+        {
+            get
+	{
+		Special spec = new Special();
+		spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Nilfgaardian Gate");
+		spec.setSpecialAttributes(Tag.tactic);
+		
+		// Do not forget to check and RECHECK correctence of current ability,
+		// its triggering condition and signature of delegate!
+		spec.setOnDeploy ((s, f) => 
+		{}, "Play a Bronze or Silver Officer from your deck and boost it by 1.");
+		
+		return spec;
+	}
+        }
 
     }
     class RowEffect

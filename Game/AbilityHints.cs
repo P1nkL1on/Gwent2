@@ -25,7 +25,15 @@ namespace Gwent2
                 "Duel", "Units take turns dealing damage equal to their power until one of them is destroyed.",
                 "Charm", "Move an enemy to the opposite row.",
                 "Weaken", "Decrease the base power of a unit. If it falls below 1, remove it from the game. Does not trigger Deathwish abilities.",
-                "Reset", "Restore a card to its default state (as it would appear in the Deck Builder)."
+                "Reset", "Restore a card to its default state (as it would appear in the Deck Builder).",
+                "Reveal", "Show a card to both players, then hide it back in the hand or deck.",
+                "Drain", "Deal damage and boost self by the same amount.",
+                "Lock", "Status that disables a unit's abilities.",
+                "Truce", "If neither player has passed.",
+                "Revealed", "A card in the hand that has been turned over.",
+                "Conceal", "Turn over a face-up card in hand.",
+                "Crew", "This unit triggers the ability of Crewed units played adjacent to it.",
+                "Create", "Spawn one of 3 randomly selected cards from the specified source."
         };
         public static string addHitsTo(string sourceAbilities)
         {

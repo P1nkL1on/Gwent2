@@ -113,5 +113,77 @@ namespace Gwent2
         }
 
         // Nilfgaard
+        public static Leader Usurper
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.nilfgaard, Rarity.gold, "Usurper");
+                self.setUnitAttributes(1, Tag.officer);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Spying.");
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Create any Leader and boost it by 2.");
+
+                return self;
+            }
+        }
+        public static Leader EmhyrvarEmreis
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.nilfgaard, Rarity.gold, "Emhyr var Emreis");
+                self.setUnitAttributes(7, Tag.officer);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Play a card, then return a Bronze or Silver ally to your hand.");
+
+                return self;
+            }
+        }
+        public static Leader JanCalveit
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.nilfgaard, Rarity.gold, "Jan Calveit");
+                self.setUnitAttributes(5, Tag.officer);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Look at the top 3 cards from your deck, then play 1.");
+
+                return self;
+            }
+        }
+        public static Leader MorvranVoorhis
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.nilfgaard, Rarity.gold, "Morvran Voorhis");
+                self.setUnitAttributes(7, Tag.officer);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Reveal up to 4 cards.");
+
+                return self;
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace Gwent2
         static Color neutralColor = Color.FromArgb(150, 40, 22);
         static Color skelligeColor = Color.FromArgb(110, 12, 122);
         static Color monsterColor = Color.FromArgb(220, 82, 50);
-        static Color nilfgaardColor = Color.FromArgb(50, 42, 20);
+        static Color nilfgaardColor = Color.FromArgb(22, 22, 22);
         static Color northernColor = Color.FromArgb(30, 42, 222);
 
         public static Color colorOfRarity(Rarity rare)

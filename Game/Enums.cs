@@ -51,6 +51,7 @@ namespace Gwent2
         beast,
         elf,
         ogroid,
+        construct,
 
         machine,
         soldier,
@@ -69,6 +70,8 @@ namespace Gwent2
         clanBrokvar,
 
         kaedwen,
+
+        aedirn,
 
         special,
         spell,
