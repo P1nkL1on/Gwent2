@@ -1,3 +1,5 @@
+// < > GOLD
+// < > LEADERS
 public static Leader Usurper
 {
 	get
@@ -70,6 +72,7 @@ public static Leader MorvranVoorhis
 		return self;
 	}
 }
+// < > UNITS
 public static Unit CahirDyffryn
 {
 	get
@@ -301,6 +304,7 @@ public static Unit YenneferNecromancer
 		return self;
 	}
 }
+// < > SILVER
 public static Unit Albrich
 {
 	get
@@ -574,6 +578,7 @@ public static Unit Vrygheff
 		return self;
 	}
 }
+// < > BRONZE
 public static Unit AlbaArmoredCavalry
 {
 	get
@@ -1008,6 +1013,8 @@ public static Unit ViperWitcher
 		return self;
 	}
 }
+// < > SPECIALS
+// < > GOLD
 public static Special Assassination
 {
 	get
@@ -1024,6 +1031,7 @@ public static Special Assassination
 		return spec;
 	}
 }
+// < > SILVER
 public static Special Cadaverine
 {
 	get
@@ -1089,6 +1097,7 @@ public static Special Treason
 		return spec;
 	}
 }
+// < > BRONZE
 // Suggest anything to improove this card!
 public static Special Ointment
 {
@@ -1106,6 +1115,8 @@ public static Special Ointment
 		return spec;
 	}
 }
+// < > UNITS
+// < > SILVER
 public static Unit HeftyHelge
 {
 	get
@@ -1122,6 +1133,7 @@ public static Unit HeftyHelge
 		return self;
 	}
 }
+// < > BRONZE
 public static Unit FireScorpion
 {
 	get

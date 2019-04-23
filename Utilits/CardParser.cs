@@ -68,6 +68,7 @@ namespace Gwent2
                     if (rest == "SPECIALS") currentType = Parser.specials;
                     if (rest == "UNITS") currentType = Parser.units;
                     if (rest == "LEADERS") currentType = Parser.leaders;
+                    res.Add("// < > " + rest);
                     continue;
                 }
                 if (line == "")

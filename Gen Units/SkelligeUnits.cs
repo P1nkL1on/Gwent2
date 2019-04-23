@@ -6,130 +6,9 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class SpawnUnit : Spawner
+    partial class SpawnUnit : Spawner
     {
-        // random
-        static int createChoiseOptionCount = -1;
-        static Random unitDecisionsRandomiser = new Random();
-
-        // ||| universal templates |||
-        // < >
-        public static List<Card> allCards = DeckIO.invokeAllCards();
-        public static Unit transformUnit(Unit target, Unit transformInto, Card by)
-        {
-            var token = transformInto;
-            // make same host
-            token.SetDefaultHost(target.host, target.context);
-            // make same position
-            token.place = target.place;
-            token.row = target.row;
-            // change in _cards array of game
-            token.context.ReplaceCardInGame(token, target);
-            // make visible to all others
-            token.makeVisibleAll();
-            // ask redrawing
-            token._show.redrawCausedChangeValue();
-            return token;
-        }
-        public static Unit createToken(Unit preset, Card source)
-        {
-            preset.SetDefaultHost(source.host, source.context);
-            source.context.AddCardToGame(preset);
-            return preset;
-        }
-        static void resurrectAllyUnit(Card self, params UnitPredicat[] filters)
-        {
-            // select one card from discard
-            List<UnitPredicat> fs = new List<UnitPredicat>();
-            fs.Add(Filter.anyAllyUnitInDiscard(self as Unit));
-            fs.AddRange(filters);
-
-            Unit u = self.host.selectUnit(
-                        Select.Units(self.context.cards,
-                        fs.ToArray()), self.QestionString());
-            // the player plays a card if its exists
-            if (u != null)
-                self.host.playCard(u);
-        }
-        static bool dealDamage(Card self, int damageValue)
-        {
-            Unit t = self.host.selectUnit(
-                        Select.Units(self.context.cards, Filter.anyOtherUnitInBattlefield(self as Unit)),
-                        self.QestionString());
-            if (t != null)
-                return t.damage(self, damageValue);
-            return false;
-        }
-        static Unit weatherMage(string Name, string description, Clan clan, Card option1, Card option2, Card option3, params Tag[] tags)
-        {
-            Unit self = new Unit();
-            self.setAttributes(clan, Rarity.silver, Name);
-            self.setUnitAttributes(4, tags);
-            self.setOnDeploy((s, f) =>
-            {
-                List<Card> vars = new List<Card>() { option1, option2, option3 };
-                s.host.playCard(SpawnSpecial.addSpecialToGame(s.host.selectCard(vars, s.QestionString()) as Special, s));
-                s._show.redrawCausedChangeValue();
-            }, description);
-            return self;
-        }
-        static void duel(Unit self, Unit fightWith)
-        {
-            for (; ; )
-            {
-                bool opponentDead = fightWith.damage(self, self.power);
-                if (opponentDead) return;
-                bool selfDead = self.damage(fightWith, fightWith.power);
-                if (selfDead) return;
-            }
-        }
-        static void applyHazzardOnDeployWithoutCard(Card s, Special analogCard, TriggerTurnRowEffect hazzardEffect)
-        {
-            Player enemy = s.host.chooseEnemy(s.context, s.QestionString());
-            int row = s.host.chooseEnemyRow(enemy, s.QestionString());
-
-            // there is a little trick
-            // instead of creating unique birna roweffect,
-            // we create a DOOMed version of skelligian storm
-            // and apply (DO NOT PLAY) it to choosen row
-            // after it it will dissappear in banish
-
-            Special st = SpawnSpecial.addSpecialToGame(analogCard, s);
-            st.move(Place.banish);
-            RowEffect hazz = new RowEffect(st, enemy, row);
-            hazz.SetBehaviour(hazzardEffect);
-        }
-        public static Card createCard(Card source, List<Card> listOriginal, params CardPredicat[] filters)
-        {
-            if (listOriginal.Count == 0)
-                return null;
-            var fs = filters.ToList();
-            fs.Add((crd) => { return crd.name != source.name; });
-            filters = fs.ToArray();
-
-            Card c = source.host.selectCard(
-                Filter.randomCardsFrom(
-                    Select.Cards(listOriginal, filters),
-                    createChoiseOptionCount),
-                source.QestionString());
-            if (c == null)
-                return null;
-            if (c as Unit != null)
-            {
-                Unit u = c.spawnDefaultCopy(source.host, source) as Unit;
-                u.context.Log(u, "unit created by " + source.ToString());
-                return u;
-            }
-            if (c as Special != null)
-            {
-                Special s = c.spawnDefaultCopy(source.host, source) as Special;
-                s.context.Log(s, "special created by " + source.ToString());
-                return s;
-            }
-            return null;
-        }
         // ||| SKELIGE |||
-        // < > tokens
         // < > bronze skellige
         public static Unit AnCraiteWarrior
         {
@@ -184,7 +63,7 @@ namespace Gwent2
                 self.setUnitAttributes(6, Tag.soldier, Tag.clanTuirseach);
                 self.setOnDeploy((s, f) =>
                 {
-                    dealDamage(s, 5);
+                    CommonFunc.dealDamage(s, 5);
                 }, "Deal 5 damage.");
                 return self;
             }
@@ -198,7 +77,7 @@ namespace Gwent2
                 self.setUnitAttributes(1, Tag.soldier, Tag.clanTuirseach);
                 self.setOnDeploy((s, f) =>
                 {
-                    s.host.playCard(createToken(TokenBear, s));
+                    s.host.playCard(CommonFunc.createToken(TokenBear, s));
                 }, "Spawn a Bear.");
                 self.setDeployValue(Value.spawnToken(11));
                 return self;
@@ -256,7 +135,7 @@ namespace Gwent2
                 self.setUnitAttributes(1, Tag.support, Tag.clanHeyMaey, Tag.doomed);
                 self.setOnDeploy((s, f) =>
                 {
-                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.soldier), Filter.anyUnitHasColor(Rarity.bronze));
+                    CommonFunc.resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.soldier), Filter.anyUnitHasColor(Rarity.bronze));
                 }, "Resurrect a Bronze Soldier.");
                 return self;
             }
@@ -329,7 +208,7 @@ namespace Gwent2
                 self.setUnitAttributes(3, Tag.support, Tag.clanDimun, Tag.doomed);
                 self.setOnDeploy((s, f) =>
                 {
-                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.machine), Filter.anyUnitHasColor(Rarity.bronze));
+                    CommonFunc.resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Tag.machine), Filter.anyUnitHasColor(Rarity.bronze));
                 }, "Resurrect a Bronze Machine.");
                 return self;
             }
@@ -380,7 +259,7 @@ namespace Gwent2
                 self.setOnDiscard((s, f) =>
                 {
                     // ERROR -> random row, not one
-                    (s as Unit).row = unitDecisionsRandomiser.Next(3);
+                    (s as Unit).row = CommonFunc.unitDecisionsRandomiser.Next(3);
                     s.move(Place.battlefield);
                 }, "Whenever you Discard this unit, Resurrect it on a random row.");
                 return self;
@@ -395,7 +274,7 @@ namespace Gwent2
                 self.setUnitAttributes(7, Tag.soldier, Tag.clanAnCraite);
                 self.setOnDeploy((s, f) =>
                 {
-                    dealDamage(s, f == Place.graveyard ? 6 : 4);
+                    CommonFunc.dealDamage(s, f == Place.graveyard ? 6 : 4);
                 }, "Deal 4 damage. If Resurrected, deal 6 damage instead.");
                 return self;
             }
@@ -639,8 +518,8 @@ namespace Gwent2
                 Unit self = new Unit();
                 self.setAttributes(Clan.skellige, Rarity.bronze, "Raging Berserker");
                 self.setUnitAttributes(8, Tag.soldier, Tag.cursed, Tag.cultist);
-                self.setOnDamaged((s, u, X) => { if (s.place == Place.battlefield) transformUnit(s as Unit, SpawnUnit.RagingBear, s); }, "When this unit is damaged or weakened, transform into a Raging Bear.");
-                self.setOnWeakened((s, u, X) => { if (s.place == Place.battlefield) transformUnit(s as Unit, SpawnUnit.RagingBear, s); }, "");
+                self.setOnDamaged((s, u, X) => { if (s.place == Place.battlefield) CommonFunc.transformUnit(s as Unit, SpawnUnit.RagingBear, s); }, "When this unit is damaged or weakened, transform into a Raging Bear.");
+                self.setOnWeakened((s, u, X) => { if (s.place == Place.battlefield) CommonFunc.transformUnit(s as Unit, SpawnUnit.RagingBear, s); }, "");
                 return self;
             }
         }
@@ -785,7 +664,8 @@ namespace Gwent2
                     // use only once
                     s.timer.Tick();
                 }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
-                self.setDeployValue((s, f) => {
+                self.setDeployValue((s, f) =>
+                {
                     double drawValue = 0.0;
                     if (!s.timer.IsEverTicked())
                     {
@@ -853,7 +733,7 @@ namespace Gwent2
                 {
                     Unit u = s as Unit;
                     u.weaken(s, u.basePower - u.basePower / 2);
-                    u.row = unitDecisionsRandomiser.Next(3);
+                    u.row = CommonFunc.unitDecisionsRandomiser.Next(3);
                     s.move(Place.battlefield);
                 },
                     "Whenever discarded, resurrect on a random row, then weaken self by half.");
@@ -877,7 +757,7 @@ namespace Gwent2
                 self.setUnitAttributes(3, Tag.support, Tag.doomed);
                 self.setOnDeploy((s, f) =>
                 {
-                    resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Utils.possibleClans.ToArray()), Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver));
+                    CommonFunc.resurrectAllyUnit(s, Filter.anyUnitHasTagAnyFrom(Utils.possibleClans.ToArray()), Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver));
                 }, "Resurrect a Bronze Soldier.");
                 return self;
             }
@@ -913,7 +793,7 @@ namespace Gwent2
                 self.setUnitAttributes(6, Tag.officer, Tag.clanDimun);
                 self.setOnDeploy((s, f) =>
                 {
-                    bool destroyed = dealDamage(s, 6);
+                    bool destroyed = CommonFunc.dealDamage(s, 6);
                     Unit u = Filter.highestUnit(Select.Units(s.context.cards, Filter.anyAllyUnitInDiscard(s)));
                     if (u != null)
                         u.strengthen(s, 3);
@@ -990,7 +870,7 @@ namespace Gwent2
                 {
                     Unit target = s.host.selectUnit(Select.Units(s.context.cards, Filter.anyEnemyUnitInBattlefield(s)), s.QestionString());
                     if (target != null)
-                        duel(s as Unit, target);
+                        CommonFunc.duel(s as Unit, target);
                 }, "Duel an enemy.");
                 return self;
             }
@@ -1034,7 +914,7 @@ namespace Gwent2
                             Filter.anyUnitHasColor(Rarity.bronze, Rarity.silver)),
                         s.QestionString());
                     if (t != null)
-                        transformUnit(t, SpawnUnit.TokenJadeFigurine, s);
+                        CommonFunc.transformUnit(t, SpawnUnit.TokenJadeFigurine, s);
                 }, "Transform a Bronze or Silver unit into a Jade Figurine.");
                 return self;
             }
@@ -1048,7 +928,7 @@ namespace Gwent2
                 self.setUnitAttributes(6, Tag.officer, Tag.clanTuirseach);
                 self.setOnDeploy((s, f) =>
                 {
-                    applyHazzardOnDeployWithoutCard(s, SpawnSpecial.SkelligeStorm, SpawnSpecial.storm);
+                    CommonFunc.applyHazzardOnDeployWithoutCard(s, SpawnSpecial.SkelligeStorm, SpawnSpecial.storm);
                 }, "Apply Skellige Storm to an enemy row.");
                 return self;
             }
@@ -1078,7 +958,7 @@ namespace Gwent2
                     }
                     else
                     {
-                        Card u = createCard(s, s.context.startedDeck,
+                        Card u = CommonFunc.createCard(s, s.context.startedDeck,
                             Filter.anyUnit(),
                             Filter.anyCardInEnemyDeck(s),
                             Filter.anyCardHasColor(Rarity.silver));
@@ -1148,7 +1028,7 @@ namespace Gwent2
                     if (u != null)
                     {
                         u.move(Place.graveyard);
-                        dealDamage(s, (u as Unit).basePower);
+                        CommonFunc.dealDamage(s, (u as Unit).basePower);
                     }
                 }, "Discard a Bronze unit from your deck, then deal damage equal to its base power to an enemy.");
                 return self;
@@ -1167,184 +1047,12 @@ namespace Gwent2
                         s.context._drawCard(s.host, 2);
                         // short way discarding
                         var cardsToDiscard = s.host.selectCards(
-                            Select.Cards(s.context.cards, Filter.anyCardInYourHand(s)), 
+                            Select.Cards(s.context.cards, Filter.anyCardInYourHand(s)),
                             2, "Discard a card");
                         foreach (Card c in cardsToDiscard)
                             c.move(Place.graveyard);
                     }, "Draw 2 cards, then Discard 2 cards.");
                 return self;
-            }
-        }
-
-        // ||| NILFGAARD |||
-        // < > bronze inlfgaard
-        public static Unit Emissary
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributes(Clan.nilfgaard, Rarity.bronze, "Emissary");
-                self.setUnitAttributes(2);
-                // WARNING: current comments are actual to every spy unit
-                self.setSpying();
-                // ! the way to show a player class to play it to the other side
-                // base Host is a pointer to Player, who is playing this card!
-                self.setOnDeploy((s, f) =>
-                {
-                    // THE NEXT LINE IS neccessary too
-                    (s as Unit).status.isSpy = true;
-
-                    List<Unit> randomBronzePair =
-                        Filter.randomUnitsFrom(
-                            Select.Units(s.context.cards,
-                            Filter.anyUnitInBaseHostDeck(s),
-                            Filter.anyUnitHasColor(Rarity.bronze)),
-                            2);
-                    if (randomBronzePair.Count == 0)
-                        return;
-                    s.baseHost.playCard(
-                        s.baseHost.selectUnit(randomBronzePair, s.QestionString()));
-                }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
-                return self;
-            }
-        }
-        public static Unit Ambassador
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributes(Clan.nilfgaard, Rarity.bronze, "Ambassador");
-                self.setUnitAttributes(2);
-                self.setSpying();
-                self.setOnDeploy((s, f) =>
-                {
-                    (s as Unit).status.isSpy = true;
-
-                    Unit t = s.baseHost.selectUnit(
-                        Select.Units(s.context.cards, Filter.anyUnitInBaseHostBattlefield(s)),
-                        s.QestionString());
-                    if (t != null)
-                        t.boost(s, 12);
-
-                }, "Spying.\nBoost an ally by 12.");
-                return self;
-            }
-        }
-
-        // ||| NORTHERN REALMS |||
-        // < > tokens
-        // < > bronze
-        // < > silver
-        // < > gold
-
-        // ||| MONSTERS |||
-        // < > tokens
-        // < > bronze
-        // < > silver
-        // < > gold
-
-        // ||| SCOET'AEL |||
-        // < > tokens
-        // < > bronze
-        // < > silver
-        // < > gold
-
-        // ||| NEUTRALS |||
-        // < > tokens
-        public static Unit TokenJadeFigurine
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributes(Clan.neutral, Rarity.silver, "Jade Figurine");
-                self.setUnitAttributes(2, Tag.doomed);
-                return self;
-            }
-        }
-        public static Unit TokenBear
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributesToken(Clan.neutral, Rarity.bronze, "Bear");
-                self.setUnitAttributes(11, Tag.beast, Tag.cursed);
-                return self;
-            }
-        }
-        // < > bronze
-        // < > silver
-        // < > gold
-        public static Unit VesemirMentor
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributes(Clan.neutral, Rarity.gold, "Vesemir: Mentor");
-                self.setUnitAttributes(6, Tag.witcher);
-                self.setOnDeploy((s, f) =>
-                {
-                    Card item = s.host.selectCard(
-                        Select.Cards(s.context.cards,
-                            Filter.anyCardInYourDeck(s),
-                            Filter.anyCardHasTagAnyFrom(Tag.alchemy),
-                            Filter.anyCardHasColor(Rarity.bronze, Rarity.silver)),
-                        s.QestionString());
-                    if (item != null)
-                        s.host.playCard(item);
-                }, "Play a Bronze or Silver Alchemy card from your deck.");
-                return self;
-            }
-        }
-        public static Unit GeraltofRivia
-        {
-            get
-            {
-                Unit self = new Unit();
-                self.setAttributes(Clan.neutral, Rarity.gold, "Geralt of Rivia");
-                self.setUnitAttributes(15, Tag.witcher);
-                return self;
-            }
-        }
-
-        // ||| WEATHER |||
-        public static Unit Gremist
-        {
-            get
-            {
-                return weatherMage("Gremist", "Spawn Torrential Rain, Clear Skies or Bloodcurdling Roar.", Clan.skellige,
-                    SpawnSpecial.TorrentialRain, SpawnSpecial.ClearSkies, SpawnSpecial.BloodcurdlingRoar, Tag.support);
-            }
-        }
-        public static Unit IdaEmeanaepSivney
-        {
-            get
-            {
-                return weatherMage("Ida Emean aep Sivney", "Spawn Impenetrable Fog, Clear Skies or Alzur's Thunder.", Clan.scoetaels,
-                    SpawnSpecial.ImpenetrableFog, SpawnSpecial.ClearSkies, SpawnSpecial.AlzursThunder, Tag.elf, Tag.mage);
-            }
-        }
-        public static Unit Dethmold
-        {
-            get
-            {
-                return weatherMage("Dethmold", "Spawn Torrential Rain, Clear Skies or Alzur's Thunder.", Clan.northen,
-                    SpawnSpecial.TorrentialRain, SpawnSpecial.ClearSkies, SpawnSpecial.AlzursThunder, Tag.kaedwen, Tag.mage);
-            }
-        }
-        public static Unit Vanhemar
-        {
-            get
-            {
-                return weatherMage("Vanhemar", "Spawn Biting Frost, Clear Skies or Shrike.", Clan.nilfgaard,
-                    SpawnSpecial.BitingFrost, SpawnSpecial.ClearSkies, SpawnSpecial.Shrike, Tag.mage);
-            }
-        }
-        public static Unit Vaedermakar
-        {
-            get
-            {
-                return weatherMage("Vaedermakar", "Spawn Biting Frost, Impenetrable Fog or Alzur's Thunder.", Clan.neutral,
-                    SpawnSpecial.BitingFrost, SpawnSpecial.ImpenetrableFog, SpawnSpecial.AlzursThunder, Tag.mage);
             }
         }
     }

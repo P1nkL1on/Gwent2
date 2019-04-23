@@ -18,7 +18,7 @@ namespace Gwent2
         {
             Leader copy = this.spawnCard() as Leader;
             copy.SetDefaultHost(newHost, sourceOfMakeingCopy.context);
-            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+            return CommonFunc.createToken(copy, sourceOfMakeingCopy);
         }
         public override Card spawnCard()
         {

@@ -102,7 +102,7 @@ namespace Gwent2
                     if (t != null)
                     {
                         t.destroy(s);
-                        s.host.playCard(SpawnUnit.createToken(SpawnUnit.TokenBear, s));
+                        s.host.playCard(CommonFunc.createToken(SpawnUnit.TokenBear, s));
                     }
                 }, "Destroy an Ally. Spawn a Bear.");
                 return spec;
@@ -302,7 +302,6 @@ namespace Gwent2
             }
         }
         
-
         // hazzards
         public static TriggerTurnRowEffect rain = (r) => { foreach (Unit t in Filter.randomUnitsFrom(r.allRowUnits, 2))t.damage(r.Source, 1); };
         public static TriggerTurnRowEffect frost = (r) => { Unit t = Filter.lowestUnit(r.allRowUnits); if (t != null)t.damage(r.Source, 2); };
@@ -515,8 +514,8 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.alchemy);
                 spec.setOnDeploy((s, f) =>
                 {
-                    s.host.playCard(SpawnUnit.createCard(s,
-                        SpawnUnit.allCards,
+                    s.host.playCard(CommonFunc.createCard(s,
+                        CommonFunc.allCards,
                         Filter.anyCardHasClan(Clan.skellige),
                         Filter.anyCardHasColor(Rarity.silver),
                         Filter.nonSpyingCard()));
@@ -533,8 +532,8 @@ namespace Gwent2
                 spec.setSpecialAttributes(Tag.item);
                 spec.setOnDeploy((s, f) =>
                 {
-                    Unit soldier = SpawnUnit.createCard(s,
-                        SpawnUnit.allCards,
+                    Unit soldier = CommonFunc.createCard(s,
+                        CommonFunc.allCards,
                         Filter.anyCardHasClan(Clan.skellige),
                         Filter.anyCardHasTagAnyFrom(Tag.soldier),
                         Filter.anyCardHasColor(Rarity.silver, Rarity.bronze)) as Unit;
@@ -545,6 +544,8 @@ namespace Gwent2
                 return spec;
             }
         }
+
+        // nilfgaard
 
     }
     class RowEffect

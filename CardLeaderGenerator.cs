@@ -28,6 +28,7 @@ namespace Gwent2
             }, "Single-Use: Whenever you play a Leader while first round, boost it by 10.");
             return ta;
         }
+        // Skellige
         public static Leader HaraldtheCripple
         {
             get
@@ -85,7 +86,7 @@ namespace Gwent2
                         SpawnUnit.TuirseachHunter,
                         SpawnUnit.TuirseachSkirmisher
                     };
-                    s.host.playCard(SpawnUnit.createToken(s.host.selectUnit(possibleSolders, s.QestionString()), s));
+                    s.host.playCard(CommonFunc.createToken(s.host.selectUnit(possibleSolders, s.QestionString()), s));
                 }, "Spawn a Bronze Clan Tuirseach Soldier.");
                 return self;
             }
@@ -110,5 +111,7 @@ namespace Gwent2
                 return self;
             }
         }
+
+        // Nilfgaard
     }
 }

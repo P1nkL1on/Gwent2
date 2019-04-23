@@ -63,7 +63,7 @@ namespace Gwent2
         {
             Unit copy = this.spawnCard() as Unit;
             copy.SetDefaultHost(newHost, sourceOfMakeingCopy.context);
-            return SpawnUnit.createToken(copy, sourceOfMakeingCopy);
+            return CommonFunc.createToken(copy, sourceOfMakeingCopy);
         }
         public override Card spawnCard()
         {

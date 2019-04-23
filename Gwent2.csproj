@@ -44,48 +44,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbilityHints.cs" />
-    <Compile Include="Card.cs" />
-    <Compile Include="CardAbstractGenerator.cs" />
-    <Compile Include="CardDeckGenerator.cs" />
-    <Compile Include="CardLeader.cs" />
+    <Compile Include="Game\AbilityHints.cs" />
+    <Compile Include="CardLogic\Card.cs" />
+    <Compile Include="Game\CardAbstractGenerator.cs" />
+    <Compile Include="Gen Units\CommonFunc.cs" />
+    <Compile Include="Gen Units\MonstersUnits.cs" />
+    <Compile Include="Gen Units\NilfgaardUnits.cs" />
+    <Compile Include="Gen Units\NorthernRealmsUnits.cs" />
+    <Compile Include="Gen Units\ScoetaelsUnits.cs" />
+    <Compile Include="Gen Units\SkelligeUnits.cs" />
+    <Compile Include="Utilits\CardDeckGenerator.cs" />
+    <Compile Include="CardLogic\CardLeader.cs" />
     <Compile Include="CardLeaderGenerator.cs" />
-    <Compile Include="CardParser.cs" />
-    <Compile Include="DeckBuilder.cs" />
-    <Compile Include="DeckIO.cs" />
-    <Compile Include="PlayerAiVanilla.cs" />
-    <Compile Include="PlayerChoiseContext.cs" />
-    <Compile Include="PlayerChoiseWindows.cs" />
-    <Compile Include="UtilsDrawing.cs" />
-    <Compile Include="CardMatch.cs" />
-    <Compile Include="CardSpecial.cs" />
+    <Compile Include="Utilits\CardParser.cs" />
+    <Compile Include="DeckLogic\DeckBuilder.cs" />
+    <Compile Include="DeckLogic\DeckIO.cs" />
+    <Compile Include="Game\PlayerAiVanilla.cs" />
+    <Compile Include="Game\PlayerChoiseContext.cs" />
+    <Compile Include="Game\PlayerChoiseWindows.cs" />
+    <Compile Include="Visualisation\UtilsDrawing.cs" />
+    <Compile Include="Game\CardMatch.cs" />
+    <Compile Include="CardLogic\CardSpecial.cs" />
     <Compile Include="CardSpecialGenerator.cs" />
-    <Compile Include="CardTimer.cs" />
-    <Compile Include="CardUnit.cs" />
-    <Compile Include="CardUnitGenerator.cs" />
-    <Compile Include="CardUnitStatus.cs" />
-    <Compile Include="CLogger.cs" />
-    <Compile Include="ConsoleSelector.cs" />
-    <Compile Include="Effects.cs" />
-    <Compile Include="Enums.cs" />
-    <Compile Include="FieldDrawer.cs" />
-    <Compile Include="Filters.cs" />
-    <Compile Include="FontProblem.cs" />
-    <Compile Include="PicGenerator.cs" />
-    <Compile Include="PixColor.cs" />
-    <Compile Include="PixDrawer.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerAI.cs" />
-    <Compile Include="PlayerHuman.cs" />
+    <Compile Include="CardLogic\CardTimer.cs" />
+    <Compile Include="CardLogic\CardUnit.cs" />
+    <Compile Include="Gen Units\NeutralUnits.cs" />
+    <Compile Include="CardLogic\CardUnitStatus.cs" />
+    <Compile Include="Visualisation\CLogger.cs" />
+    <Compile Include="IO\ConsoleSelector.cs" />
+    <Compile Include="Visualisation\Effects.cs" />
+    <Compile Include="Game\Enums.cs" />
+    <Compile Include="Visualisation\FieldDrawer.cs" />
+    <Compile Include="Game\Filters.cs" />
+    <Compile Include="Visualisation\FontProblem.cs" />
+    <Compile Include="Utilits\PicGenerator.cs" />
+    <Compile Include="Utilits\PixColor.cs" />
+    <Compile Include="Utilits\PixDrawer.cs" />
+    <Compile Include="Game\Player.cs" />
+    <Compile Include="Game\PlayerAI.cs" />
+    <Compile Include="Game\PlayerHuman.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenTaker.cs" />
-    <Compile Include="Selector.cs" />
-    <Compile Include="ValueCalculator.cs" />
+    <Compile Include="Utilits\ScreenTaker.cs" />
+    <Compile Include="Game\Selector.cs" />
+    <Compile Include="Game\ValueCalculator.cs" />
+    <Compile Include="Gen Units\WeatherUnits.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
