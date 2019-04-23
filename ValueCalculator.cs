@@ -60,6 +60,6 @@ namespace Gwent2
         public static double meanTopdeckValue(Card asker)
         {
             return meanPlayValue(Select.Cards(asker.context.cards, Filter.anyCardInBaseHostDeck(asker)));
-        }
+        }            
     }
 }

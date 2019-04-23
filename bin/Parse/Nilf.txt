@@ -1,0 +1,322 @@
+--GOLD
+--LEADERS
+
+Usurper
+Leader Officer 1
+Spying.
+Create any Leader and boost it by 2.
+
+Emhyr var Emreis
+Leader Officer 7
+Play a card, then return a Bronze or Silver ally to your hand.
+
+Jan Calveit
+Leader Officer 5
+Look at the top 3 cards from your deck, then play 1.
+
+Morvran Voorhis
+Leader Officer 7
+Reveal up to 4 cards.
+
+--UNITS
+
+Cahir Dyffryn
+Officer Doomed 1
+Resurrect a Leader.
+
+Leo Bonhart
+Soldier 7
+Reveal one of your units and deal damage equal to its base power to an enemy.
+
+Letho of Gulet
+Witcher 1
+Spying.
+Apply Lock status to 2 units on this row, then Drain all their power.
+
+Letho: Kingslayer?
+Witcher 5
+Choose One: Destroy an enemy Leader, then boost self by 5; or Play a Bronze or Silver Tactic from your deck.
+
+Menno Coehoorn
+Officer 8
+Deal 4 damage to an enemy. If it's Spying, destroy it instead.
+
+Rainfarn of Attre
+Officer 5
+Play a Bronze or Silver Spying unit from your deck.
+
+Shilard
+Officer 9
+Truce: Draw a card from both decks. Keep one and give the other to your opponent.
+
+Stefan Skellen
+Officer 10
+Move any card in your deck to the top. If it's a non-Spying unit, boost it by 5.
+
+Tibor Eggebracht
+Officer 10
+Truce: Boost self by 15, then your opponent draws a Revealed Bronze card.
+
+Vattier de Rideaux
+Officer 11
+Reveal up to 2 of your cards, then Reveal the same number of your opponent's randomly.
+
+Vilgefortz
+Mage 9
+Destroy an ally, then play the top card of your deck; or Truce: Destroy an enemy, then your opponent draws and Reveals a Bronze card.
+
+Xarthisius
+Mage 13
+Look at your opponent's deck and move a card to the bottom.
+
+Yennefer: Enchantress?
+Mage Aedirn 5
+Spawn the last Bronze or Silver Spell you played.
+
+Yennefer: Necromancer?
+Mage Aedirn 5
+Resurrect a Bronze or Silver Soldier from your opponent's graveyard.
+
+--SILVER
+
+Albrich
+Mage 10
+Truce: Each player draws a card. The opponent's card is Revealed.
+
+Assire var Anahid
+Mage 11
+Return 2 Bronze or Silver cards from either graveyard to their respective decks.
+
+Auckes
+Witcher 7
+Toggle 2 units' Lock statuses.
+
+Cantarella
+13
+Spying.
+Single-Use: Draw 2 cards. Keep one and move the other to the bottom of your deck.
+
+Ceallach Dyffryn
+Officer 2
+Spawn an Ambassador, Assassin or Emissary.
+
+Cynthia
+Mage 5
+Reveal the Highest unit in your opponent's hand and boost self by its power.
+
+False Ciri
+8
+Spying. If Spying, boost self by 1 on turn start and when this player passes, move to the opposite row.
+Deathwish: Destroy the Lowest unit on the row.
+
+Fringilla Vigo?
+Mage 1
+Spying.
+Copy the power from the unit to the left to the unit to the right.
+
+Henry var Attre
+Support 9
+Conceal any number of units. If allies, boost by 2. If enemies, deal 2 damage.
+
+Joachim de Wett
+Officer 5
+Spying.
+Play the top non-Spying Bronze or Silver unit from your deck and boost it by 10.
+
+Peter Saar Gwynleve
+Officer 6
+Reset an ally and Strengthen it by 3; or Reset an enemy and Weaken it by 3.
+
+Serrit
+Witcher 6
+Deal 7 damage to an enemy; or Set a Revealed opposing unit's power to 1.
+
+Sweers
+Officer 9
+Choose an enemy or a Revealed unit in your opponent's hand, then move all copies of it from their deck to the graveyard.
+
+The Guardian
+Construct 11
+Add a Lesser Guardian to the top of your opponent's deck.
+
+Vreemde
+Officer 4
+Create a Bronze Nilfgaardian Soldier.
+
+Vrygheff
+Officer 5
+Play a Bronze Machine from your deck.
+
+--BRONZE
+
+Alba Armored Cavalry
+Soldier 7
+Whenever an ally appears, boost self by 1.
+
+Alba Pikeman
+Soldier 3
+Summon all copies of this unit to this row.
+
+Alba Spearman
+Soldier 10
+Boost self by 1 whenever either player draws a card.
+
+Alchemist
+Mage 9
+Reveal 2 cards.
+
+Assassin
+1
+Spying.
+Deal 10 damage to the unit to the left.
+
+Combat Engineer
+Support 6
+Boost an ally by 5.
+Crew.
+
+Daerlan Soldier
+Soldier 4
+Whenever you Reveal this unit, play it automatically on a random row and draw a card.
+
+Deithwen Arbalest
+Soldier 7
+Deal 3 damage to an enemy. If it's Spying, deal 6 damage instead.
+
+Impera Brigade
+Soldier 6
+Boost self by 2 for each Spying enemy. Boost self by 2 whenever a Spying enemy appears.
+
+Impera Enforcers
+Soldier 6
+Deal 2 damage to an enemy.
+For each Spying enemy that appears during your turn, deal 2 damage to an enemy on turn end.
+
+Infiltrator
+10
+Toggle a unit's Spying status.
+
+Magne Division
+Soldier 3
+Play a random Bronze Item from your deck.
+
+Master of Disguise
+Soldier 11
+Conceal 2 cards.
+
+Nauzicaa Brigade
+Soldier 5
+Deal 7 damage to a Spying unit. If it was destroyed, Strengthen self by 4.
+
+Nauzicaa Sergeant
+Officer 7
+Clear Hazards from its row and boost an ally or a Revealed unit in your hand by 3.
+
+Nilfgaardian Knight
+Soldier 12
+2 Armor.
+Reveal a random card in your hand, with priority given to Bronze, then Silver, then Gold.
+
+Recruit
+Soldier 1
+Play a random different Bronze Soldier from your deck.
+
+Slave Driver
+Officer 10
+Set an ally's power to 1 and deal damage to an enemy by the amount of power lost.
+
+Slave Hunter
+Soldier 8
+Charm a Bronze enemy with 3 power or less.
+
+Slave Infantry
+Soldier 3
+Spawn a Doomed default copy of this unit on your other rows.
+
+Spotter
+Soldier 5
+Boost self by the base power of a Revealed Bronze or Silver unit.
+
+Standard Bearer
+Soldier 8
+Boost an ally by 2 whenever you play a Soldier.
+
+Venendal Elite
+Soldier 1
+Switch this unit's power with that of a Revealed unit.
+
+Vicovaro Medic
+Support Doomed 1
+Resurrect a Bronze unit from your opponent's graveyard.
+
+Vicovaro Novice?
+Mage 2
+Look at 2 random Bronze Alchemy cards from your deck, then play 1.
+
+Viper Witcher?
+Witcher 5
+Deal 1 damage for each Alchemy card in your starting deck.
+
+--SPECIALS
+--GOLD
+
+Assassination
+Tactic Special
+Deal 8 damage to an enemy. Repeat once.
+
+--SILVER
+
+Cadaverine
+Alchemy Special Item
+Choose One: Deal 2 damage to an enemy and all units that share its categories; or Destroy a Bronze or Silver Neutral unit.
+
+Dazhbog Runestone
+Alchemy Special Item
+Create a Silver Nilfgaard card.
+
+Nilfgaardian Gate
+Tactic Special
+Play a Bronze or Silver Officer from your deck and boost it by 1.
+
+Treason?
+Tactic Special
+Force 2 adjacent enemies to Duel each other.
+
+--BRONZE
+
+Ointment?
+Alchemy Special Item
+Resurrect a Bronze unit with 5 power or less.
+
+--UNITS
+--SILVER
+
+Hefty Helge
+Machine 8
+Deal 1 damage to all enemies except those on the opposite row. If this unit was Revealed, deal damage to all enemies instead.
+
+--BRONZE
+
+Fire Scorpion
+Machine 5
+Deal 5 damage to an enemy.
+Whenever you Reveal this unit, trigger its ability.
+
+Imperial Golem
+Construct 3
+Summon a copy of this unit to a random row whenever you Reveal a card in your opponent's hand.
+
+Mangonel
+Machine 7
+Deal 2 damage to a random enemy.
+Repeat this ability whenever you Reveal a card.
+
+Rot Tosser
+Machine 8
+Spawn a Cow Carcass on an enemy row.
+
+Sentry
+Soldier 8
+Boost all allied copies of a Soldier by 2.
+
+

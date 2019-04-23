@@ -50,6 +50,7 @@
     <Compile Include="CardDeckGenerator.cs" />
     <Compile Include="CardLeader.cs" />
     <Compile Include="CardLeaderGenerator.cs" />
+    <Compile Include="CardParser.cs" />
     <Compile Include="DeckBuilder.cs" />
     <Compile Include="DeckIO.cs" />
     <Compile Include="PlayerAiVanilla.cs" />

@@ -786,9 +786,13 @@ namespace Gwent2
                     s.timer.Tick();
                 }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
                 self.setDeployValue((s, f) => {
-                    if (s.timer.IsEverTicked())
-                        return -s.power;    // if spy was played, then it is only - value
-                    return 0.0;
+                    double drawValue = 0.0;
+                    if (!s.timer.IsEverTicked())
+                    {
+                        // mean value of possible drawing card
+                        drawValue = 9.9;
+                    }
+                    return drawValue - s.power; // is spy, so minus his power
                 });
                 return self;
             }

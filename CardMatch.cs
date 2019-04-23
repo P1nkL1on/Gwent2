@@ -440,9 +440,10 @@ namespace Gwent2
             // actions performed only if player has not passed yet
             if (!currentPlayer.passed)
             {
-                foreach (Card c in _handWithLeaderOf(currentPlayer))
-                    topLeftTextBox.AddLog(c.ToString().PadLeft(30) + " = " + c._valueDeploy(c, Place.hand), ConsoleColor.Magenta);
-                Console.ReadLine();
+                //foreach (Card c in _handWithLeaderOf(currentPlayer))
+                //    topLeftTextBox.AddLog(c.ToString().PadLeft(30) + " = " + c._valueDeploy(c, Place.hand), ConsoleColor.Magenta);
+                //Console.ReadLine();
+
                 // draw current state for human player
                 //if (currentPlayer as PlayerHuman != null) { State(); Console.ReadLine(); State(); }
                 Card selected = currentPlayer.selectCardOrNone(_handWithLeaderOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
