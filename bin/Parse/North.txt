@@ -1,0 +1,319 @@
+--GOLD
+--LEADERS
+
+King Foltest
+Leader Temeria 5
+Boost all other allies and your non-Spying units in hand and deck by 1.
+Crew.
+
+King Henselt
+Leader Kaedwen 3
+Choose a Bronze Machine or Kaedweni ally and play all copies of it from your deck.
+Crew.
+
+King Radovid V
+Leader Redania 6
+Toggle 2 units' Lock statuses. If enemies, deal 4 damage to them. Crew.
+
+Princess Adda
+Leader Cursed 6
+Create a Bronze or Silver Cursed unit.
+
+--UNITS
+
+Bloody Baron
+Temeria Officer 10
+If in hand, deck, or on board, boost self by 1 whenever an enemy is destroyed.
+
+Dandelion
+Support 11
+Boost 3 units in your deck by 2.
+
+John Natalis
+Temeria Officer 6
+Play a Bronze or Silver Tactic from your deck.
+
+Keira Metz
+Mage Temeria 6
+Spawn Alzur's Thunder, Thunderbolt or Arachas Venom.
+
+Kiyan
+Cursed Witcher 4
+Choose One: Create a Bronze or Silver Alchemy card; or Play a Bronze or Silver Item from your deck.
+
+Philippa Eilhart?
+Mage Redania 1
+Deal 6 damage to an enemy, then deal 5, 4, 3, 2 and 1 damage to random enemies. Cannot damage the same enemy twice in a row.
+
+Priscilla
+Support 3
+Boost 5 random allies by 3.
+
+Roche: Merciless?
+Temeria Officer 6
+Destroy a face-down Ambush enemy.
+
+Seltkirk of Gulet
+Cursed Aedirn Officer 8
+Duel an enemy.
+3 Armor.
+
+Shani
+Redania Support Doomed 4
+Resurrect a non-Cursed Bronze or Silver unit and give it 2 Armor.
+
+Sigismund Dijkstra
+Redania 4
+Spying.
+Play the top 2 cards from your deck.
+
+Vandergrift
+Cursed Kaedwen Officer 7
+Deal 1 damage to all enemies. If a unit is destroyed, apply Ragh Nar Roog to its row.
+
+Vernon Roche
+Temeria Officer 3
+Deal 7 damage to an enemy.
+At game start, add a Blue Stripe Commando to your deck.
+
+--SILVER
+
+Hubert Rejk
+Vampire 7
+Drain all boosts from units in your deck.
+
+Margarita of Aretuza
+Mage Temeria 6
+Reset a unit and toggle its Lock status.
+
+Nenneke
+Support Temeria 10
+Return 3 Bronze or Silver units from the graveyard to your deck.
+
+Odrin
+Soldier Kaedwen 8
+Move to a random row and boost all other allies on it by 1 on turn start.
+
+Prince Stennis
+Aedirn Officer 3
+Play the top non-Spying Bronze or Silver unit from your deck and give it 5 Armor.
+3 Armor.
+
+Princess Pavetta
+Mage Cintra 3
+Return each player's Lowest Bronze or Silver unit to their deck.
+
+Ronvid the Incessant
+Soldier Kaedwen 11
+Resurrect on a random row with 1 power on turn end.
+Crew.
+
+Sabrina Glevissig
+Mage Kaedwen 3
+Spying.
+
+Sabrina's Specter
+Mage Cursed Doomed 3
+Resurrect a Bronze Cursed unit.
+
+Sile de Tansarville
+Mage 4
+Play a Bronze or Silver special card, then draw a card.
+
+Thaler
+Temeria 13
+Spying.
+Single-Use: Draw 2 cards, keep one and return the other to your deck.
+
+Trollololo
+Redania Ogroid 11
+9 Armor.
+Deathwish: Set the power of all units on the row to the power of the Lowest unit on the row.
+
+Ves
+Soldier Temeria 12
+Swap up to 2 cards.
+
+Vincent Meis
+Beast Cursed 9
+Destroy the Armor of all units, then boost self by half the value destroyed.
+
+Botchling
+Cursed 10
+Summon a Lubberkin to this row.
+
+Foltest's Pride
+Machine Temeria 10
+Deal 2 damage to an enemy and move it to the row above. 
+Crewed: Repeat its ability.
+
+Lubberkin
+Cursed 5
+Summon a Botchling to this row.
+
+--BRONZE
+
+Aedirnian Mauler
+Soldier Aedirn 7
+Deal 4 damage to an enemy.
+
+Aretuza Adept
+Mage Temeria 3
+Play a random Bronze Hazard from your deck.
+
+Ban Ard Tutor
+Mage Kaedwen 9
+Swap a card in your hand with a Bronze special card from your deck.
+
+Blue Stripe Commando
+Soldier Temeria 3
+Whenever a different Temerian ally with the same power is played, Summon a copy of this unit to a random row.
+
+Blue Stripe Scout
+Soldier Temeria 3
+Boost all Temerian allies and your non-Spying Temerian units in hand and deck with the same power as this unit by 1.
+Crew.
+
+Cursed Knight
+Cursed Aedirn 8
+Transform a Cursed ally into a default copy of this unit.
+2 Armor.
+
+Damned Sorceress
+Mage Cursed 4
+If there is a Cursed unit on this row, deal 7 damage.
+
+Dun Banner
+Soldier Kaedwen 4
+If you are losing by more than 25 on turn start, Summon this unit to a random row.
+
+Field Medic
+Support 8
+Boost Soldier allies by 1.
+
+Kaedweni Cavalry
+Soldier Kaedwen 8
+Destroy a unit's Armor, then boost self by the amount destroyed.
+
+Kaedweni Knight
+Soldier Kaedwen 8
+Boost self by 5 if played from the deck.
+2 Armor.
+
+Kaedweni Revenant
+Cursed Kaedwen 4
+When you play your next Spell or Item, Spawn a Doomed default copy of this unit on its row.
+1 Armor.
+
+Kaedweni Sergeant
+Kaedwen 9
+Clear Hazards from its row.
+3 Armor.
+Crew.
+
+Poor F'ing Infantry
+Soldier Temeria 6
+Spawn Left Flank Infantry and Right Flank Infantry to the left and right of this unit, respectively.
+
+Reaver Hunter
+Redania Soldier 6
+Boost all copies of this unit in hand, deck, and on board by 1.
+Repeat its ability whenever a copy of this unit is played.
+
+Reaver Scout
+Redania Support 1
+Choose a different Bronze ally and play a copy of it from your deck.
+
+Redanian Elite
+Redania Soldier 8
+Whenever this unit's Armor reaches 0, boost self by 5.
+4 Armor.
+
+Redanian Knight
+Redania Soldier 7
+If this unit has no Armor, boost it by 2 and give it 2 Armor on turn end.
+
+Redanian Knight-Elect
+Redania Soldier 7
+If this unit has Armor on turn end, boost adjacent units by 1.
+2 Armor.
+
+Siege Master
+Kaedwen Support 6
+Heal an allied Bronze or Silver Machine and repeat its ability.
+Crew.
+
+Siege Support
+Kaedwen Support 7
+Whenever an ally appears, boost it by 1. If it's a Machine, also give it 1 Armor.
+Crew.
+
+Temerian Drummer
+Support Temeria 5
+Boost an ally by 6.
+
+Temerian Infantry
+Soldier Temeria 3
+Summon all copies of this unit to this row.
+
+Tormented Mage
+Mage Cursed 2
+Look at 2 Bronze Spells or Items from your deck, then play 1.
+
+Tridam Infantry
+Soldier 10
+4 Armor.
+
+Witch Hunter
+Redania Soldier 3
+Reset a unit. If it's a Mage, play a copy of this unit from your deck.
+
+Ballista
+Machine 6
+Deal 1 damage to an enemy and 4 other random enemies with the same power.
+Crewed: Repeat its ability.
+
+Battering Ram
+Machine 6
+Deal 3 damage to an enemy. If it's destroyed, deal 3 damage to another enemy.
+Crewed: Increase initial damage by 1.
+
+Reinforced Ballista
+Machine 7
+Deal 2 damage to an enemy.
+Crewed: Repeat its ability.
+
+Reinforced Trebuchet
+Machine 8
+Deal 1 damage to a random enemy on turn end.
+
+Siege Tower
+Machine 8
+Boost self by 2.
+Crewed: Repeat its ability.
+
+Trebuchet
+Machine 7
+Deal 1 damage to 3 adjacent enemies.
+Crewed: Increase damage by 1.
+
+--SPECIALS
+--SILVER
+
+Vandergrift's Blade
+Special Item
+Choose One: Destroy a Bronze or Silver Cursed enemy; or Deal 9 damage and, if the unit was destroyed, Banish it.
+
+Zoria Runestone
+Alchemy Special Item
+Create a Silver Northern Realms card.
+
+--BRONZE
+
+Bloody Flail
+Special Item
+Deal 5 damage and Spawn a Specter on a random row.
+
+Winch
+Tactic Special
+Create a Bronze Machine.

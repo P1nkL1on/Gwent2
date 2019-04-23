@@ -1,0 +1,46 @@
+--GOLD
+--UNITS
+
+Cerys an Craite
+ClananCraite Officer 6
+When 4 units are Resurrected while this unit is in the graveyard, Resurrect it on a random row.
+
+Cerys: Fearless
+ClananCraite Officer 6
+Resurrect the next unit you Discard.
+
+Olaf
+Beast Cursed 20
+Deal 10 damage to self. Reduce the damage inflicted by 2 for each Beast you played this match.
+
+Kambi
+1
+Spying.
+Deathwish: Spawn Hemdall on a random row on this unit's side.
+
+Hemdall
+Doomed 20
+Destroy all other units and clear all Boons and Hazards.
+
+Hjalmar an Craite
+ClananCraite Officer 14
+Spawn the Lord of Undvik on the opposite row.
+
+--SILVER
+
+Blueboy Lugos
+ClanDrummond Soldier 9
+Spawn a Spectral Whale on an enemy row.
+
+Donar an Hindar
+ClanHeymaey Officer 9
+Toggle a unit's Lock status, then move a Bronze unit from your opponent's graveyard to yours.
+
+Harald Houndsnout
+Cursed ClanTordarroch 6
+Spawn Wilfred to the left of this unit, Wilhelm to the right, and Wilmar on the opposite row.
+
+Spectral Whale
+Cursed Doomed 3
+Spying.
+Move to a random row and deal 1 damage to all other units on it on turn end.

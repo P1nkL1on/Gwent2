@@ -1,0 +1,335 @@
+--GOLD
+--LEADERS
+
+Eredin Breacc Glas
+WildHunt Leader 5
+Spawn a Bronze Wild Hunt unit.
+
+Unseen Elder
+Leader Vampire 5
+Drain a unit by half.
+
+Whispering Hillock
+Leader Relict 6
+Create a Bronze or Silver Organic card.
+
+Arachas Queen
+Leader Insectoid 7
+Immune.
+Consume 3 allies and boost self by their power.
+
+Dagon
+Leader Vodyanoi 8
+Spawn Impenetrable Fog or Torrential Rain.
+
+--UNITS
+
+Brewess: Ritual
+Mage Doomed Relict 1
+Resurrect 2 Bronze Deathwish units.
+
+Caranthir Ar-Feiniel
+WildHunt Mage Officer 9
+Move an enemy to the row opposite this unit and apply Biting Frost to that row.
+
+Draug
+Cursed Officer 10
+Resurrect units as 1-power Draugirs until you fill this row.
+
+Ge'els
+WildHunt Officer 1
+Look at a random Gold and Silver card from your deck, then play 1 and move the other to the top of the deck.
+
+Imlerith?
+WildHunt Officer 9
+Deal 4 damage to an enemy. If the enemy is under Biting Frost, deal 8 damage instead.
+
+Imlerith: Sabbath
+WildHunt Officer 5
+Every turn, Duel the Highest enemy on turn end. If this unit survives, Heal it by 2 and give it 2 Armor.
+2 Armor.
+
+Miruna
+Beast 4
+After 2 turns, Charm the Highest enemy on the opposite row on turn start.
+
+Weavess: Incantation
+Mage Relict 4
+Choose One: Strengthen all your other Relicts in hand, deck, and on board by 2; or Play a Bronze or Silver Relict from your deck and Strengthen it by 2.
+
+Whispess: Tribute
+Mage Relict 6
+Play a Bronze or Silver Organic card from your deck.
+
+Caretaker
+Doomed Relict 4
+Resurrect a Bronze or Silver unit from your opponent's graveyard.
+
+Kayran
+Insectoid 5
+Consume a unit with 7 power or less and boost self by its power.
+
+Old Speartip
+Ogroid 10
+Deal 2 damage to 5 random enemies on the opposite row.
+
+Old Speartip: Asleep
+Ogroid 12
+Strengthen all your other Ogroids in hand, deck, and on board by 1.
+
+Woodland Spirit
+Relict 5
+Spawn 3 Wolves on the melee row and apply Impenetrable Fog to the opposite row.
+
+--SILVER
+
+Brewess
+Mage Relict 8
+Summon Whispess and Weavess to this row.
+
+Nithral
+WildHunt Officer 6
+Deal 6 damage to an enemy. Increase damage by 1 for each Wild Hunt unit in your hand.
+
+She-Troll of Vergen
+Ogroid 1
+Play a Bronze Deathwish unit from your deck, Consume it and boost self by its base power.
+
+Weavess
+Mage Relict 6
+Summon Brewess and Whispess to this row.
+
+Whispess
+Mage Relict 6
+Summon Brewess and Weavess to this row.
+
+Adda: Striga
+Cursed Relict 6
+Deal 8 damage to a non-Monster faction unit.
+
+Frightener
+Construct 13
+Spying.
+Single-Use: Move an enemy to this row and draw a card.
+
+Golyat
+Ogroid 10
+Boost self by 7.
+Whenever this unit is damaged, deal 2 damage to self.
+
+Ifrit
+Construct 8
+Spawn 3 Lesser Ifrits to the right of this unit.
+
+Imperial Manticore
+Beast 13
+No ability.
+
+Jotunn
+Ogroid 6
+Move 3 enemies to the row opposite this unit and deal 2 damage to them. If that row is under Biting Frost, deal 3 damage instead.
+
+Maerolorn
+Relict 4
+Play a Bronze Deathwish unit from your deck.
+
+Morvudd
+Relict 6
+Toggle a unit's Lock status. If it was an enemy, halve its power.
+
+Mourntart
+Necrophage 5
+Consume all Bronze and Silver units in your graveyard and boost self by 1 for each.
+
+Nekurat
+Vampire 5
+Spawn Moonlight.
+
+Ozzrel
+Necrophage 5
+Consume a Bronze or Silver unit from either graveyard and boost by its power.
+
+Ruehin
+Insectoid Cursed 8
+Strengthen all your other Insectoids and Cursed units in hand, deck, and on board by 1.
+
+Toad Prince
+Cursed 6
+Draw a unit, then Consume a unit in your hand and boost self by its power.
+
+--BRONZE
+
+Ice Giant
+Ogroid 6
+Boost by 7 if Biting Frost is anywhere on the board.
+
+Nekker
+Ogroid 4
+If in hand, deck, or on board, boost self by 1 whenever you Consume a card.
+Deathwish: Summon a copy of this unit to the same position.
+
+Nekker Warrior
+Ogroid 9
+Choose a Bronze ally and add 2 copies of it to the bottom of your deck.
+
+Siren
+Beast 4
+Play Moonlight from your deck.
+
+Wild Hunt Navigator
+WildHunt Mage 3
+Choose a Bronze non-Mage Wild Hunt ally and play a copy of it from your deck.
+
+Wild Hunt Rider
+WildHunt Soldier 10
+Increase the damage dealt by Biting Frost on the opposite row by 1.
+
+Wild Hunt Warrior
+WildHunt Soldier 7
+Deal 3 damage to an enemy. If the enemy is destroyed or is under Biting Frost, boost self by 2.
+
+Alpha Werewolf
+Beast Cursed 10
+Spawn a Wolf on each side of this unit on contact with Full Moon.
+
+Ancient Foglet
+Necrophage 10
+Boost by 1 if Impenetrable Fog is on the board on turn end.
+
+Arachas Behemoth
+Insectoid 8
+The next 4 times you Consume a unit, Spawn an Arachas Hatchling on a random row.
+
+Arachas Drone
+Insectoid 3
+Summon all copies of this unit to this row.
+
+Archespore
+Cursed 7
+Move to a random row and deal 1 damage to a random enemy on turn start.
+Deathwish: Deal 4 damage to a random enemy.
+
+Archgriffin
+Beast 10
+Clear Hazards on its row.
+
+Barbegazi
+Insectoid 6
+Resilience.
+Consume an ally and boost self by its power.
+
+Bridge Troll
+Ogroid 10
+Move a Hazard on an enemy row to a different enemy row.
+
+Celaeno Harpy
+Beast 6
+Spawn 2 Harpy Eggs to the left of this unit.
+
+Cockatrice
+Draconid 6
+Reset a unit.
+
+Cyclops
+Ogroid 11
+Destroy an ally and deal damage equal to its power to an enemy.
+
+D'ao
+Construct 6
+Deathwish: Spawn 2 Lesser D'ao on this row.
+
+Drowner
+Necrophage 7
+Move an enemy to the row opposite this unit and deal 2 damage to it. If that row is under a Hazard, deal 4 damage instead.
+
+Ekimmara
+Vampire 5
+Drain a unit by 3.
+
+Fiend
+Relict 11
+No ability.
+
+Foglet
+Necrophage 4
+Whenever you apply Impenetrable Fog to an enemy row, Summon a copy of this unit to the opposite row.
+
+Forktail
+Draconid 8
+Consume 2 allies and boost self by their power.
+
+Ghoul
+Necrophage 4
+Consume a Bronze or Silver unit from your graveyard and boost self by its power.
+
+Griffin
+Beast 9
+Trigger the Deathwish of a Bronze ally.
+
+Harpy
+Beast 4
+Whenever you destroy an allied Beast, Summon a copy of this unit to the same position.
+
+Ice Troll
+Ogroid 4
+Duel an enemy. If it's under Biting Frost, deal double damage.
+
+Lamia
+Beast 6
+Deal 4 damage to an enemy. If the enemy is under Blood Moon, deal 7 damage instead.
+
+Rotfiend
+Necrophage 8
+Deathwish: Deal 2 damage to units on the opposite row.
+
+Slyzard
+Draconid 2
+Consume a different Bronze unit from your graveyard, then play a copy of it from your deck.
+
+Vran Warrior
+Soldier Draconid 6
+Consume the unit to the right and boost self by its power.
+Every 2 turns, repeat its ability on turn start.
+
+Werecat
+Beast Cursed 5
+Deal 5 damage to an enemy, then deal 1 damage to all enemies under Blood Moon.
+
+Werewolf
+Beast Cursed 7
+Immune.
+Boost this unit by 7 on first contact with Full Moon.
+
+Wild Hunt Drakkar
+WildHunt Machine 7
+Boost all Wild Hunt allies by 1.
+Whenever another Wild Hunt ally appears, boost it by 1.
+
+Wild Hunt Hound
+WildHunt Construct 4
+Play Biting Frost from your deck.
+
+Wyvern
+Draconid 6
+Deal 5 damage to an enemy.
+
+--SPECIALS
+--SILVER
+
+Devana Runestone
+Alchemy Special Item
+Create a Silver Monster card.
+
+Monster Nest
+Special Organic
+Spawn a Bronze Necrophage or Insectoid and boost it by 2.
+
+Parasite
+Special Organic
+Deal 12 damage to an enemy; or Boost an ally by 12.
+
+--BRONZE
+
+Moonlight
+Special Hazard Boon 
+Choose One: Apply a Full Moon Boon; or Apply a Blood Moon Hazard.

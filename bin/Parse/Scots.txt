@@ -1,0 +1,296 @@
+--GOLD
+--LEADERS
+
+Brouver Hoog
+Leader Dwarf 4
+Play a non-Spying Silver unit or a Bronze Dwarf from your deck.
+
+Eithne
+Leader Dryad 5
+Resurrect a Bronze or Silver special card.
+
+Filavandrel?
+Leader Elf 4
+Create a Silver special card.
+
+Francesca Findabair
+Leader Mage Elf 7
+Swap a card with one of your choice and boost it by 3.
+
+--UNITS
+
+Aglais
+Dryad 8
+Resurrect a Bronze or Silver special card from your opponent's graveyard, then Banish it.
+
+Iorveth
+Elf Officer 6
+Deal 8 damage to an enemy. If the unit was destroyed, boost all Elves in your hand by 1.
+
+Iorveth: Meditation
+Elf Officer 2
+Force 2 enemies on the same row to Duel each other.
+
+Isengrim Faoiltiarna?
+Elf Officer 7
+Play a Bronze or Silver Ambush from your deck.
+
+Isengrim: Outlaw
+Elf Officer 2
+Choose One: Play a Bronze or Silver special card from your deck; or Create a Silver Elf.
+
+Ithlinne Aegli
+Mage Elf 2
+Play a Bronze Spell, Boon or Hazard from your deck twice.
+
+Milva
+Soldier 6
+Return each player's Highest Bronze or Silver unit to their deck.
+
+Morenn: Forest Child
+Dryad 6
+Ambush: When your opponent plays a Bronze or Silver special card, flip over and cancel its ability.
+
+Saskia
+Aedirn Draconid 11
+Swap up to 2 cards for Bronze cards.
+
+Schirru
+Soldier Elf 4
+Spawn Scorch or Epidemic.
+
+Xavier Moran
+Dwarf 10
+Boost this unit by the default power of the last other Dwarf you played.
+
+Zoltan Chivay
+Dwarf 8
+Choose 3 units. Strengthen allies by 2 and move them to this row. Deal 2 damage to enemies and move them to the row opposite this unit.
+
+Saesenthessis
+Aedirn Draconid 10
+Boost self by 1 for each Dwarf ally and deal 1 damage to an enemy for each Elf ally.
+
+--SILVER
+
+Aelirenn
+Elf Officer 6
+If 5 Elf allies are on the board on any turn end, Summon this unit to a random row.
+
+Barclay Els
+Dwarf Officer 2
+Play a random Bronze or Silver Dwarf from your deck and Strengthen it by 3.
+
+Braenn
+Dryad 6
+Deal damage equal to this unit's power. If a unit was destroyed, boost all your other Dryads and Ambush units in hand, deck, and on board by 1.
+
+Ciaran aep Easnillen
+Soldier Elf 9
+Toggle a unit's Lock status and move it to this row on its side.
+
+Dennis Cranmer
+Dwarf Officer 8
+Strengthen all your other Dwarves in hand, deck, and on board by 1.
+
+Ele'yas
+Soldier Elf 10
+Whenever you draw this unit or return it to your deck, boost self by 2.
+
+Malena
+Elf 7
+Ambush: After 2 turns, flip over and Charm the Highest Bronze or Silver enemy with 5 power or less on turn start.
+
+Milaen
+Elf 4
+Deal 6 damage to the units at the end of a row.
+
+Morenn
+Dryad 8
+Ambush: When a unit is played on your opponent's side, flip over and deal 7 damage to it.
+
+Pavko Gale
+Soldier 5
+Play a Bronze or Silver Item from your deck.
+
+Sheldon Skaggs
+Dwarf Officer 9
+Move all allies on this row to random rows and boost self by 1 for each.
+
+Toruviel
+Elf Officer 6
+Ambush: When your opponent passes, flip over and boost 2 units on each side by 2.
+
+Yaevinn
+Elf 13
+Spying.
+Single-Use: Draw a special card and a unit. Keep one and return the other to your deck.
+
+Yarpen Zigrin
+Soldier Dwarf 8
+Resilience.
+Whenever a Dwarf ally appears, boost self by 1.
+
+Eibhear Hattori
+Elf Support Doomed 3
+Resurrect a lower or equal Bronze or Silver Scoia'tael unit.
+
+Paulie Dahlberg
+Support Dwarf Doomed 3
+Resurrect a non-Support Bronze Dwarf.
+
+--BRONZE
+
+Blue Mountain Elite
+Soldier Elf 3
+Summon all copies of this unit to this row.
+Whenever this unit moves, boost it by 2.
+
+Dol Blathanna Archer
+Soldier Elf 7
+Deal 3 damage, then deal 1 damage.
+
+Dol Blathanna Bomber
+Soldier Elf 6
+Spawn an Incinerating Trap on an enemy row.
+
+Dol Blathanna Bowman
+Soldier Elf 7
+Deal 2 damage to an enemy.
+Whenever an enemy moves, deal 2 damage to it.
+Whenever this unit moves, deal 2 damage to a random enemy.
+
+Dol Blathanna Sentry
+Soldier Elf 2
+If in hand, deck or on board, boost self by 1 whenever you play a special card.
+
+Dwarven Agitator
+Support Dwarf 1
+Spawn a default copy of a random different Bronze Dwarf from your deck.
+
+Dwarven Mercenary
+Soldier Dwarf 8
+Move a unit to this row on its side. If it's an ally, boost it by 3.
+
+Dwarven Skirmisher
+Soldier Dwarf 6
+Deal 3 damage to an enemy. If the unit was not destroyed, boost self by 3.
+
+Elven Mercenary
+Soldier Elf 1
+Look at 2 random Bronze special cards from your deck, then play 1.
+
+Elven Scout?
+Soldier Elf 10
+Swap a card.
+
+Elven Swordmaster
+Soldier Elf 5
+Deal damage equal to this unit's power to an enemy.
+
+Farseer
+Mage Elf 8
+If any of your other allies or units in hand are boosted during your turn, boost self by 2 on turn end.
+
+Half-Elf Hunter?
+Soldier Elf 6
+Spawn a Doomed default copy of this unit to the right of this unit.
+
+Hawker Healer
+Elf Support 5
+Boost 2 allies by 3.
+
+Hawker Smuggler
+Elf Support 7
+Whenever an enemy appears, boost self by 1.
+
+Hawker Support
+Elf Support 7
+Boost a unit in your hand by 3.
+
+Mahakam Defender
+Soldier Dwarf 6
+Resilience.
+
+Mahakam Guard
+Soldier Dwarf 4
+Boost an ally by 7.
+
+Mahakam Marauder
+Soldier Dwarf 7
+Whenever this unit's power changes, except when Reset, boost self by 2.
+
+Mahakam Volunteers
+Soldier Dwarf 3
+Summon all copies of this unit.
+
+Pyrotechnician
+Soldier Dwarf 5
+Deal 3 damage to a random enemy on each row.
+
+Sage
+Mage Elf 2
+Resurrect a Bronze Alchemy or Spell card, then Banish it.
+
+Vrihedd Brigade
+Soldier Elf 9
+Clear Hazards from its row and move a unit to this row on its side.
+
+Vrihedd Dragoon
+Soldier Elf 8
+Boost a random non-Spying unit in your hand by 1 on turn end.
+
+Vrihedd Neophyte
+Soldier Elf 10
+Boost 2 random units in your hand by 1.
+
+Vrihedd Officer?
+Elf Officer 5
+Swap a card and boost self by its base power.
+
+Vrihedd Sappers
+Soldier Elf 11
+Ambush: After 2 turns, flip over on turn start.
+
+Vrihedd Vanguard
+Soldier Elf 6
+Boost Elf allies by 1.
+Whenever you Swap this card, trigger its ability.
+
+Wardancer
+Soldier Elf 3
+Whenever you Swap this unit, play it automatically on a random row.
+
+Panther
+Beast 4
+Deal 7 damage to an enemy on a row with less than 4 units.
+
+--SPECIALS
+--SILVER
+
+Mahakam Horn
+Special Item
+Choose One: Create a Bronze or Silver Dwarf; or Strengthen a unit by 7.
+
+Morana Runestone
+Alchemy Special Item
+Create a Silver Scoia'tael card.
+
+Nature's Gift
+Spell Special
+Play a Bronze or Silver special card from your deck.
+
+Pit Trap
+Special Item
+Apply a Hazard to an enemy row that deals 3 damage to units on contact.
+
+--BRONZE
+
+Crushing Trap
+Special Item
+Deal 6 damage to the units at the end of an enemy row.
+
+Elven Blade
+Special Item
+Deal 10 damage to a non-Elf unit.
+

@@ -551,18 +551,18 @@ namespace Gwent2
         public static Special Assassination
         {
             get
-	        {
-		        Special spec = new Special();
-		        spec.setAttributes(Clan.nilfgaard, Rarity.gold, "Assassination");
-		        spec.setSpecialAttributes(Tag.tactic);
-		
-		        // Do not forget to check and RECHECK correctence of current ability,
-		        // its triggering condition and signature of delegate!
-		        spec.setOnDeploy ((s, f) => 
-		        {}, "Deal 8 damage to an enemy. Repeat once.");
-		
-		        return spec;
-	        }
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.gold, "Assassination");
+                spec.setSpecialAttributes(Tag.tactic);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Deal 8 damage to an enemy. Repeat once.");
+
+                return spec;
+            }
         }
         // < > SILVER
         public static Special Cadaverine
@@ -600,20 +600,256 @@ namespace Gwent2
         public static Special NilfgaardianGate
         {
             get
-	{
-		Special spec = new Special();
-		spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Nilfgaardian Gate");
-		spec.setSpecialAttributes(Tag.tactic);
-		
-		// Do not forget to check and RECHECK correctence of current ability,
-		// its triggering condition and signature of delegate!
-		spec.setOnDeploy ((s, f) => 
-		{}, "Play a Bronze or Silver Officer from your deck and boost it by 1.");
-		
-		return spec;
-	}
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Nilfgaardian Gate");
+                spec.setSpecialAttributes(Tag.tactic);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Play a Bronze or Silver Officer from your deck and boost it by 1.");
+
+                return spec;
+            }
+        }
+        // Suggest anything to improove this card!
+        public static Special Treason
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Treason");
+                spec.setSpecialAttributes(Tag.tactic);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Force 2 adjacent enemies to Duel each other.");
+
+                return spec;
+            }
+        }
+        // < > BRONZE
+        // Suggest anything to improove this card!
+        public static Special Ointment
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.nilfgaard, Rarity.bronze, "Ointment");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Resurrect a Bronze unit with 5 power or less.");
+
+                return spec;
+            }
         }
 
+        // monsters
+        public static Special DevanaRunestone
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.monsters, Rarity.silver, "Devana Runestone");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Create a Silver Monster card.");
+
+                return spec;
+            }
+        }
+        public static Special MonsterNest
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.monsters, Rarity.silver, "Monster Nest");
+                spec.setSpecialAttributes(Tag.organic);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Spawn a Bronze Necrophage or Insectoid and boost it by 2.");
+
+                return spec;
+            }
+        }
+        public static Special Parasite
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.monsters, Rarity.silver, "Parasite");
+                spec.setSpecialAttributes(Tag.organic);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Deal 12 damage to an enemy; or Boost an ally by 12.");
+
+                return spec;
+            }
+        }
+        // < > BRONZE
+
+        // north
+        public static Special VandergriftsBlade
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.northen, Rarity.silver, "Vandergrift's Blade");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Choose One: Destroy a Bronze or Silver Cursed enemy; or Deal 9 damage and, if the unit was destroyed, Banish it.");
+
+                return spec;
+            }
+        }
+        public static Special ZoriaRunestone
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.northen, Rarity.silver, "Zoria Runestone");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Create a Silver Northern Realms card.");
+
+                return spec;
+            }
+        }
+        public static Special BloodyFlail
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.northen, Rarity.bronze, "Bloody Flail");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Deal 5 damage and Spawn a Specter on a random row.");
+
+                return spec;
+            }
+        }
+
+        // scots
+        // < > SPECIALS
+        // < > SILVER
+        public static Special MahakamHorn
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.silver, "Mahakam Horn");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Choose One: Create a Bronze or Silver Dwarf; or Strengthen a unit by 7.");
+
+                return spec;
+            }
+        }
+        public static Special MoranaRunestone
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.silver, "Morana Runestone");
+                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Create a Silver Scoia'tael card.");
+
+                return spec;
+            }
+        }
+        public static Special NaturesGift
+        {
+            get
+	        {
+		        Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.silver, "Nature's Gift");
+		        spec.setSpecialAttributes(Tag.spell);
+		
+		        // Do not forget to check and RECHECK correctence of current ability,
+		        // its triggering condition and signature of delegate!
+		        spec.setOnDeploy ((s, f) => 
+		        {}, "Play a Bronze or Silver special card from your deck.");
+		
+		        return spec;
+	        }
+        }
+        public static Special PitTrap
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.silver, "Pit Trap");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Apply a Hazard to an enemy row that deals 3 damage to units on contact.");
+
+                return spec;
+            }
+        }
+        // < > BRONZE
+        public static Special CrushingTrap
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.bronze, "Crushing Trap");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Deal 6 damage to the units at the end of an enemy row.");
+
+                return spec;
+            }
+        }
+        public static Special ElvenBlade
+        {
+            get
+            {
+                Special spec = new Special();
+                spec.setAttributes(Clan.scoetaels, Rarity.bronze, "Elven Blade");
+                spec.setSpecialAttributes(Tag.item);
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                spec.setOnDeploy((s, f) =>
+                { }, "Deal 10 damage to a non-Elf unit.");
+
+                return spec;
+            }
+        }
     }
     class RowEffect
     {

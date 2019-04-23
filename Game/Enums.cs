@@ -52,6 +52,15 @@ namespace Gwent2
         elf,
         ogroid,
         construct,
+        vodyanoi,
+        relict,
+        wildhunt,
+        insectoid,
+        vampire,
+        necrophage,
+        draconid,
+        dwarf,
+        dryad,
 
         machine,
         soldier,
@@ -70,8 +79,10 @@ namespace Gwent2
         clanBrokvar,
 
         kaedwen,
-
+        temeria,
+        redania,
         aedirn,
+        cintra,
 
         special,
         spell,

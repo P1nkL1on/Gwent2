@@ -44,7 +44,14 @@ namespace Gwent2
         //    }
         //}
 
-        public static void test()
+        public static void test2()
+        {
+            foreach (string s in new List<string>() { "Monsts", "North", "Scots", "Skells" })
+                test(s);
+            Console.ReadLine();
+        }
+
+        static void test(string Name)
         {
 
             Rarity currentRare = Rarity.none;
@@ -53,7 +60,7 @@ namespace Gwent2
             Parser currentType = Parser.units;
 
             int linesOfCard = 0;
-            string[] lines = File.ReadAllLines("../Parse/Nilf.txt");
+            string[] lines = File.ReadAllLines("../Parse/"+Name+".txt");
             List<string> res = new List<string>();
             List<string> currentCard = new List<string>();
 
@@ -143,7 +150,7 @@ namespace Gwent2
             }
             string resString = "";
             foreach (string s in res) resString += s + Environment.NewLine;
-            File.WriteAllText("../Parse/Nilf_parsed.txt", resString);
+            File.WriteAllText("../Parse/" + Name + "_parsed.txt", resString);
             int x = 10;
         }
     }

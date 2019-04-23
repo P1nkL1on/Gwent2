@@ -18,9 +18,10 @@ namespace Gwent2
 
         static Color neutralColor = Color.FromArgb(150, 40, 22);
         static Color skelligeColor = Color.FromArgb(110, 12, 122);
-        static Color monsterColor = Color.FromArgb(220, 82, 50);
+        static Color monsterColor = Color.FromArgb(110, 12, 10);
         static Color nilfgaardColor = Color.FromArgb(22, 22, 22);
-        static Color northernColor = Color.FromArgb(30, 42, 222);
+        static Color northernColor = Color.FromArgb(40, 22, 116);
+        static Color scoetealColor = Color.FromArgb(10, 170, 32);
 
         public static Color colorOfRarity(Rarity rare)
         {
@@ -39,7 +40,7 @@ namespace Gwent2
                 case Clan.skellige: return skelligeColor;
                 case Clan.monsters: return monsterColor;
                 case Clan.nilfgaard: return nilfgaardColor;
-                case Clan.scoetaels: return neutralColor;
+                case Clan.scoetaels: return scoetealColor;
                 case Clan.northen: return northernColor;
 
                 default: return neutralColor;

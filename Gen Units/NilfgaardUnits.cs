@@ -1003,41 +1003,7 @@ namespace Gwent2
                 return self;
             }
         }
-        // Suggest anything to improove this card!
-        public static Special Treason
-        {
-            get
-	{
-		Special spec = new Special();
-		spec.setAttributes(Clan.nilfgaard, Rarity.silver, "Treason");
-		spec.setSpecialAttributes(Tag.tactic);
-		
-		// Do not forget to check and RECHECK correctence of current ability,
-		// its triggering condition and signature of delegate!
-		spec.setOnDeploy ((s, f) => 
-		{}, "Force 2 adjacent enemies to Duel each other.");
-		
-		return spec;
-	}
-        }
-        // < > BRONZE
-        // Suggest anything to improove this card!
-        public static Special Ointment
-        {
-            get
-            {
-                Special spec = new Special();
-                spec.setAttributes(Clan.nilfgaard, Rarity.bronze, "Ointment");
-                spec.setSpecialAttributes(Tag.alchemy, Tag.item);
 
-                // Do not forget to check and RECHECK correctence of current ability,
-                // its triggering condition and signature of delegate!
-                spec.setOnDeploy((s, f) =>
-                { }, "Resurrect a Bronze unit with 5 power or less.");
-
-                return spec;
-            }
-        }
         // < > UNITS
         // < > SILVER
         public static Unit HeftyHelge

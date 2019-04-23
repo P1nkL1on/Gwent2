@@ -185,5 +185,244 @@ namespace Gwent2
                 return self;
             }
         }
+
+        // Monsters
+        public static Leader EredinBreaccGlas
+        {
+            get
+	        {
+		        Leader self = new Leader();
+		        self.setAttributes(Clan.monsters, Rarity.gold, "Eredin Breacc Glas");
+		        self.setUnitAttributes(5, Tag.wildhunt);
+		        self.setLeaderAttributes();
+		
+		        // Do not forget to check and RECHECK correctence of current ability,
+		        // its triggering condition and signature of delegate!
+		        self.setOnDeploy ((s, f) => 
+		        {}, "Spawn a Bronze Wild Hunt unit.");
+		
+		        return self;
+	        }
+        }
+        public static Leader UnseenElder
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.monsters, Rarity.gold, "Unseen Elder");
+                self.setUnitAttributes(5, Tag.vampire);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Drain a unit by half.");
+
+                return self;
+            }
+        }
+        public static Leader WhisperingHillock
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.monsters, Rarity.gold, "Whispering Hillock");
+                self.setUnitAttributes(6, Tag.relict);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Create a Bronze or Silver Organic card.");
+
+                return self;
+            }
+        }
+        public static Leader ArachasQueen
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.monsters, Rarity.gold, "Arachas Queen");
+                self.setUnitAttributes(7, Tag.insectoid);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Immune.");
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Consume 3 allies and boost self by their power.");
+
+                return self;
+            }
+        }
+        public static Leader Dagon
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.monsters, Rarity.gold, "Dagon");
+                self.setUnitAttributes(8, Tag.vodyanoi);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Spawn Impenetrable Fog or Torrential Rain.");
+
+                return self;
+            }
+        }
+
+        // North
+        public static Leader KingFoltest
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.northen, Rarity.gold, "King Foltest");
+                self.setUnitAttributes(5, Tag.temeria);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Boost all other allies and your non-Spying units in hand and deck by 1.");
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Crew.");
+
+                return self;
+            }
+        }
+        public static Leader KingHenselt
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.northen, Rarity.gold, "King Henselt");
+                self.setUnitAttributes(3, Tag.kaedwen);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Choose a Bronze Machine or Kaedweni ally and play all copies of it from your deck.");
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Crew.");
+
+                return self;
+            }
+        }
+        public static Leader KingRadovidV
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.northen, Rarity.gold, "King Radovid V");
+                self.setUnitAttributes(6, Tag.redania);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Toggle 2 units' Lock statuses. If enemies, deal 4 damage to them. Crew.");
+
+                return self;
+            }
+        }
+        public static Leader PrincessAdda
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.northen, Rarity.gold, "Princess Adda");
+                self.setUnitAttributes(6, Tag.cursed);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Create a Bronze or Silver Cursed unit.");
+
+                return self;
+            }
+        }
+
+        // Scots
+        public static Leader BrouverHoog
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.scoetaels, Rarity.gold, "Brouver Hoog");
+                self.setUnitAttributes(4, Tag.dwarf);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Play a non-Spying Silver unit or a Bronze Dwarf from your deck.");
+
+                return self;
+            }
+        }
+        public static Leader Eithne
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.scoetaels, Rarity.gold, "Eithne");
+                self.setUnitAttributes(5, Tag.dryad);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Resurrect a Bronze or Silver special card.");
+
+                return self;
+            }
+        }
+        public static Leader Filavandrel
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.scoetaels, Rarity.gold, "Filavandrel");
+                self.setUnitAttributes(4, Tag.elf);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Create a Silver special card.");
+
+                return self;
+            }
+        }
+        public static Leader FrancescaFindabair
+        {
+            get
+            {
+                Leader self = new Leader();
+                self.setAttributes(Clan.scoetaels, Rarity.gold, "Francesca Findabair");
+                self.setUnitAttributes(7, Tag.mage, Tag.elf);
+                self.setLeaderAttributes();
+
+                // Do not forget to check and RECHECK correctence of current ability,
+                // its triggering condition and signature of delegate!
+                self.setOnDeploy((s, f) =>
+                { }, "Swap a card with one of your choice and boost it by 3.");
+
+                return self;
+            }
+        }
     }
 }

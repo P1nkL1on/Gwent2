@@ -16,7 +16,9 @@ namespace Gwent2
             PixDrawer.SetFullScreen(false);
 
 
-            CardParser.test();
+            //CardParser.test2();
+
+            //return;
             //PixDrawer p = PixDrawer.FromPalette("dd");
             //p.drawRectangle(new Rectangle(5, 6, 15, 10), Color.DarkCyan, PixDrawer.rectangleStyleWithBorder);
             //Console.ReadLine();
