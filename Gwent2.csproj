@@ -52,6 +52,7 @@
     <Compile Include="CardLeaderGenerator.cs" />
     <Compile Include="DeckBuilder.cs" />
     <Compile Include="DeckIO.cs" />
+    <Compile Include="PlayerAiVanilla.cs" />
     <Compile Include="PlayerChoiseContext.cs" />
     <Compile Include="PlayerChoiseWindows.cs" />
     <Compile Include="UtilsDrawing.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenTaker.cs" />
     <Compile Include="Selector.cs" />
+    <Compile Include="ValueCalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

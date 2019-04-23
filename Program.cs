@@ -24,15 +24,20 @@ namespace Gwent2
             //PicGenerator.byScreenAndName();
             //SpawnUnit.showCaseAllUnits();
 
-            PlayerHuman bonnie = new PlayerHuman("Bonnie");
-
             DeckBuilder db = new DeckBuilder();
-            db.Edit(bonnie, db.Load("WinnerSkellige"));
+
+
+            PlayerHuman bonnie = new PlayerHuman("Bonnie"), ark = new PlayerHuman("Ark");
+            PlayerAI bot = new PlayerAI("A-Bot");
 
             Match newgame = new Match(
-                new List<Player>() { bonnie, new PlayerAI("Jonson Bot") },
-                new List<Deck>() { DefaultDeck.SkelligeTest, DefaultDeck.AllGameCards }
-                );
+                new List<Player>() { 
+                    bonnie, bot
+                },
+                new List<Deck>() { 
+                    db.Load("Learner"), 
+                    db.Load("Learner")
+                });
             FieldDrawer fd = new FieldDrawer(newgame, bonnie);
 
             fd.setAllCardPositions();

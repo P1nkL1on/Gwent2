@@ -15,7 +15,7 @@ namespace Gwent2
     }
     class CardRedrawContainer
     {
-        public static int redrawSpeed = 150;
+        public static int redrawSpeed = 0;  //150
         // callback
         public Card _source;
         public FieldDrawer _global;

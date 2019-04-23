@@ -17,7 +17,7 @@ namespace Gwent2
         {
             return String.Format("{0}", name);
         }
-
+        //public virtual void SetContext(Match context) { /*prohibit*/}
         public virtual Card selectCard(List<Card> fromList, string question)
         {
             var res = selectCards(fromList, 1, question);

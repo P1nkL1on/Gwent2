@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Gwent2
 {
-    class PlayerAI : Player
+    class PlayerOracle : PlayerAI
     {
-        public PlayerAI() { _name = "AI"; }
-        public PlayerAI(string Name)
+        public PlayerOracle(string Name)
         {
-            _name = Name;
+            _name = "AI " + Name;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Gwent2
         protected Player _baseHost;
         protected Player _host;
         public Timer timer = new Timer();
-        public String name { get { return _name; } set { _name = value; } }
+        public String name { get { return _name; } }
         public Clan clan { get { return _clan; } }
         public Rarity rarity { get { return _rarity; } }
         public Player host { get { return _host; } }
@@ -94,6 +94,10 @@ namespace Gwent2
             if (to != Place.banish) makeVisibleAll();
         }
 
+
+        // value computers
+        public deployValue _valueDeploy = Value.justPower();
+        public battlefieldStayValue _stayValue = Value.justStayPower();
         // triggers
         protected TriggerMove _onMove = (s, f) => { s._context.Log(s, "moved"); };
         TriggerMove _onDeploy = (s, f) => { s._context.Log(s, "deployed"); };
@@ -105,6 +109,9 @@ namespace Gwent2
 
         public TriggerTurn _onTurnStart = (s) => { /*s._context.Log(s, "starts a new turn");*/ };
         public TriggerTurn _onTurnEnd = (s) => { /*s._context.Log(s, "ends a turn");*/ };
+
+        public void setDeployValue(deployValue val) { _valueDeploy = val; }
+        public void setStayValue(battlefieldStayValue stay) { _stayValue = stay; }
 
         string _onMoveAbility = "";
         string _onDeployAbility = "";

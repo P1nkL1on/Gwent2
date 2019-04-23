@@ -1,9 +1,8 @@
 SKELLIGE – CRACH AN CRAITE
-Herald
-Coral
+Geralt of Rivia
 Ermion
-Muzzle
-Sigrdrifa
+Coral
+Ulfhedinn
 Skjall
 Udalryk
 Restore
@@ -11,7 +10,7 @@ Sigrdrifa
 Stribog Runestone
 Tuirseach Veteran x3
 Priestess of Freya x2
-Heymaey Spearmaiden
-Dimun Corsair x3
+Heymaey Spearmaiden x3
+Dimun Corsair x2
 Tuirseach Bearmaster x3
-Tuirseach Archer x3
+Tuirseach Hunter x3

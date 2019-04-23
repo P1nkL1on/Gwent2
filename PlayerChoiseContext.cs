@@ -84,6 +84,7 @@ namespace Gwent2
     class CardChoiseContext : ChoiseContext
     {
         protected List<Card> _cards;
+        public List<Card> CardsVanilla { get { return _cards; } }
 
         CardChoiseContext(List<Card> cards, string Question, bool canSelectNone, string noneVariantName)
         {

@@ -200,6 +200,7 @@ namespace Gwent2
                 {
                     s.host.playCard(createToken(TokenBear, s));
                 }, "Spawn a Bear.");
+                self.setDeployValue(Value.spawnToken(11));
                 return self;
             }
         }
@@ -784,6 +785,11 @@ namespace Gwent2
                     // use only once
                     s.timer.Tick();
                 }, "Spying.\nLook at 2 random Bronze units from your deck, then play 1.");
+                self.setDeployValue((s, f) => {
+                    if (s.timer.IsEverTicked())
+                        return -s.power;    // if spy was played, then it is only - value
+                    return 0.0;
+                });
                 return self;
             }
         }
@@ -1149,7 +1155,7 @@ namespace Gwent2
             get
             {
                 Unit self = new Unit();
-                self.setAttributes(Clan.skellige, Rarity.gold, "Ermionh");
+                self.setAttributes(Clan.skellige, Rarity.gold, "Ermion");
                 self.setUnitAttributes(10, Tag.support, Tag.clanAnCraite);
                 self.setOnDeploy(
                     (s, f) =>

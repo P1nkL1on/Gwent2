@@ -15,7 +15,6 @@ namespace Gwent2
         public List<Card> cards = new List<Card>();
         public List<Card> startedDeck = new List<Card>();
         private ConsoleWindowText topLeftTextBox;
-
         public void Log(string message)
         {
             topLeftTextBox.AddLog(message, ConsoleColor.Magenta);
@@ -24,6 +23,7 @@ namespace Gwent2
         {
             Log(String.Format("{0} : {1}", source.ToString(), message));
         }
+
         public void AddCardToGame(Card card) { 
             Log(card, "added to game"); 
             cards.Add(card);
@@ -440,12 +440,14 @@ namespace Gwent2
             // actions performed only if player has not passed yet
             if (!currentPlayer.passed)
             {
+                foreach (Card c in _handWithLeaderOf(currentPlayer))
+                    topLeftTextBox.AddLog(c.ToString().PadLeft(30) + " = " + c._valueDeploy(c, Place.hand), ConsoleColor.Magenta);
+                Console.ReadLine();
                 // draw current state for human player
                 //if (currentPlayer as PlayerHuman != null) { State(); Console.ReadLine(); State(); }
                 Card selected = currentPlayer.selectCardOrNone(_handWithLeaderOf(currentPlayer), "Select a card to play in this turn or pass", "Pass");
                 if (selected != null)
                 {
-                    //topLeftTextBox.AddLog("\n\n" + selected.ToFormat(), ConsoleColor.Cyan);
                     // current player plays a selected card
                     currentPlayer.playCard(selected);
                 }
