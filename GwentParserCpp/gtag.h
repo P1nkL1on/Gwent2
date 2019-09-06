@@ -8,7 +8,7 @@ class GTag : public GNegatable
 public:
     GTag() = default;
     virtual GParse* createNew() const override;
-    virtual QString parseFrom(GAbilityStream &stream) override;
+    virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     enum Tag {

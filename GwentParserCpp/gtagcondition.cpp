@@ -8,7 +8,7 @@ GParse *GTagCondition::createNew() const
     return new GTagCondition();
 }
 
-QString GTagCondition::parseFrom(GAbilityStream &stream)
+GParseRes GTagCondition::parseFrom(GAbilityStream &stream)
 {
     return GParse::awaitsAnyCountOf(
                 stream,

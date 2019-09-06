@@ -8,7 +8,7 @@ class GColor : public GNegatable
 public:
     GColor() = default;
     virtual GParse* createNew() const override;
-    virtual QString parseFrom(GAbilityStream &stream) override;
+    virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     enum Rarity {anycolor = 0, bronze = 1, silver = 2, gold = 3};

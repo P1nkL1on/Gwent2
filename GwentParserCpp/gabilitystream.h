@@ -12,7 +12,9 @@ public:
     bool isNull() const;
     bool end() const;
     QString word() const;
+    QString peekNextWord() const;
     QString nextWord();
+
     operator =(const GAbilityStream &abilityStream);
 protected:
     int m_pos = -1;

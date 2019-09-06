@@ -8,7 +8,7 @@ GParse *GColorCondition::createNew() const
     return new GColorCondition();
 }
 
-QString GColorCondition::parseFrom(GAbilityStream &stream)
+GParseRes GColorCondition::parseFrom(GAbilityStream &stream)
 {
     return GParse::awaitsAnyCountOf(
                 stream,

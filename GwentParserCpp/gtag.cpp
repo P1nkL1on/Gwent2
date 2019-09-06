@@ -7,20 +7,24 @@ GParse *GTag::createNew() const
     return cop;
 }
 
-QString GTag::parseFrom(GAbilityStream &stream)
+GParseRes GTag::parseFrom(GAbilityStream &stream)
 {
-    QString currentTag = stream.nextWord();
+    GAbilityStream streamCopy = stream;
+    QString currentTag = streamCopy.nextWord();
     int words = 1;
     do{
+        if (streamCopy.end())
+            break;
         const int index = m_tags.indexOf(currentTag);
         if (index < 0){
-            currentTag += QString(" %1").arg(stream.nextWord());
+            currentTag += QString(" %1").arg(streamCopy.nextWord());
             ++words;
             continue;
         }
         m_tag = Tag(index);
+        stream = streamCopy;
         return QString();
-    }while(words < 3 && !stream.end());
+    }while(words < 3);
     return QString("'%1' is not a tag!").arg(currentTag.split(' ').first());
 }
 

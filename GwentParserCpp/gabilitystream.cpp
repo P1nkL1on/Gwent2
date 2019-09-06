@@ -31,10 +31,16 @@ QString GAbilityStream::word() const
     return m_words->at(m_pos);
 }
 
+QString GAbilityStream::peekNextWord() const
+{
+    return m_words->at(m_pos + 1);
+}
+
 QString GAbilityStream::nextWord()
 {
     return m_words->at(m_pos++);
 }
+
 
 GAbilityStream::operator =(const GAbilityStream &abilityStream)
 {

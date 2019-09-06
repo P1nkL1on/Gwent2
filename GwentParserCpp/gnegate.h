@@ -11,7 +11,7 @@ class GNegate : public GParse
 public:
     GNegate() = default;
     virtual GParse* createNew() const override;
-    virtual QString parseFrom(GAbilityStream &stream) override;
+    virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 private:
     GNegatable* m_value = nullptr;
@@ -27,13 +27,13 @@ GParse *GNegate<T>::createNew() const
 }
 
 template<typename T>
-QString GNegate<T>::parseFrom(GAbilityStream &stream)
+GParseRes GNegate<T>::parseFrom(GAbilityStream &stream)
 {
     const QString negateWord = stream.nextWord();
     if (negateWord != m_negateWord)
-        return QString("'%1' is not a negation").arg(negateWord);
+        return QString("'%1' is not a negation!").arg(negateWord);
     GParse* value;
-    const QString errMessage =
+    const GParseRes errMessage =
         GParse::awaits(stream, QList<GParse*>() << static_cast<GParse*>(new T()), value);
     m_value = static_cast<GNegatable*>(value);
     return errMessage;

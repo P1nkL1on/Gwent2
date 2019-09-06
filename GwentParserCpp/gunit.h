@@ -12,7 +12,7 @@ class GUnit : public GParse
 public:
     GUnit() = default;
     virtual GParse* createNew() const override;
-    virtual QString parseFrom(GAbilityStream &stream) override;
+    virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     GColorCondition *m_colors = nullptr;

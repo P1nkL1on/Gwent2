@@ -7,10 +7,14 @@ GParse *GPlaceCondition::createNew() const
     return new GPlaceCondition();
 }
 
-QString GPlaceCondition::parseFrom(GAbilityStream &stream)
+GParseRes GPlaceCondition::parseFrom(GAbilityStream &stream)
 {
-    if (stream.nextWord() != "in")
-        return QString("'in' for specifying place awaited!");
+    if (stream.end())
+        return QString("can't find place description!");
+    GAbilityStream findInStream(stream);
+    if (findInStream.nextWord() != "in")
+        return QString("can't find 'in' before place description!");
+    stream = findInStream;
     return GParse::awaitsAnyCountOf(
                 stream,
                 m_separators,
@@ -20,11 +24,11 @@ QString GPlaceCondition::parseFrom(GAbilityStream &stream)
 
 QString GPlaceCondition::toString() const
 {
-    QString res;
+    QString res = "in ";
     foreach (GParse* place, m_places)
         res += QString("%1%2")
-                .arg(res.isEmpty()? "" : QString(" %1 ")
-                .arg(place == m_places.last()? m_separators.last() : m_separators.first()))
+                .arg(place == m_places.first()? "" : QString("%1 ")
+                .arg(place == m_places.last()?(" " + m_separators.last() ): m_separators.first()))
                 .arg(place->toString());
     return res;
 }

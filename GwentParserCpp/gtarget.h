@@ -8,7 +8,7 @@ class GTarget : public GParse
 public:
     GTarget() = default;
     virtual GParse* createNew() const override;
-    virtual QString parseFrom(GAbilityStream &stream) override;
+    virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     // units and unit equals to other units / other unit

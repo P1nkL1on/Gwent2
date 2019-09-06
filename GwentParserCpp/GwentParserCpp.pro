@@ -28,7 +28,9 @@ SOURCES += main.cpp \
     gtarget.cpp \
     gtag.cpp \
     gtagcondition.cpp \
-    gplacecondition.cpp
+    gplacecondition.cpp \
+    gparseres.cpp \
+    gerrorhandler.cpp
 
 HEADERS += \
     gparse.h \
@@ -44,4 +46,6 @@ HEADERS += \
     gtarget.h \
     gtag.h \
     gtagcondition.h \
-    gplacecondition.h
+    gplacecondition.h \
+    gparseres.h \
+    gerrorhandler.h

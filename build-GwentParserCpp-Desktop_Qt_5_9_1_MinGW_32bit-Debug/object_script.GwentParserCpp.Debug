@@ -14,4 +14,6 @@ INPUT(
 ./debug\gtag.o
 ./debug\gtagcondition.o
 ./debug\gplacecondition.o
+./debug\gparseres.o
+./debug\gerrorhandler.o
 );

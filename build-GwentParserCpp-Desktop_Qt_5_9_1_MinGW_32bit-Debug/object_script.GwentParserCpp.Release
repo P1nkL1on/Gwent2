@@ -14,4 +14,6 @@ INPUT(
 ./release\gtag.o
 ./release\gtagcondition.o
 ./release\gplacecondition.o
+./release\gparseres.o
+./release\gerrorhandler.o
 );
