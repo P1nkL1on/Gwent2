@@ -15,6 +15,7 @@ protected:
         anytag = 0,
         leader = 1,
         doomed,
+        spying,
         cursed,
         beast,
         elf,
@@ -61,6 +62,7 @@ protected:
             << QString()
             << "leader"
             << "doomed"
+            << "spying"
             << "cursed"
             << "beast"
             << "elf"

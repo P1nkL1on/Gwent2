@@ -7,28 +7,38 @@ GParse *GUnit::createNew() const
 
 GParseRes GUnit::parseFrom(GAbilityStream &stream)
 {
+    const QString errStart = "can't find targeting description, because ";
     QList<GParse*> flags;
     GParseRes errorMessage = GParse::awaitAnyFlags(
                 stream,
                 QList<GParse*>()
                     << static_cast<GParse*>(new GColorCondition())
                     << static_cast<GParse*>(new GTagCondition())
-                    << static_cast<GParse*>(new GHost())
-                    << static_cast<GParse*>(new GTarget())
-                    << static_cast<GParse*>(new GPlaceCondition()),
+                    << static_cast<GParse*>(new GHost()),
                 flags);
-    if (!errorMessage.isEmpty())
-        return QString("can't find targeting description, because %1").arg(errorMessage.message());
+//    if (!errorMessage.isEmpty())
+//        return QString("%1%2").arg(errStart).arg(errorMessage.message());
     m_colors = static_cast<GColorCondition*>(flags[0]);
     m_tags   = static_cast<GTagCondition*>(flags[1]);
     m_host   = static_cast<GHost*>(flags[2]);
-    m_target = static_cast<GTarget*>(flags[3]);
-    m_places = static_cast<GPlaceCondition*>(flags[4]);
+    if (m_host == nullptr) m_host = new GHost();
 
-    if (m_host == nullptr)
-        m_host = new GHost();
-    if (m_target == nullptr)
-        return QString("can't find targeting description, because no target given!");
+    m_target = new GTarget();
+    const GParseRes errTargetMessage = m_target->parseFrom(stream);
+    if (!errTargetMessage.isEmpty())
+        return QString("%1%2%3")
+                .arg(errStart)
+                .arg(errTargetMessage.message())
+                .arg(errorMessage.isEmpty()? "" : QString(" becasuse %1").arg(errorMessage.message()));
+
+    m_places = new GPlaceCondition();
+    const GParseRes errPlaceMessage = m_places->parseFrom(stream);
+    if (errPlaceMessage.isFatal())
+        return QString("%1%2").arg(errStart).arg(errPlaceMessage.message());
+    if (!errPlaceMessage.isEmpty() && m_places != nullptr){
+        delete m_places;
+        m_places = nullptr;
+    }
     return QString();
 }
 

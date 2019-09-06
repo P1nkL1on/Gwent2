@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    GAbilityStream gas("Bronze or non-silver Machine or Kaedwen enemy unit in graveyard and hand and hand and deck");
+    GAbilityStream gas("bronze non-spying ally unit in deck");
     GUnit gc;
 
     if (GErrorHandler::show(gc.parseFrom(gas)))
