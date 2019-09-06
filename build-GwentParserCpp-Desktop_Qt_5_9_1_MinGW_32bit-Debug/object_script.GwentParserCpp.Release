@@ -1,0 +1,17 @@
+INPUT(
+./release\main.o
+./release\gabilitystream.o
+./release\gcolor.o
+./release\gcolorcondition.o
+./release\gnegate.o
+./release\gnegatable.o
+./release\gparse.o
+./release\ghost.o
+./release\gunits.o
+./release\gunit.o
+./release\gplace.o
+./release\gtarget.o
+./release\gtag.o
+./release\gtagcondition.o
+./release\gplacecondition.o
+);

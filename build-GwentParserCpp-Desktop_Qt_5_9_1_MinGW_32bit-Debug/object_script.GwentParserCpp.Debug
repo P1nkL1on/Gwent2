@@ -1,0 +1,17 @@
+INPUT(
+./debug\main.o
+./debug\gabilitystream.o
+./debug\gcolor.o
+./debug\gcolorcondition.o
+./debug\gnegate.o
+./debug\gnegatable.o
+./debug\gparse.o
+./debug\ghost.o
+./debug\gunits.o
+./debug\gunit.o
+./debug\gplace.o
+./debug\gtarget.o
+./debug\gtag.o
+./debug\gtagcondition.o
+./debug\gplacecondition.o
+);

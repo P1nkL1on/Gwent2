@@ -4,3 +4,6 @@ D:\microsoft visual studio projects\Gwent2\bin\Debug\Gwent2.pdb
 D:\microsoft visual studio projects\Gwent2\obj\Debug\Gwent2.exe
 D:\microsoft visual studio projects\Gwent2\obj\Debug\Gwent2.pdb
 D:\microsoft visual studio projects\Gwent2\obj\Debug\Gwent2.csprojResolveAssemblyReference.cache
+D:\Gwent2\bin\Debug\Gwent2.exe.config
+D:\Gwent2\obj\Debug\Gwent2.exe
+D:\Gwent2\obj\Debug\Gwent2.pdb

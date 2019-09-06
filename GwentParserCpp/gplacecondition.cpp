@@ -9,6 +9,8 @@ GParse *GPlaceCondition::createNew() const
 
 QString GPlaceCondition::parseFrom(GAbilityStream &stream)
 {
+    if (stream.nextWord() != "in")
+        return QString("'in' for specifying place awaited!");
     return GParse::awaitsAnyCountOf(
                 stream,
                 m_separators,
