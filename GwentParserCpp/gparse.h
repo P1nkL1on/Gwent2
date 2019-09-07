@@ -26,15 +26,25 @@ protected:
             GAbilityStream &stream,
             const QList<GParse*> &pretendents,
             GParse *&winner);
-    static GParseRes awaitsAnyCountOf(
+    static GParseRes awaitsOptional(GAbilityStream &stream,
+            GParse* pretendent,
+            GParse* defaultClass = nullptr);
+    static GParseRes awaits(
             GAbilityStream &stream,
+            const QString &word);
+    static GParseRes awaits(
+            GAbilityStream &stream,
+            const QStringList &wordSequence);
+
+    static GParseRes awaitsAnyCountOf(GAbilityStream &stream,
             const QStringList separators,
             const QList<GParse*> &pretendents,
-            QList<GParse*> &winners);
-    static GParseRes awaitAnyFlags(
-            GAbilityStream &stream,
-            const QList<GParse*> &flags,
-            QList<GParse*> &winners);
+            QList<GParse*> &winners,
+            bool canBeEmpty = true);
+//    static GParseRes awaitAnyFlags(
+//            GAbilityStream &stream,
+//            const QList<GParse*> &flags,
+//            QList<GParse*> &winners);
 };
 
 #endif // GPARSE_H

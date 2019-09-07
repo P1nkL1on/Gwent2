@@ -7,11 +7,11 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    GAbilityStream gas("bronze non-spying ally unit in deck");
+    GAbilityStream gas("bronze unit");
     GUnit gc;
 
     if (GErrorHandler::show(gc.parseFrom(gas)))
-        std::cout << gc.toString().toStdString() << std::endl;
+        std::cout << std::endl << gc.toString().toStdString() << std::endl;
 
     return a.exec();
 }

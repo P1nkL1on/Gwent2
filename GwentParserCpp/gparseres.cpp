@@ -1,10 +1,9 @@
 #include "gparseres.h"
 
 
-GParseRes::GParseRes(const QString &errMessage, const bool isFatal)
+GParseRes::GParseRes(const QString &message)
 {
-    m_fatal = isFatal;
-    m_message = errMessage;
+    m_message = message;
 }
 
 GParseRes::operator =(const QString &errMessage)
@@ -15,11 +14,6 @@ GParseRes::operator =(const QString &errMessage)
 bool GParseRes::isEmpty() const
 {
     return m_message.isEmpty();
-}
-
-bool GParseRes::isFatal() const
-{
-    return m_fatal;
 }
 
 QString GParseRes::message() const

@@ -53,6 +53,6 @@ QStringList GAbilityStream::separateText(const QString &text) const
 {
     QString textSpaced = text;
     foreach (const QString op, m_operators)
-        textSpaced = textSpaced.replace(QString(op), QString(op) + m_separator);
+        textSpaced = textSpaced.replace(QString(op), m_separator + QString(op) + m_separator);
     return textSpaced.split(m_separator, QString::SplitBehavior::SkipEmptyParts);
 }
