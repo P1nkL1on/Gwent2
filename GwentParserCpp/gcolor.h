@@ -12,7 +12,7 @@ public:
     virtual QString toString() const override;
 protected:
     enum Rarity {anycolor = 0, bronze = 1, silver = 2, gold = 3};
-    Rarity m_rarity;
+    Rarity m_rarity = anycolor;
 
     const QStringList m_rarities = QStringList() << QString() << "bronze" << "silver" << "gold";
 };

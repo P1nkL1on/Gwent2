@@ -12,19 +12,17 @@ GParseRes GTagCondition::parseFrom(GAbilityStream &stream)
 {
     return GParse::awaitsAnyCountOf(
                 stream,
-                QStringList() << m_separator,
+                m_separators,
                 QList<GParse*>()
-                    << static_cast<GParse*>(new GTag())
-                    << static_cast<GParse*>((new GNegate<GTag>())),
+                    << static_cast<GParse*>((new GNegate<GTag>()))
+                    << static_cast<GParse*>(new GTag()),
                 m_tags);
 }
 
 QString GTagCondition::toString() const
 {
-    QString res;
+    QStringList tags;
     foreach (GParse* tag, m_tags)
-        res += QString("%1%2")
-                .arg(res.isEmpty()? "" : QString(" %1 ").arg(m_separator))
-                .arg(tag->toString());
-    return res;
+        tags << tag->toString();
+    return toStringSeparators(tags, m_separators);
 }

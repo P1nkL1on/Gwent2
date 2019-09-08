@@ -18,33 +18,35 @@ protected:
             const QStringList &variants,
             const QString &purpose,
             int &index) const;
-    QString toStringEnum(
-            const QStringList &variants,
-            const QString &purpose,
-            const int index) const;
     static GParseRes awaits(
             GAbilityStream &stream,
             const QList<GParse*> &pretendents,
             GParse *&winner);
-    static GParseRes awaitsOptional(GAbilityStream &stream,
-            GParse* pretendent,
-            GParse* defaultClass = nullptr);
+    static GParseRes awaits(GAbilityStream &stream,
+            GParse *&pretendent);
     static GParseRes awaits(
             GAbilityStream &stream,
             const QString &word);
     static GParseRes awaits(
             GAbilityStream &stream,
             const QStringList &wordSequence);
-
+    static GParseRes awaits(GAbilityStream &stream,
+            const QStringList &elementPurpose,
+            QList<GParse *> &elementSequence);
     static GParseRes awaitsAnyCountOf(GAbilityStream &stream,
             const QStringList separators,
             const QList<GParse*> &pretendents,
             QList<GParse*> &winners,
             bool canBeEmpty = true);
-//    static GParseRes awaitAnyFlags(
-//            GAbilityStream &stream,
-//            const QList<GParse*> &flags,
-//            QList<GParse*> &winners);
+
+
+    QString toStringEnum(
+            const QStringList &variants,
+            const QString &purpose,
+            const int index) const;
+    QString toStringSeparators(
+            const QStringList &elements,
+            const QStringList &separators) const;
 };
 
 #endif // GPARSE_H

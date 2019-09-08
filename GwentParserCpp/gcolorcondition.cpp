@@ -12,19 +12,17 @@ GParseRes GColorCondition::parseFrom(GAbilityStream &stream)
 {
     return GParse::awaitsAnyCountOf(
                 stream,
-                QStringList() << m_separator,
+                m_separators,
                 QList<GParse*>()
-                    << static_cast<GParse*>(new GColor())
-                    << static_cast<GParse*>((new GNegate<GColor>())),
+                    << static_cast<GParse*>((new GNegate<GColor>()))
+                    << static_cast<GParse*>(new GColor()),
                 m_colors);
 }
 
 QString GColorCondition::toString() const
 {
-    QString res;
+    QStringList colors;
     foreach (GParse* color, m_colors)
-        res += QString("%1%2")
-                .arg(res.isEmpty()? "" : QString(" %1 ").arg(m_separator))
-                .arg(color->toString());
-    return res;
+        colors << color->toString();
+    return toStringSeparators(colors, m_separators);
 }

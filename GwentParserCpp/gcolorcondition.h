@@ -12,7 +12,7 @@ public:
     virtual QString toString() const override;
 protected:
     QList<GParse*> m_colors;
-    const QString m_separator = "or";
+    const QStringList m_separators = QStringList() << "," << "or";
 };
 
 #endif // GCOLORCONDITION_H

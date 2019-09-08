@@ -7,28 +7,24 @@ GParse *GUnit::createNew() const
 
 GParseRes GUnit::parseFrom(GAbilityStream &stream)
 {
-    const QString errStart = "can't find unit description, because";
-    GParseRes errMessage("");
+    const auto errMessage = awaits(
+                stream,
+                QStringList()
+                << "rarity"
+                << "tag"
+                << "host"
+                << "target"
+                << "place",
+                QList<GParse*>()
+                << (m_colors = new GColorCondition())
+                << (m_tags = new GTagCondition())
+                << (m_host = new GHost())
+                << (m_target = new GTarget())
+                << (m_places = new GPlaceCondition()));
 
-    errMessage = awaitsOptional(stream, m_colors = new GColorCondition());
     if (!errMessage.isEmpty())
-        return QString("%1 invalid rarity, because %2").arg(errStart).arg(errMessage.message());
-
-    errMessage = awaitsOptional(stream, m_tags = new GTagCondition());
-    if (!errMessage.isEmpty())
-        return QString("%1 invalid tags, because %2").arg(errStart).arg(errMessage.message());
-
-    errMessage = awaitsOptional(stream, m_host = new GHost(), new GHost());
-
-    m_target = new GTarget();
-    errMessage = m_target->parseFrom(stream);
-    if (!errMessage.isEmpty())
-        return QString("%1 invalid target, because %2").arg(errStart).arg(errMessage.message());
-
-    errMessage = awaitsOptional(stream, m_places = new GPlaceCondition());
-    if (!errMessage.isEmpty())
-        return QString("%1 invalid place, because %2").arg(errStart).arg(errMessage.message());
-
+        return QString("invalid unit(s), because %1")
+                .arg(errMessage.message());
     return QString();
 }
 

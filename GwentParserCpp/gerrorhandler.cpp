@@ -6,7 +6,7 @@ using namespace std;
 bool GErrorHandler::show(const GParseRes &operationRes)
 {
     if (operationRes.isEmpty()){
-        cout << "Parsing success" << endl;
+        //cout << "Parsing success" << endl;
         return true;
     }
     const QString sep = "because ";

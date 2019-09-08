@@ -12,7 +12,7 @@ public:
     virtual QString toString() const override;
 protected:
     enum Host {any = 0, enemy = 1, ally = 2};
-    Host m_host;
+    Host m_host = any;
 
     const QStringList m_hosts = QStringList() << QString() << "enemy" << "ally";
 };

@@ -104,7 +104,7 @@ protected:
             << "organic"
             << "hazard"
             << "boon";
-    Tag m_tag;
+    Tag m_tag = anytag;
 };
 
 

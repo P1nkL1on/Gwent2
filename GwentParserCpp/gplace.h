@@ -11,8 +11,8 @@ public:
     virtual GParseRes parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
-    enum Place {battlefield = 0, hand = 1, deck = 2, graveyard = 3};
-    Place m_place;
+    enum Place {battlefield = 0, hand = 1, deck = 2, graveyard = 3, startingDeck = 4, anyCard = 5};
+    Place m_place = battlefield;
 
     const QStringList m_places = QStringList()
             << "battlefield" << "hand" << "deck" << "graveyard";

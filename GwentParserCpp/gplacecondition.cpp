@@ -21,11 +21,8 @@ GParseRes GPlaceCondition::parseFrom(GAbilityStream &stream)
 
 QString GPlaceCondition::toString() const
 {
-    QString res = m_places.isEmpty()? "" : "in ";
+    QStringList places;
     foreach (GParse* place, m_places)
-        res += QString("%1%2")
-                .arg(place == m_places.first()? "" : QString("%1 ")
-                .arg(place == m_places.last()?(" " + m_separators.last() ): m_separators.first()))
-                .arg(place->toString());
-    return res;
+        places << place->toString();
+    return toStringSeparators(places, m_separators);
 }

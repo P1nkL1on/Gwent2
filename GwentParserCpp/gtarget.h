@@ -13,7 +13,7 @@ public:
 protected:
     // units and unit equals to other units / other unit
     enum Target {unit = 0, units = 1, self = 2};
-    Target m_target;
+    Target m_target = unit;
 
     const QStringList m_targets = QStringList() << "unit" << "units" << "self";
 };
