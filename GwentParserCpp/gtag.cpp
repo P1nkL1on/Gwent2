@@ -7,7 +7,7 @@ GParse *GTag::createNew() const
     return cop;
 }
 
-GParseRes GTag::parseFrom(GAbilityStream &stream)
+GErr GTag::parseFrom(GAbilityStream &stream)
 {
     GAbilityStream streamCopy = stream;
     QString currentTag = streamCopy.nextWord();
@@ -23,9 +23,9 @@ GParseRes GTag::parseFrom(GAbilityStream &stream)
         }
         m_tag = Tag(index);
         stream = streamCopy;
-        return QString();
+        return GErr();
     }while(words < 3);
-    return QString("'%1' is not a tag!").arg(currentTag.split(' ').first());
+    return GErr(stream.pos(), QString("'%1' is not a tag!").arg(currentTag.split(' ').first()));
 }
 
 QString GTag::toString() const

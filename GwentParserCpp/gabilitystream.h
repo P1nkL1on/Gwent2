@@ -11,11 +11,15 @@ public:
     GAbilityStream(const GAbilityStream &abilityStream);
     bool isNull() const;
     bool end() const;
+    int pos() const;
     QString word() const;
     QString peekNextWord() const;
     QString nextWord();
+    QString wordsAround(const int position, const int amplitude = 2) const;
+    QString wordsAround(const int positionFrom, const int positionTo, const int amplitude = 2) const;
 
     operator =(const GAbilityStream &abilityStream);
+
 protected:
     int m_pos = -1;
     QString m_text = QString();

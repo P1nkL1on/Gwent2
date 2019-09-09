@@ -6,10 +6,10 @@ GParse *GColor::createNew() const
     return new GColor();
 }
 
-GParseRes GColor::parseFrom(GAbilityStream &stream)
+GErr GColor::parseFrom(GAbilityStream &stream)
 {
     int index;
-    const GParseRes errorMessage = parseEnum(stream, m_rarities, "rarity", index);
+    const GErr errorMessage = parseEnum(stream, m_rarities, "rarity", index);
     if (errorMessage.isEmpty())
         m_rarity = Rarity(index);
     return errorMessage;

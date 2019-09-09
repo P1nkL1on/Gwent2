@@ -5,10 +5,11 @@ GParse *GUnit::createNew() const
     return new GUnit();
 }
 
-GParseRes GUnit::parseFrom(GAbilityStream &stream)
+GErr GUnit::parseFrom(GAbilityStream &stream)
 {
-    const auto errMessage = awaits(
-                stream,
+    GAbilityStream unitStream(stream);
+    const auto err = awaits(
+                unitStream,
                 QStringList()
                 << "rarity"
                 << "tag"
@@ -21,11 +22,14 @@ GParseRes GUnit::parseFrom(GAbilityStream &stream)
                 << (m_host = new GHost())
                 << (m_target = new GTarget())
                 << (m_places = new GPlaceCondition()));
-
-    if (!errMessage.isEmpty())
-        return QString("invalid unit(s), because %1")
-                .arg(errMessage.message());
-    return QString();
+    if (!err.isEmpty())
+        return GErr(unitStream.pos(), QString("can't parse targeting unit")) += err;
+    if (m_target->isMultipleUnits())
+        return GErr(stream.pos(), QString("awaited targeting of 1 unit!"));
+    if (m_places->count() >= 2)
+        return GErr(stream.pos(), QString("1 unit can't be in several different places!"));
+    stream = unitStream;
+    return GErr();
 }
 
 QString GUnit::toString() const

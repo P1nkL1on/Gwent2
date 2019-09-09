@@ -5,10 +5,10 @@ GParse *GHost::createNew() const
     return new GHost();
 }
 
-GParseRes GHost::parseFrom(GAbilityStream &stream)
+GErr GHost::parseFrom(GAbilityStream &stream)
 {
     int index;
-    const GParseRes errorMessage = parseEnum(stream, m_hosts, "host", index);
+    const GErr errorMessage = parseEnum(stream, m_hosts, "host", index);
     if (errorMessage.isEmpty())
         m_host = Host(index);
     return errorMessage;

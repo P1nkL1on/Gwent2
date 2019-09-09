@@ -8,7 +8,7 @@ class GHost : public GParse
 public:
     GHost() = default;
     virtual GParse* createNew() const override;
-    virtual GParseRes parseFrom(GAbilityStream &stream) override;
+    virtual GErr parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     enum Host {any = 0, enemy = 1, ally = 2};

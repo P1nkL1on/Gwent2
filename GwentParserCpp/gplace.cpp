@@ -5,10 +5,10 @@ GParse *GPlace::createNew() const
     return new GPlace();
 }
 
-GParseRes GPlace::parseFrom(GAbilityStream &stream)
+GErr GPlace::parseFrom(GAbilityStream &stream)
 {
     int index;
-    const GParseRes errorMessage = parseEnum(stream, m_places, "place", index);
+    const GErr errorMessage = parseEnum(stream, m_places, "place", index);
     if (errorMessage.isEmpty())
         m_place = Place(index);
     return errorMessage;

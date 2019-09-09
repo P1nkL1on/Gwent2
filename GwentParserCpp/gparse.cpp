@@ -1,35 +1,38 @@
 #include "gparse.h"
 
-GParseRes GParse::awaits(
+GErr GParse::awaits(
         GAbilityStream &stream,
         const QList<GParse*> &pretendents,
+        const QStringList &purposes,
         GParse *&winner)
 {
-    QString awaitErrorMessage;
+    const QString purposesFailString = "awaits %1, but failed";
+    QString ps = "";
+    foreach (const QString &p, purposes)
+        ps += p + (p == purposes.last()? "" : " or ");
+    GErr awaitError(stream.pos(), purposesFailString.arg(ps));
+
     foreach (GParse *pretendent, pretendents){
         GAbilityStream pretendentStream(stream);
-        const GParseRes errMessage = pretendent->parseFrom(pretendentStream);
-        if (errMessage.isEmpty()){
+        const GErr err = pretendent->parseFrom(pretendentStream);
+        if (err.isEmpty()){
             stream = pretendentStream;
             winner = pretendent;
             foreach (GParse* p, pretendents)
                 if (p != winner)
                     delete p;
-            return QString();
+            return GErr();
         }
-        awaitErrorMessage += QString("%1%2")
-                .arg(awaitErrorMessage.isEmpty()? "" : " and ")
-                .arg(errMessage.message());
+        awaitError += err;
     }
     foreach (GParse* p, pretendents)
         delete p;
-    return awaitErrorMessage;
+    return awaitError;
 }
-
-GParseRes GParse::awaits(GAbilityStream &stream, GParse *&pretendent)
+GErr GParse::awaits(GAbilityStream &stream, GParse *&pretendent)
 {
     GAbilityStream pretendentStream(stream);
-    const GParseRes errMessage = pretendent->parseFrom(pretendentStream);
+    const GErr errMessage = pretendent->parseFrom(pretendentStream);
     if (!errMessage.isEmpty()){
         GParse* defaultPretendent = pretendent->createNew();
         delete pretendent;
@@ -39,12 +42,12 @@ GParseRes GParse::awaits(GAbilityStream &stream, GParse *&pretendent)
     return errMessage;
 }
 
-GParseRes GParse::awaits(GAbilityStream &stream, const QString &word)
+GErr GParse::awaits(GAbilityStream &stream, const QString &word)
 {
     return awaits(stream, QStringList() << word);
 }
 
-GParseRes GParse::awaits(GAbilityStream &stream, const QStringList &wordSequence)
+GErr GParse::awaits(GAbilityStream &stream, const QStringList &wordSequence)
 {
     GAbilityStream findInStream(stream);
     QString awaitedString = "";
@@ -53,36 +56,37 @@ GParseRes GParse::awaits(GAbilityStream &stream, const QStringList &wordSequence
         awaitedString += string + (awaitedString.isEmpty()? "" : " ");
     for (int i = 0; i < wordSequence.length(); ++i){
         if (findInStream.end())
-            return QString("awaited '%1', but given %2!")
+            return GErr(findInStream.pos(), QString("awaited '%1', but given %2!")
                     .arg(awaitedString).arg(givenString.isEmpty()?
-                                                "nothing" : QString("'%1'").arg(givenString));
+                    "nothing" : QString("'%1'").arg(givenString)));
         const QString awaits = wordSequence[i];
         const QString given = findInStream.nextWord();
         givenString += (i == 0? "" : " ") + given;
         if (awaits != given)
-            return QString("awaited '%1', but given '%2'!")
-                    .arg(awaitedString).arg(givenString);
+            return GErr(findInStream.pos(), QString("awaited '%1', but given '%2'!")
+                    .arg(awaitedString).arg(givenString));
     }
     stream = findInStream;
-    return QString();
+    return GErr();
 }
 
-GParseRes GParse::awaits(GAbilityStream &stream, const QStringList &elementPurpose, QList<GParse *> &elementSequence)
+GErr GParse::awaits(GAbilityStream &stream, const QStringList &elementPurpose, QList<GParse *> &elementSequence)
 {
     Q_ASSERT(elementPurpose.length() == elementSequence.length());
 
     for (int i = 0; i < elementPurpose.length(); ++i){
-        const auto errMessage = awaits(stream, elementSequence[i]);
-        if (!errMessage.isEmpty())
-            return QString("invalid %1, because %2").arg(elementPurpose[i]).arg(errMessage.message());
+        const auto err = awaits(stream, elementSequence[i]);
+        if (!err.isEmpty())
+            return GErr(stream.pos(), QString("invalid %1").arg(elementPurpose[i])) += err;
     }
-    return QString();
+    return GErr();
 }
 
-GParseRes GParse::awaitsAnyCountOf(
+GErr GParse::awaitsAnyCountOf(
         GAbilityStream &stream,
-        const QStringList separators,
+        const QStringList &separators,
         const QList<GParse *> &pretendents,
+        const QStringList &pretendentPurposes,
         QList<GParse *> &winners,
         bool canBeEmpty)
 {
@@ -93,19 +97,17 @@ GParseRes GParse::awaitsAnyCountOf(
         foreach (GParse* pretendent, pretendents)
             newPretendents << pretendent->createNew();
 
-        const GParseRes errorMessage = awaits(stream, newPretendents, winner);
-        if (!errorMessage.isEmpty()){
+        const GErr err = awaits(stream, newPretendents, pretendentPurposes, winner);
+        if (!err.isEmpty()){
             // parse zero elemts
             if (!winners.length())
                 break;//return canBeEmpty? QString() : errorMessage;
-            return GParseRes(
-                        QString("can't parse sequence, because separator isn't followed by element, because %1")
-                        .arg(errorMessage.message()));
+            return GErr(stream.pos(), QString("can't parse sequence, because separator isn't followed by element")) += err;
         }
         winners << winner;
         if (stream.end()){
             if (winners.isEmpty() && !canBeEmpty)
-                return QString("empty list readen!");
+                return GErr(stream.pos(), "empty list readen!");
             break;//return QString();
         }
 
@@ -121,25 +123,25 @@ GParseRes GParse::awaitsAnyCountOf(
     }while(!stream.end());
     // return QString("can't parse sequence, because element doesn't follow separator!");
     if (!canBeEmpty && winners.isEmpty())
-        return QString("can't find sequence!");
+        return GErr(stream.pos(), "can't find sequence!");
     if (!separatorUsed.isEmpty() && !separatorUsed.contains(separators.last()))
-        return QString("ambegious separators using!");
-    return QString();
+        return GErr(stream.pos(), "ambegious separators using!");
+    return GErr();
 }
 
-GParseRes GParse::parseEnum(GAbilityStream &stream, const QStringList &variants, const QString &purpose, int &index) const
+GErr GParse::parseEnum(GAbilityStream &stream, const QStringList &variants, const QString &purpose, int &index) const
 {
     GAbilityStream streamWord = stream;
     const QString value = streamWord.nextWord();
     index = variants.indexOf(value);
     if (index < 0 && variants.first().isEmpty()){
         index = 0;
-        return QString();
+        return GErr();
     }
     if (index < 0)
-        return QString("'%1' does not represent a %2!").arg(value).arg(purpose);
+        return GErr(stream.pos(), QString("'%1' does not represent a %2!").arg(value).arg(purpose));
     stream = streamWord;
-    return QString();
+    return GErr();
 }
 
 QString GParse::toStringEnum(const QStringList &variants, const QString &purpose, const int index) const

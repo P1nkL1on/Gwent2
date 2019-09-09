@@ -1,7 +1,7 @@
 #ifndef GPARSE_H
 #define GPARSE_H
 
-#include "gparseres.h"
+#include "gparseerr.h"
 #include <QList>
 #include "gabilitystream.h"
 
@@ -10,32 +10,31 @@ class GParse
 public:
     GParse() = default;
     virtual GParse* createNew() const = 0;
-    virtual GParseRes parseFrom(GAbilityStream &stream) = 0;
+    virtual GErr parseFrom(GAbilityStream &stream) = 0;
     virtual QString toString() const = 0;
 protected:
-    GParseRes parseEnum(
+    GErr parseEnum(
             GAbilityStream& stream,
             const QStringList &variants,
             const QString &purpose,
             int &index) const;
-    static GParseRes awaits(
-            GAbilityStream &stream,
-            const QList<GParse*> &pretendents,
+    static GErr awaits(GAbilityStream &stream,
+            const QList<GParse*> &pretendents, const QStringList &purposes,
             GParse *&winner);
-    static GParseRes awaits(GAbilityStream &stream,
+    static GErr awaits(GAbilityStream &stream,
             GParse *&pretendent);
-    static GParseRes awaits(
+    static GErr awaits(
             GAbilityStream &stream,
             const QString &word);
-    static GParseRes awaits(
+    static GErr awaits(
             GAbilityStream &stream,
             const QStringList &wordSequence);
-    static GParseRes awaits(GAbilityStream &stream,
+    static GErr awaits(GAbilityStream &stream,
             const QStringList &elementPurpose,
             QList<GParse *> &elementSequence);
-    static GParseRes awaitsAnyCountOf(GAbilityStream &stream,
-            const QStringList separators,
-            const QList<GParse*> &pretendents,
+    static GErr awaitsAnyCountOf(GAbilityStream &stream,
+            const QStringList &separators,
+            const QList<GParse*> &pretendents, const QStringList &pretendentPurposes,
             QList<GParse*> &winners,
             bool canBeEmpty = true);
 

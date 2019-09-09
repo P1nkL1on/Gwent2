@@ -8,7 +8,7 @@ class GPlace : public GParse
 public:
     GPlace() = default;
     virtual GParse* createNew() const override;
-    virtual GParseRes parseFrom(GAbilityStream &stream) override;
+    virtual GErr parseFrom(GAbilityStream &stream) override;
     virtual QString toString() const override;
 protected:
     enum Place {battlefield = 0, hand = 1, deck = 2, graveyard = 3, startingDeck = 4, anyCard = 5};

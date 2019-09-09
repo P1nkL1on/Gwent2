@@ -2,20 +2,26 @@
 
 #include "gplace.h"
 
+GPlaceCondition::GPlaceCondition(const QString &pretext):
+    m_awaitedPretext(pretext)
+{
+}
+
 GParse *GPlaceCondition::createNew() const
 {
     return new GPlaceCondition();
 }
 
-GParseRes GPlaceCondition::parseFrom(GAbilityStream &stream)
+GErr GPlaceCondition::parseFrom(GAbilityStream &stream)
 {
-    GParseRes errMessage = awaits(stream, "in");
+    GErr errMessage = awaits(stream, m_awaitedPretext);
     if (!errMessage.isEmpty())
-        return QString();
+        return GErr();
     return GParse::awaitsAnyCountOf(
                 stream,
-                m_separators,
+                m_andSeparators,
                 QList<GParse*>() << static_cast<GParse*>(new GPlace()),
+                QStringList() << "place name",
                 m_places);
 }
 
@@ -24,5 +30,10 @@ QString GPlaceCondition::toString() const
     QStringList places;
     foreach (GParse* place, m_places)
         places << place->toString();
-    return toStringSeparators(places, m_separators);
+    return toStringSeparators(places, m_andSeparators);
+}
+
+int GPlaceCondition::count() const
+{
+    return m_places.length();
 }

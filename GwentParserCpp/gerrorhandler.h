@@ -1,11 +1,11 @@
 #ifndef GERRORHANDLER_H
 #define GERRORHANDLER_H
 
-#include "gparseres.h"
-#include <iostream>
+#include "gparseerr.h"
+#include "gabilitystream.h"
 
 namespace GErrorHandler {
-    bool show(const GParseRes &operationRes);
+    bool show(const GErr &operationRes, const GAbilityStream &stream);
 }
 
 #endif // GERRORHANDLER_H
