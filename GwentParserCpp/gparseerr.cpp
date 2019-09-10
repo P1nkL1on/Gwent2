@@ -49,7 +49,10 @@ bool GErr::show(const GAbilityStream &stream) const
     }
     cout << m_errorMessage.toStdString();
     if (m_errorMessage[m_errorMessage.length() - 1] == '!')
-        cout << "\t\t" << stream.wordsAround(m_streamPosition).toStdString();
+        cout << "\t\t" << (m_streamPositionEnd < 0?
+                             stream.wordsAround(m_streamPosition)
+                           : stream.wordsAround(m_streamPosition, m_streamPositionEnd))
+                        .toStdString();
     cout << endl;
     foreach (const GErr& err, m_causes)
         err.show(stream);

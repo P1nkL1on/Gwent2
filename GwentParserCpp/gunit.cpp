@@ -23,11 +23,11 @@ GErr GUnit::parseFrom(GAbilityStream &stream)
                 << (m_target = new GTarget())
                 << (m_places = new GPlaceCondition()));
     if (!err.isEmpty())
-        return GErr(unitStream.pos(), QString("can't parse targeting unit")) += err;
+        return GErr(unitStream.pos(), unitStream.pos(), QString("can't parse targeting unit")) += err;
     if (m_target->isMultipleUnits())
-        return GErr(stream.pos(), QString("awaited targeting of 1 unit!"));
-    if (m_places->count() >= 2)
-        return GErr(stream.pos(), QString("1 unit can't be in several different places!"));
+        return GErr(stream.pos(), unitStream.pos(), QString("awaited targeting of single unit!"));
+    if (m_places->count() > 1)
+        return GErr(stream.pos(), unitStream.pos(), QString("one unit can't be in several different places!"));
     stream = unitStream;
     return GErr();
 }

@@ -15,7 +15,7 @@ public:
     QString word() const;
     QString peekNextWord() const;
     QString nextWord();
-    QString wordsAround(const int position, const int amplitude = 2) const;
+    QString wordsAround(const int position) const;
     QString wordsAround(const int positionFrom, const int positionTo, const int amplitude = 2) const;
 
     operator =(const GAbilityStream &abilityStream);

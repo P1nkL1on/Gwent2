@@ -5,19 +5,19 @@
 # Template: app
 #############################################################################
 
-MAKEFILE      = Makefile.Release
+MAKEFILE      = Makefile.Debug
 
 ####### Compiler, tools and options
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DUNICODE -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_NO_DEBUG -DQT_CORE_LIB
-CFLAGS        = -fno-keep-inline-dllexport -pipe -O2 -Wextra -Wall -W $(DEFINES)
-CXXFLAGS      = -fno-keep-inline-dllexport -pipe -O2 -std=gnu++11 -Wextra -Wall -W -fexceptions -mthreads $(DEFINES)
-INCPATH       = -I..\GwentParserCpp -I. -I..\..\progs\QT_creator\5.9.1\mingw53_32\include -I..\..\progs\QT_creator\5.9.1\mingw53_32\include\QtCore -Irelease -I..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\win32-g++ 
+DEFINES       = -DUNICODE -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_CORE_LIB
+CFLAGS        = -fno-keep-inline-dllexport -pipe -g -Wextra -Wall -W $(DEFINES)
+CXXFLAGS      = -fno-keep-inline-dllexport -pipe -g -std=gnu++11 -Wextra -Wall -W -fexceptions -mthreads $(DEFINES)
+INCPATH       = -I..\GwentParserCpp -I. -I..\..\progs\QT_creator\5.9.1\mingw53_32\include -I..\..\progs\QT_creator\5.9.1\mingw53_32\include\QtCore -Idebug -I..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\win32-g++ 
 LINKER      =        g++
-LFLAGS        =        -Wl,-s -Wl,-subsystem,console -mthreads
-LIBS        =        -LD:\progs\QT_creator\5.9.1\mingw53_32\lib D:\progs\QT_creator\5.9.1\mingw53_32\lib\libQt5Core.a 
+LFLAGS        =        -Wl,-subsystem,console -mthreads
+LIBS        =        -LD:\progs\QT_creator\5.9.1\mingw53_32\lib D:\progs\QT_creator\5.9.1\mingw53_32\lib\libQt5Cored.a 
 QMAKE         = D:\progs\QT_creator\5.9.1\mingw53_32\bin\qmake.exe
 IDC           = idc
 IDL           = midl
@@ -41,7 +41,7 @@ QINSTALL_PROGRAM = D:\progs\QT_creator\5.9.1\mingw53_32\bin\qmake.exe -install q
 
 ####### Output directory
 
-OBJECTS_DIR   = release
+OBJECTS_DIR   = debug
 
 ####### Files
 
@@ -60,25 +60,25 @@ SOURCES       = ..\GwentParserCpp\main.cpp \
 		..\GwentParserCpp\gtag.cpp \
 		..\GwentParserCpp\gtagcondition.cpp \
 		..\GwentParserCpp\gplacecondition.cpp \
-		..\GwentParserCpp\gparseerr.cpp \
-		..\GwentParserCpp\gcondition.cpp 
-OBJECTS       = release/main.o \
-		release/gabilitystream.o \
-		release/gcolor.o \
-		release/gcolorcondition.o \
-		release/gnegate.o \
-		release/gnegatable.o \
-		release/gparse.o \
-		release/ghost.o \
-		release/gunits.o \
-		release/gunit.o \
-		release/gplace.o \
-		release/gtarget.o \
-		release/gtag.o \
-		release/gtagcondition.o \
-		release/gplacecondition.o \
-		release/gparseerr.o \
-		release/gcondition.o
+		..\GwentParserCpp\gerrorhandler.cpp \
+		..\GwentParserCpp\gparseerr.cpp 
+OBJECTS       = debug/main.o \
+		debug/gabilitystream.o \
+		debug/gcolor.o \
+		debug/gcolorcondition.o \
+		debug/gnegate.o \
+		debug/gnegatable.o \
+		debug/gparse.o \
+		debug/ghost.o \
+		debug/gunits.o \
+		debug/gunit.o \
+		debug/gplace.o \
+		debug/gtarget.o \
+		debug/gtag.o \
+		debug/gtagcondition.o \
+		debug/gplacecondition.o \
+		debug/gerrorhandler.o \
+		debug/gparseerr.o
 
 DIST          =  ..\GwentParserCpp\gparse.h \
 		..\GwentParserCpp\gabilitystream.h \
@@ -94,8 +94,8 @@ DIST          =  ..\GwentParserCpp\gparse.h \
 		..\GwentParserCpp\gtag.h \
 		..\GwentParserCpp\gtagcondition.h \
 		..\GwentParserCpp\gplacecondition.h \
-		..\GwentParserCpp\gparseerr.h \
-		..\GwentParserCpp\gcondition.h ..\GwentParserCpp\main.cpp \
+		..\GwentParserCpp\gerrorhandler.h \
+		..\GwentParserCpp\gparseerr.h ..\GwentParserCpp\main.cpp \
 		..\GwentParserCpp\gabilitystream.cpp \
 		..\GwentParserCpp\gcolor.cpp \
 		..\GwentParserCpp\gcolorcondition.cpp \
@@ -110,36 +110,37 @@ DIST          =  ..\GwentParserCpp\gparse.h \
 		..\GwentParserCpp\gtag.cpp \
 		..\GwentParserCpp\gtagcondition.cpp \
 		..\GwentParserCpp\gplacecondition.cpp \
-		..\GwentParserCpp\gparseerr.cpp \
-		..\GwentParserCpp\gcondition.cpp
+		..\GwentParserCpp\gerrorhandler.cpp \
+		..\GwentParserCpp\gparseerr.cpp
 QMAKE_TARGET  = GwentParserCpp
-DESTDIR        = release\ #avoid trailing-slash linebreak
+DESTDIR        = debug\ #avoid trailing-slash linebreak
 TARGET         = GwentParserCpp.exe
-DESTDIR_TARGET = release\GwentParserCpp.exe
+DESTDIR_TARGET = debug\GwentParserCpp.exe
 
 ####### Build rules
 
 first: all
-all: Makefile.Release  $(DESTDIR_TARGET)
+all: Makefile.Debug  $(DESTDIR_TARGET)
 
 $(DESTDIR_TARGET):  $(OBJECTS) 
-	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.GwentParserCpp.Release  $(LIBS)
+	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) object_script.GwentParserCpp.Debug  $(LIBS)
+	objcopy --only-keep-debug debug/GwentParserCpp.exe debug/GwentParserCpp.exe.debug && objcopy --strip-debug debug/GwentParserCpp.exe && objcopy --add-gnu-debuglink=debug/GwentParserCpp.exe.debug debug/GwentParserCpp.exe
 
 qmake: FORCE
-	@$(QMAKE) -o Makefile.Release ..\GwentParserCpp\GwentParserCpp.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
+	@$(QMAKE) -o Makefile.Debug ..\GwentParserCpp\GwentParserCpp.pro -spec win32-g++ "CONFIG+=qml_debug" "CONFIG+=force_debug_info" "CONFIG+=separate_debug_info"
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) GwentParserCpp.zip $(SOURCES) $(DIST) ..\GwentParserCpp\GwentParserCpp.pro ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\spec_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\qdevice.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\device_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\g++-base.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\angle.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\sanitize.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\gcc-base.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\qconfig.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3danimation.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3danimation_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dcore.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dcore_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dinput.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dinput_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dlogic.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dlogic_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquick.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquick_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickanimation.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickinput.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickrender.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3drender.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3drender_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axbase.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axbase_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axcontainer.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axserver.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axserver_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bluetooth.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_charts.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_charts_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_concurrent.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_core.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_core_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_datavisualization.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_datavisualization_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_dbus.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_dbus_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designer.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designer_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_egl_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_fb_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gamepad.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gamepad_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gui.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gui_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_help.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_help_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_location.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_location_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimedia.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_network.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_network_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_networkauth.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_networkauth_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_nfc.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_nfc_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_opengl.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_opengl_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_openglextensions.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_positioning.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_positioning_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_printsupport.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_purchasing.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_purchasing_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmldebug_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmltest.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quick.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quick_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickcontrols2.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_remoteobjects.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_repparser.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_repparser_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_script.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_script_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scripttools.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scripttools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scxml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scxml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sensors.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sensors_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialbus.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialbus_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialport.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialport_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sql.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sql_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_svg.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_svg_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_testlib.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_testlib_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_texttospeech.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_texttospeech_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_theme_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uiplugin.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uitools.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uitools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_webchannel.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_webchannel_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_websockets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_websockets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_widgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_widgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_winextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_winextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt_functions.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\win32-g++\qmake.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\spec_post.prf .qmake.stash ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exclusive_builds.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\toolchain.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\default_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\win32\default_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\resolve_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exclusive_builds_post.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\default_post.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\build_pass.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\win32\console.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qml_debug.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\precompile_header.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\warn_on.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\resources.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\moc.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qmake_use.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\file_copies.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\testcase_targets.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exceptions.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\yacc.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\lex.prf ..\GwentParserCpp\GwentParserCpp.pro ..\..\progs\QT_creator\5.9.1\mingw53_32\lib\Qt5Core.prl    ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\data\dummy.cpp ..\GwentParserCpp\gparse.h ..\GwentParserCpp\gabilitystream.h ..\GwentParserCpp\gcolor.h ..\GwentParserCpp\gcolorcondition.h ..\GwentParserCpp\gnegate.h ..\GwentParserCpp\gnegatable.h ..\GwentParserCpp\ghost.h ..\GwentParserCpp\gunits.h ..\GwentParserCpp\gunit.h ..\GwentParserCpp\gplace.h ..\GwentParserCpp\gtarget.h ..\GwentParserCpp\gtag.h ..\GwentParserCpp\gtagcondition.h ..\GwentParserCpp\gplacecondition.h ..\GwentParserCpp\gparseerr.h ..\GwentParserCpp\gcondition.h ..\GwentParserCpp\main.cpp ..\GwentParserCpp\gabilitystream.cpp ..\GwentParserCpp\gcolor.cpp ..\GwentParserCpp\gcolorcondition.cpp ..\GwentParserCpp\gnegate.cpp ..\GwentParserCpp\gnegatable.cpp ..\GwentParserCpp\gparse.cpp ..\GwentParserCpp\ghost.cpp ..\GwentParserCpp\gunits.cpp ..\GwentParserCpp\gunit.cpp ..\GwentParserCpp\gplace.cpp ..\GwentParserCpp\gtarget.cpp ..\GwentParserCpp\gtag.cpp ..\GwentParserCpp\gtagcondition.cpp ..\GwentParserCpp\gplacecondition.cpp ..\GwentParserCpp\gparseerr.cpp ..\GwentParserCpp\gcondition.cpp    
+	$(ZIP) GwentParserCpp.zip $(SOURCES) $(DIST) ..\GwentParserCpp\GwentParserCpp.pro ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\spec_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\qdevice.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\device_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\g++-base.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\angle.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\sanitize.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\common\gcc-base.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\qconfig.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3danimation.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3danimation_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dcore.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dcore_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dinput.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dinput_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dlogic.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dlogic_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquick.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquick_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickanimation.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickanimation_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickinput.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickrender.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickscene2d.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3dquickscene2d_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3drender.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_3drender_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_accessibility_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axbase.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axbase_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axcontainer.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axserver.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_axserver_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bluetooth.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_charts.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_charts_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_concurrent.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_core.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_core_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_datavisualization.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_datavisualization_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_dbus.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_dbus_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designer.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designer_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_devicediscovery_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_egl_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_eventdispatcher_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_fb_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_fontdatabase_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gamepad.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gamepad_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gui.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_gui_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_help.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_help_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_location.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_location_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimedia.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_network.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_network_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_networkauth.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_networkauth_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_nfc.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_nfc_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_opengl.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_opengl_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_openglextensions.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_packetprotocol_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_platformcompositor_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_positioning.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_positioning_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_printsupport.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_purchasing.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_purchasing_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmldebug_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmltest.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quick.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quick_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickcontrols2.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickcontrols2_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quicktemplates2_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_remoteobjects.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_remoteobjects_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_repparser.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_repparser_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_script.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_script_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scripttools.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scripttools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scxml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_scxml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sensors.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sensors_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialbus.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialbus_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialport.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_serialport_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sql.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_sql_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_svg.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_svg_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_testlib.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_testlib_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_texttospeech.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_texttospeech_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_theme_support_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uiplugin.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uitools.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_uitools_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_webchannel.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_webchannel_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_websockets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_websockets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_widgets.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_widgets_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_winextras.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_winextras_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xml.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xml_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt_functions.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\win32-g++\qmake.conf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\spec_post.prf .qmake.stash ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exclusive_builds.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\toolchain.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\default_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\win32\default_pre.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\resolve_config.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exclusive_builds_post.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\default_post.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\build_pass.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\win32\console.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\resolve_target.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\win32\separate_debug_info.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qml_debug.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\precompile_header.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\warn_on.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qt.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\resources.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\moc.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\qmake_use.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\file_copies.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\testcase_targets.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\exceptions.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\yacc.prf ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\lex.prf ..\GwentParserCpp\GwentParserCpp.pro ..\..\progs\QT_creator\5.9.1\mingw53_32\lib\Qt5Cored.prl    ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\data\dummy.cpp ..\GwentParserCpp\gparse.h ..\GwentParserCpp\gabilitystream.h ..\GwentParserCpp\gcolor.h ..\GwentParserCpp\gcolorcondition.h ..\GwentParserCpp\gnegate.h ..\GwentParserCpp\gnegatable.h ..\GwentParserCpp\ghost.h ..\GwentParserCpp\gunits.h ..\GwentParserCpp\gunit.h ..\GwentParserCpp\gplace.h ..\GwentParserCpp\gtarget.h ..\GwentParserCpp\gtag.h ..\GwentParserCpp\gtagcondition.h ..\GwentParserCpp\gplacecondition.h ..\GwentParserCpp\gerrorhandler.h ..\GwentParserCpp\gparseerr.h ..\GwentParserCpp\main.cpp ..\GwentParserCpp\gabilitystream.cpp ..\GwentParserCpp\gcolor.cpp ..\GwentParserCpp\gcolorcondition.cpp ..\GwentParserCpp\gnegate.cpp ..\GwentParserCpp\gnegatable.cpp ..\GwentParserCpp\gparse.cpp ..\GwentParserCpp\ghost.cpp ..\GwentParserCpp\gunits.cpp ..\GwentParserCpp\gunit.cpp ..\GwentParserCpp\gplace.cpp ..\GwentParserCpp\gtarget.cpp ..\GwentParserCpp\gtag.cpp ..\GwentParserCpp\gtagcondition.cpp ..\GwentParserCpp\gplacecondition.cpp ..\GwentParserCpp\gerrorhandler.cpp ..\GwentParserCpp\gparseerr.cpp    
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\main.o release\gabilitystream.o release\gcolor.o release\gcolorcondition.o release\gnegate.o release\gnegatable.o release\gparse.o release\ghost.o release\gunits.o release\gunit.o release\gplace.o release\gtarget.o release\gtag.o release\gtagcondition.o release\gplacecondition.o release\gparseerr.o release\gcondition.o
+	-$(DEL_FILE) debug\main.o debug\gabilitystream.o debug\gcolor.o debug\gcolorcondition.o debug\gnegate.o debug\gnegatable.o debug\gparse.o debug\ghost.o debug\gunits.o debug\gunit.o debug\gplace.o debug\gtarget.o debug\gtag.o debug\gtagcondition.o debug\gplacecondition.o debug\gerrorhandler.o debug\gparseerr.o
 
 distclean: clean 
-	-$(DEL_FILE) .qmake.stash
+	-$(DEL_FILE) D:\Gwent2\build-GwentParserCpp-Desktop_Qt_5_9_1_MinGW_32bit-Profile\debug\GwentParserCpp.exe.debug .qmake.stash
 	-$(DEL_FILE) $(DESTDIR_TARGET)
-	-$(DEL_FILE) Makefile.Release
+	-$(DEL_FILE) Makefile.Debug
 
 mocclean: compiler_moc_header_clean compiler_moc_source_clean
 
@@ -153,11 +154,11 @@ compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_predefs_make_all: release/moc_predefs.h
+compiler_moc_predefs_make_all: debug/moc_predefs.h
 compiler_moc_predefs_clean:
-	-$(DEL_FILE) release\moc_predefs.h
-release/moc_predefs.h: ../../progs/QT_creator/5.9.1/mingw53_32/mkspecs/features/data/dummy.cpp
-	g++ -fno-keep-inline-dllexport -pipe -O2 -std=gnu++11 -Wextra -Wall -W -dM -E -o release\moc_predefs.h ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\data\dummy.cpp
+	-$(DEL_FILE) debug\moc_predefs.h
+debug/moc_predefs.h: ../../progs/QT_creator/5.9.1/mingw53_32/mkspecs/features/data/dummy.cpp
+	g++ -fno-keep-inline-dllexport -pipe -g -std=gnu++11 -Wextra -Wall -W -dM -E -o debug\moc_predefs.h ..\..\progs\QT_creator\5.9.1\mingw53_32\mkspecs\features\data\dummy.cpp
 
 compiler_moc_header_make_all:
 compiler_moc_header_clean:
@@ -175,7 +176,7 @@ compiler_clean: compiler_moc_predefs_clean
 
 ####### Compile
 
-release/main.o: ../GwentParserCpp/main.cpp ../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QCoreApplication \
+debug/main.o: ../GwentParserCpp/main.cpp ../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QCoreApplication \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcoreapplication.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
@@ -226,25 +227,24 @@ release/main.o: ../GwentParserCpp/main.cpp ../../progs/QT_creator/5.9.1/mingw53_
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qeventloop.h \
 		../GwentParserCpp/gerrorhandler.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
-		../GwentParserCpp/gabilitystream.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../GwentParserCpp/gunit.h \
 		../GwentParserCpp/gcolorcondition.h \
-		../GwentParserCpp/gcondition.h \
 		../GwentParserCpp/gcolor.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../GwentParserCpp/gabilitystream.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../GwentParserCpp/gplacecondition.h \
 		../GwentParserCpp/gplace.h \
 		../GwentParserCpp/gtagcondition.h \
 		../GwentParserCpp/gtag.h \
 		../GwentParserCpp/ghost.h \
 		../GwentParserCpp/gtarget.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\GwentParserCpp\main.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\GwentParserCpp\main.cpp
 
-release/gabilitystream.o: ../GwentParserCpp/gabilitystream.cpp ../GwentParserCpp/gabilitystream.h \
+debug/gabilitystream.o: ../GwentParserCpp/gabilitystream.cpp ../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
@@ -283,112 +283,111 @@ release/gabilitystream.o: ../GwentParserCpp/gabilitystream.cpp ../GwentParserCpp
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gabilitystream.o ..\GwentParserCpp\gabilitystream.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gabilitystream.o ..\GwentParserCpp\gabilitystream.cpp
 
-release/gcolor.o: ../GwentParserCpp/gcolor.cpp ../GwentParserCpp/gcolor.h \
+debug/gcolor.o: ../GwentParserCpp/gcolor.cpp ../GwentParserCpp/gcolor.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gcolor.o ..\GwentParserCpp\gcolor.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gcolor.o ..\GwentParserCpp\gcolor.cpp
 
-release/gcolorcondition.o: ../GwentParserCpp/gcolorcondition.cpp ../GwentParserCpp/gcolorcondition.h \
-		../GwentParserCpp/gcondition.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
+debug/gcolorcondition.o: ../GwentParserCpp/gcolorcondition.cpp ../GwentParserCpp/gcolorcondition.h \
 		../GwentParserCpp/gcolor.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
 		../GwentParserCpp/gabilitystream.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../GwentParserCpp/gnegate.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gcolorcondition.o ..\GwentParserCpp\gcolorcondition.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gcolorcondition.o ..\GwentParserCpp\gcolorcondition.cpp
 
-release/gnegate.o: ../GwentParserCpp/gnegate.cpp ../GwentParserCpp/gnegate.h \
+debug/gnegate.o: ../GwentParserCpp/gnegate.cpp ../GwentParserCpp/gnegate.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -410,31 +409,31 @@ release/gnegate.o: ../GwentParserCpp/gnegate.cpp ../GwentParserCpp/gnegate.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gnegate.o ..\GwentParserCpp\gnegate.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gnegate.o ..\GwentParserCpp\gnegate.cpp
 
-release/gnegatable.o: ../GwentParserCpp/gnegatable.cpp ../GwentParserCpp/gnegatable.h \
+debug/gnegatable.o: ../GwentParserCpp/gnegatable.cpp ../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -456,30 +455,30 @@ release/gnegatable.o: ../GwentParserCpp/gnegatable.cpp ../GwentParserCpp/gnegata
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gnegatable.o ..\GwentParserCpp\gnegatable.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gnegatable.o ..\GwentParserCpp\gnegatable.cpp
 
-release/gparse.o: ../GwentParserCpp/gparse.cpp ../GwentParserCpp/gparse.h \
+debug/gparse.o: ../GwentParserCpp/gparse.cpp ../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -501,31 +500,31 @@ release/gparse.o: ../GwentParserCpp/gparse.cpp ../GwentParserCpp/gparse.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gparse.o ..\GwentParserCpp\gparse.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gparse.o ..\GwentParserCpp\gparse.cpp
 
-release/ghost.o: ../GwentParserCpp/ghost.cpp ../GwentParserCpp/ghost.h \
+debug/ghost.o: ../GwentParserCpp/ghost.cpp ../GwentParserCpp/ghost.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -547,35 +546,37 @@ release/ghost.o: ../GwentParserCpp/ghost.cpp ../GwentParserCpp/ghost.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\ghost.o ..\GwentParserCpp\ghost.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\ghost.o ..\GwentParserCpp\ghost.cpp
 
-release/gunits.o: ../GwentParserCpp/gunits.cpp ../GwentParserCpp/gunits.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gunits.o ..\GwentParserCpp\gunits.cpp
+debug/gunits.o: ../GwentParserCpp/gunits.cpp ../GwentParserCpp/gunits.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gunits.o ..\GwentParserCpp\gunits.cpp
 
-release/gunit.o: ../GwentParserCpp/gunit.cpp ../GwentParserCpp/gunit.h \
+debug/gunit.o: ../GwentParserCpp/gunit.cpp ../GwentParserCpp/gunit.h \
 		../GwentParserCpp/gcolorcondition.h \
-		../GwentParserCpp/gcondition.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../GwentParserCpp/gcolor.h \
+		../GwentParserCpp/gnegatable.h \
+		../GwentParserCpp/gparse.h \
+		../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -597,40 +598,37 @@ release/gunit.o: ../GwentParserCpp/gunit.cpp ../GwentParserCpp/gunit.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../GwentParserCpp/gcolor.h \
-		../GwentParserCpp/gnegatable.h \
-		../GwentParserCpp/gparse.h \
-		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../GwentParserCpp/gplacecondition.h \
 		../GwentParserCpp/gplace.h \
 		../GwentParserCpp/gtagcondition.h \
 		../GwentParserCpp/gtag.h \
 		../GwentParserCpp/ghost.h \
 		../GwentParserCpp/gtarget.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gunit.o ..\GwentParserCpp\gunit.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gunit.o ..\GwentParserCpp\gunit.cpp
 
-release/gplace.o: ../GwentParserCpp/gplace.cpp ../GwentParserCpp/gplace.h \
+debug/gplace.o: ../GwentParserCpp/gplace.cpp ../GwentParserCpp/gplace.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -652,31 +650,31 @@ release/gplace.o: ../GwentParserCpp/gplace.cpp ../GwentParserCpp/gplace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
-		../GwentParserCpp/gabilitystream.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gplace.o ..\GwentParserCpp\gplace.cpp
-
-release/gtarget.o: ../GwentParserCpp/gtarget.cpp ../GwentParserCpp/gtarget.h \
-		../GwentParserCpp/gparse.h \
-		../GwentParserCpp/gparseerr.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
+		../GwentParserCpp/gabilitystream.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gplace.o ..\GwentParserCpp\gplace.cpp
+
+debug/gtarget.o: ../GwentParserCpp/gtarget.cpp ../GwentParserCpp/gtarget.h \
+		../GwentParserCpp/gparse.h \
+		../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -698,128 +696,80 @@ release/gtarget.o: ../GwentParserCpp/gtarget.cpp ../GwentParserCpp/gtarget.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gtarget.o ..\GwentParserCpp\gtarget.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gtarget.o ..\GwentParserCpp\gtarget.cpp
 
-release/gtag.o: ../GwentParserCpp/gtag.cpp ../GwentParserCpp/gtag.h \
+debug/gtag.o: ../GwentParserCpp/gtag.cpp ../GwentParserCpp/gtag.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gtag.o ..\GwentParserCpp\gtag.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gtag.o ..\GwentParserCpp\gtag.cpp
 
-release/gtagcondition.o: ../GwentParserCpp/gtagcondition.cpp ../GwentParserCpp/gtagcondition.h \
-		../GwentParserCpp/gcondition.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
+debug/gtagcondition.o: ../GwentParserCpp/gtagcondition.cpp ../GwentParserCpp/gtagcondition.h \
 		../GwentParserCpp/gtag.h \
 		../GwentParserCpp/gnegatable.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
-		../GwentParserCpp/gabilitystream.h \
-		../GwentParserCpp/gnegate.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gtagcondition.o ..\GwentParserCpp\gtagcondition.cpp
-
-release/gplacecondition.o: ../GwentParserCpp/gplacecondition.cpp ../GwentParserCpp/gplacecondition.h \
-		../GwentParserCpp/gcondition.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -841,31 +791,33 @@ release/gplacecondition.o: ../GwentParserCpp/gplacecondition.cpp ../GwentParserC
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
+		../GwentParserCpp/gabilitystream.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
+		../GwentParserCpp/gnegate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gtagcondition.o ..\GwentParserCpp\gtagcondition.cpp
+
+debug/gplacecondition.o: ../GwentParserCpp/gplacecondition.cpp ../GwentParserCpp/gplacecondition.h \
 		../GwentParserCpp/gplace.h \
 		../GwentParserCpp/gparse.h \
 		../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
-		../GwentParserCpp/gabilitystream.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gplacecondition.o ..\GwentParserCpp\gplacecondition.cpp
-
-release/gparseerr.o: ../GwentParserCpp/gparseerr.cpp ../GwentParserCpp/gparseerr.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -887,30 +839,72 @@ release/gparseerr.o: ../GwentParserCpp/gparseerr.cpp ../GwentParserCpp/gparseerr
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QList \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
 		../GwentParserCpp/gabilitystream.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gparseerr.o ..\GwentParserCpp\gparseerr.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gplacecondition.o ..\GwentParserCpp\gplacecondition.cpp
 
-release/gcondition.o: ../GwentParserCpp/gcondition.cpp ../GwentParserCpp/gcondition.h \
+debug/gerrorhandler.o: ../GwentParserCpp/gerrorhandler.cpp ../GwentParserCpp/gerrorhandler.h \
+		../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtcore-config.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsystemdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qprocessordetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qcompilerdetection.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qtypeinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qsysinfo.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlogging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qflags.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbasicatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_bootstrap.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qgenericatomic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_cxx11.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qatomic_msvc.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobalstatic.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QStringList \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qlist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qalgorithms.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gerrorhandler.o ..\GwentParserCpp\gerrorhandler.cpp
+
+debug/gparseerr.o: ../GwentParserCpp/gparseerr.cpp ../GwentParserCpp/gparseerr.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/QString \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qglobal.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig-bootstrapped.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qconfig.h \
@@ -932,20 +926,12 @@ release/gcondition.o: ../GwentParserCpp/gcondition.cpp ../GwentParserCpp/gcondit
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qmutex.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnumeric.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qversiontagging.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qiterator.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qhashfunctions.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qchar.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qpair.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearraylist.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qbytearray.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qrefcount.h \
 		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qnamespace.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstring.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qregexp.h \
-		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringmatcher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\gcondition.o ..\GwentParserCpp\gcondition.cpp
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qarraydata.h \
+		../../progs/QT_creator/5.9.1/mingw53_32/include/QtCore/qstringbuilder.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\gparseerr.o ..\GwentParserCpp\gparseerr.cpp
 
 ####### Install
 

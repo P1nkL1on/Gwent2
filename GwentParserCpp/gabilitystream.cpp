@@ -41,29 +41,29 @@ QString GAbilityStream::nextWord()
     return m_words->at(m_pos++);
 }
 
-QString GAbilityStream::wordsAround(const int position, const int amplitude) const
+QString GAbilityStream::wordsAround(const int position) const
 {
-    const int prevIndex = position < amplitude? 0 : (position - amplitude);
-    const int nextIndex = position + amplitude >= m_words->length()? (m_words->length() - 1) : (position + amplitude);
+    return wordsAround(position, position);
+}
+
+QString GAbilityStream::wordsAround(const int positionFrom, const int positionTo, const int amplitude) const
+{
+    const int prevIndex = positionFrom < amplitude? 0 : (positionFrom - amplitude);
+    const int nextIndex = positionTo + amplitude >= m_words->length()? (m_words->length() - 1) : (positionTo + amplitude);
 
     QString mess = "\n";
     int startInd = -1, endInd = -1, ind = 0;
     for (int i = prevIndex; i <= nextIndex; ++i){
         const QString addition = (i == prevIndex? "" : " ") + QString("%1").arg(m_words->at(i));
         mess += addition;
-        if (position == i){
+        if (positionFrom == i)
             startInd = ind + (i == prevIndex? 0 : 1);
+        if ((nextIndex < positionTo? nextIndex : positionTo) == i)
             endInd = ind + addition.length();
-        }
         ind += addition.length();
     }
     mess += '\n' + QString().leftJustified(startInd, ' ') + QString().leftJustified(endInd - startInd, '~');
     return mess;
-}
-
-QString GAbilityStream::wordsAround(const int positionFrom, const int positionTo, const int amplitude) const
-{
-
 }
 
 
